@@ -49,17 +49,74 @@
 % \newacronym{FIT}{FIT}{Fakulta informa{\v c}n{\' i}ch technologi{\' i}}
 
 \begin{introduction}
-	%sem napište úvod Vaší práce
+
+Rozhraní příkazové řádky (CLI) je základní prostředí pro komunikaci s operačním systémem.
+
+Grafické uživatelské rozhraní (GUI) se jednodušeji ovládá, ale ne vždy je k dispozici. To platí zejména při ovládání serverů.
+
+% https://en.wikipedia.org/wiki/Command-line_interface
+% https://en.wikipedia.org/wiki/Shell_(computing)
+% https://www.abclinuxu.cz/ucebnice/zaklady/prikazova-radka
+
 \end{introduction}
 
 \chapter{Cíl práce}
 
 \chapter{Analýza a návrh}
 
+
+\section{Debugovaní shellu} %-------------------------------------------------
+
+\subsection{Interní nástroje}
+
+\subsubsection{Debugovací mód BASHe (jak funguje shopt s extdebug)}
+shopt s extdebug
+
+\subsubsection{set x, u, v, e}
+priklady do skriptu
+
+\subsubsection{PS0, PS4}
+PS0 bude v novém bashi, my ji proto nebudeme používat, PS4 se vypisuje při debugovaní
+
+\subsection{Externí nástroje}
+
+\subsection{BASH Debugger}
+todo: popsat jak funguje, co vsechno umi, nejake priklady
+% http://bashdb.sourceforge.net/
+
+\section{Možnosti debugování v interaktivním shellu} %------------------------
+
+\subsection{GNU Readline}
+GNU Readline umožnuje přemapovat enter tak, abysme mohli spustit prikaz v nami definovane funkci. Problémem je, že takto upravený příkaz se uloží do historie. Dalším problémem jsou víceřádkové příkazy, tedy takové, pro jejichž napsání musíme několikrát zmáčknout enter.
+TODO: ukázka.
+
+\subsection{Napsání nového REPLu}
+Zprovoznění základní funkcionality by bylo snadné, vzhledem ke komplexnosti BASHe však téměř nemožné mít stejné chování jako v BASHi.
+
+\subsection{DEBUG trap}
+Současné řešené. Při zapnutém extdebug je možné příkazy nepustit a jen evalovat poslední příkaz z historie. TODO: je potřeba popsat základní chování historie (např mezera na začátku příkazu, atd.)
+
+
+
+
+
 \chapter{Realizace}
 
+\section{Nespouštění příkazů}
+Pro zabránění spouštění používáme DEBUG trap.
+
+\section{Hooks}
+Aby byl kód přehledný, veškerá funkcionalita je rozdělena do hooků, nebo-li modulů, které obsahují kód, který je spuštěn před, nebo i po vykonání příkazu. Kód vykonaný před příkazem může rozhodnout, zda-li má dojít k zabránění vykonání příkazu.
+
+\section{Bezpečný mód}
+Bezpečný mód umožňuje dvě základní věci. Tou jednodušší je pouze vypsání efektu příkazu, který má nějaké destruktivní. Složitější varianta dovoluje vracení do stavu před vykonáním příkazu. (TODO: tohle ještě není naimplementované)
+
+
+
+
+
 \begin{conclusion}
-	%sem napište závěr Vaší práce
+	sem napište závěr Vaší práce
 \end{conclusion}
 
 \bibliographystyle{csn690}
