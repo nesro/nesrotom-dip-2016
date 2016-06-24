@@ -66,6 +66,10 @@ Grafické uživatelské rozhraní (GUI) se jednodušeji ovládá, ale ne vždy j
 
 
 
+\section{Historie UNIXu}
+Nevim, jestli se takove tema jeste hodi do takoveto prace.
+
+
 \section{Historie shellu}
 
 \begin{figure}[htb]\centering
@@ -87,10 +91,17 @@ Grafické uživatelské rozhraní (GUI) se jednodušeji ovládá, ale ne vždy j
 % unix timeline for students
 % http://unix.harley.com/instructors/timeline.html
 
-\section{Fungování shellu}
-Popsat nějaké zajímavosti o tom jak věci fungují.
+%^ Historie shellu %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-http://www.pixelbeat.org/programming/stdio_buffering/
+
+
+
+\section{Fungování shellu}
+Popsat základní principy jak funguje shell.
+
+%http://www.pixelbeat.org/programming/stdio_buffering/
+
+
 
 
 \section{Debugovaní shellu} %-------------------------------------------------
@@ -122,12 +133,25 @@ TODO: ukázka.
 Zprovoznění základní funkcionality by bylo snadné, vzhledem ke komplexnosti BASHe však téměř nemožné mít stejné chování jako v BASHi.
 
 \subsection{DEBUG trap}
-Současné řešené. Při zapnutém extdebug je možné příkazy nepustit a jen evalovat poslední příkaz z historie. TODO: je potřeba popsat základní chování historie (např mezera na začátku příkazu, atd.)
+Současné řešení. Při zapnutém extdebug je možné příkazy nepustit a jen evalovat poslední příkaz z historie. TODO: je potřeba popsat základní chování historie (např mezera na začátku příkazu, atd.)
+
+
+\section{Logování výstupu}
+Napsat o tom, jak a proc logovat vystup skriptu. Jak to delat ve skriptech, jak to delat v interaktivnim shellu. Moznosti zapinani debugovani ve skriptech. Popsat prikaz jak prikaz script, tak i logovani pres exec. Popsat co se tam vsechno deje.
 
 
 
 
+\section{Automatizované spouštění příkazů}
+Popsat jak se dají automaticky spouštět příkazy. At uz lokalne, nebo vzdalene. Popsat jak rekonstrukci z typescriptu, tak treba Tcl, Expect.
 
+\subsection{Testování shell skriptů}
+Popsat jak funguji nektere testovaci frameworky.shunit2, roundup
+
+% https://bmizerany.github.io/roundup/
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Realizace}
 
 \section{Nespouštění příkazů}
@@ -139,6 +163,8 @@ Aby byl kód přehledný, veškerá funkcionalita je rozdělena do hooků, nebo-
 \section{Bezpečný mód}
 Bezpečný mód umožňuje dvě základní věci. Tou jednodušší je pouze vypsání efektu příkazu, který má nějaké destruktivní. Složitější varianta dovoluje vracení do stavu před vykonáním příkazu. (TODO: tohle ještě není naimplementované)
 
+\section{Historie}
+Popsat jak jsem vyresil ukladani historie prikazu, ukladani vystupu, navratove kody, jak vracet nasledky prikazu do puvodniho stavu.
 
 
 
