@@ -29,7 +29,7 @@
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 
 \department{Katedra teoretické informatiky}
-\title{Doplňte název práce}
+\title{Comma-shell, interaktivní debugger shellu}
 \authorGN{Tomáš} %(křestní) jméno (jména) autora
 \authorFN{Nesrovnal} %příjmení autora
 \authorWithDegrees{Bc. Tomáš Nesrovnal} %jméno autora včetně současných akademických titulů
@@ -50,9 +50,21 @@
 
 \begin{introduction}
 
-Rozhraní příkazové řádky (CLI) je základní prostředí pro komunikaci s operačním systémem.
+Grafické uživatelské rozhraní (GUI) se jednoduše ovládá, ale ne vždy je k dispozici. To platí zejména při ovládání serverů.
 
-Grafické uživatelské rozhraní (GUI) se jednodušeji ovládá, ale ne vždy je k dispozici. To platí zejména při ovládání serverů.
+Rozhraní příkazové řádky (CLI) je základní textové prostředí pro komunikaci s operačním systémem. Umožňuje spouštění programů, vkládat vstupní data a sledovat výstupní data v terminálu.
+
+Jedním ze základních bodů UNIXové filosofie je mít jednoduché programy, které dělají pouze jednu věc, ale dělají ji dobře. To platí zejména pro základní příkazy ze sady GNU coreutils, tedy příkazy pro základní manipulaci se soubory, shellem a textem.
+
+Tyto základní příkazy je možné řetězit a tím vytvářet užitečné jednořádkové skripty.
+
+TODO: napsat o tom, ze pro zacatecnika to muze byt neintuitivni, musi si pamatovat spoustu prikazu. o navratovych kodech, o historii prikazu a o logovani
+
+% https://www.gnu.org/software/coreutils/coreutils.html
+% http://www.tldp.org/LDP/GNU-Linux-Tools-Summary/GNU-Linux-Tools-Summary.pdf
+
+% https://en.wikipedia.org/wiki/Unix_philosophy
+% ^- tady je spousta dalsich uzitecnych odkazu, o cem by se mohlo psat
 
 % https://en.wikipedia.org/wiki/Command-line_interface
 % https://en.wikipedia.org/wiki/Shell_(computing)
@@ -67,8 +79,13 @@ Grafické uživatelské rozhraní (GUI) se jednodušeji ovládá, ale ne vždy j
 
 
 \section{Historie UNIXu}
-Nevim, jestli se takove tema jeste hodi do takoveto prace.
 
+% unix timeline for students
+% http://unix.harley.com/instructors/timeline.html
+% http://www.harley.com/books/sg3.html
+
+% Recommended UNIX Books
+% http://www.it.northwestern.edu/research/user-services/sscc/booklist.html
 
 \section{Historie shellu}
 
@@ -88,8 +105,7 @@ Nevim, jestli se takove tema jeste hodi do takoveto prace.
 % puvodni shell z unix v6
 %https://github.com/JNeitzel/v6shell
 
-% unix timeline for students
-% http://unix.harley.com/instructors/timeline.html
+
 
 %^ Historie shellu %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -97,9 +113,15 @@ Nevim, jestli se takove tema jeste hodi do takoveto prace.
 
 
 \section{Fungování shellu}
-Popsat základní principy jak funguje shell.
+Popsat základní principy jak funguje shell. Popsat procesy v unixu, fork, co vsechno se musi stat, aby shell mohl spustit prikaz.
 
-%http://www.pixelbeat.org/programming/stdio_buffering/
+TODO: asi by bylo dobry popsat zakladni strukturu BASHe
+
+% bash git repo
+% git clone git://git.savannah.gnu.org/bash.git
+
+% buffering in standard streams
+% http://www.pixelbeat.org/programming/stdio_buffering/
 
 
 
@@ -155,6 +177,9 @@ Zde by mohly byt sepsany obecne pozadavky na to, co by interaktivni debugger mel
 
 \section{Chování uživatelů v příkazové řádce} %------------------------
 Napadlo me udelat aketu o tom, jak se uzivatele chovaji v prikazove radce. Napriklad jaky pouzivaji shell, jaky maji PS1, nastavenou historii, logovani atd, jake pouzivaji aliasy, jestli si delaji skripty na kazdou vec, atd.
+
+Asi by stalo za to vysledovat chovani studentu predmetu PS1 a pomoci jim v prevenci chyb ktere delaji.
+
 % https://www.reddit.com/r/programming/comments/697cu/bash_users_what_do_you_have_for_your_ps1/
 
 
