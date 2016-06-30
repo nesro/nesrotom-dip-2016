@@ -73,6 +73,8 @@ TODO: napsat o tom, ze pro zacatecnika to muze byt neintuitivni, musi si pamatov
 \end{introduction}
 
 \chapter{Cíl práce}
+Napsat o tom, ze cilem prace je usnadnit praci v prikazove radce a sepsat zakladni funkcionalitu debuggeru.
+
 
 \chapter{Analýza a návrh}
 
@@ -95,6 +97,7 @@ TODO: napsat o tom, ze pro zacatecnika to muze byt neintuitivni, musi si pamatov
 	\label{fig:shell_history}
 \end{figure}
 
+V latexovych komentarich jsou nejake odkazy o historii.
 
 % uvod, prehled csh, ksh, bash.
 % https://www.ibm.com/developerworks/library/l-linux-shells/
@@ -113,9 +116,23 @@ TODO: napsat o tom, ze pro zacatecnika to muze byt neintuitivni, musi si pamatov
 
 
 \section{Fungování shellu}
-Popsat základní principy jak funguje shell. Popsat procesy v unixu, fork, co vsechno se musi stat, aby shell mohl spustit prikaz.
 
-TODO: asi by bylo dobry popsat zakladni strukturu BASHe
+\subsection{Gramatika shellu}
+Soubor s gramatikiou bashe, parse.y, ma pres 6000 radek. Chtel bych zde napsat zjednodusenou gramatiku, ktera by se dala snadno pochopit (ono to zas tak slozite neni).
+
+Popsat jakym zpusobem parsuje gramatiku BASH (yacc) a jakym to delaji parsery bashlex a bashast.
+
+
+% https://github.com/idank/bashlex/blob/master/bashlex/parser.py
+% https://github.com/neloe/libbash/blob/master/bashast/bashast.g
+
+% https://stackoverflow.com/questions/5491775/how-to-write-a-shell-lexer-by-hand
+
+\subsection{Spouštění příkazů}
+Popsat základní principy jak funguje shell. Popsat procesy v unixu, fork, exec, co vsechno se musi stat, aby shell mohl spustit prikaz.
+
+\subsection{Struktura BASHe}
+Zdrojovy kod je rozdelen do souboru, mozna by bylo dobre popsat popsat co ktery soubor dela, aby si ctenar udelal.
 
 % bash git repo
 % git clone git://git.savannah.gnu.org/bash.git
@@ -123,10 +140,10 @@ TODO: asi by bylo dobry popsat zakladni strukturu BASHe
 % buffering in standard streams
 % http://www.pixelbeat.org/programming/stdio_buffering/
 
-
-
-
 \section{Debugovaní shellu} %-------------------------------------------------
+
+\subsection{Debugovaní BASHe}
+Jeste jsem se k tomu nedostal, ale chtel bych si odkrokovat v gdb par zakladnich veci, abych videl co se tam deje. Mozna by stalo za to septat i sem.
 
 \subsection{Interní nástroje}
 
