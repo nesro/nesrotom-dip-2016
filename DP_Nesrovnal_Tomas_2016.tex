@@ -464,8 +464,24 @@ Popsat jak jsem vyresil ukladani historie prikazu, ukladani vystupu, navratove k
 todo: historie taky neni v zadani a moc jsem to nedoresil. teoreticky by na to sel napsat pre a post hook, ktery zaznamena vsechno potrebne a zapise to nekam do souboru.
 
 
+\section{Instalace}
+todo: odkaz na github, vypsat sem to je i tam, tedy: tvorba virtualniho stroje a instalace
+popsat, ze se predopklada instalace do ~/.commash
+
+\section{Testování}
+Pro testování byl zvolen skriptovací jazyk Expect, který je rozšířením jazyka Tcl. Lze tedy velice snadno otestovat chování Comma-shellu a jeho částí pro různé vstupy.
+
+Testy se skládají ze vstupů a z řetězců, které se očekávájí na výstupu. Přes Expect se potom vytvoří nová instance bashe, ve které se automaticky načte Comma-shell a postupně se posílají vstupy a sledují se výstupy pro očekáváné řetězce.
+
+Testy jsou rozdělené na menší části, kde každá testuje jednu konkrétní věc. Přes skript lze pustit sérii všech testů.
 
 
+
+%
+%
+%
+%
+%
 \begin{conclusion}
 
 	todo: urcite bych napsal. ze nikdo nic podobneho neudelal a ohlasy byly celkem pozitivni. pokud se toho chytne alespon par lidi a budou hlasit chyby, co je potreba vylepsit, nebo dokonce i prispivat, mohl by z toho byt jednou opravdu vyborny pomocnik
