@@ -24,6 +24,12 @@
 \newcommand{\tg}{\mathop{\mathrm{tg}}} %cesky tangens
 \newcommand{\cotg}{\mathop{\mathrm{cotg}}} %cesky cotangens
 
+
+% XXX
+%\setcounter{tocdepth}{4}
+%\setcounter{secnumdepth}{4}
+
+
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 % ODTUD DAL VSE ZMENTE
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
@@ -72,8 +78,119 @@ TODO: napsat o tom, ze pro zacatecnika to muze byt neintuitivni, musi si pamatov
 
 \end{introduction}
 
+\chapter{Definice a pojmy}
+
+prompt
+shell
+interaktivni
+debugger
+gnu
+linux
+root
+hook
+terminal
+
+todo: spousta veci nema cesky ekvivalent, zde bych mohl tyto pojmy vysvetlit.
+
+\chapter{Historie shellu a dnešní využití}
+
+Napsat o tom, ze bash je dneska nejcastejsi, protoze linux je vlastne GNU/Linux a bash je GNU bash. Zsh je lepsi snad uplne ve vsem. Sh, resp Dash je rychlejsi.
+
+\section{Bash - Bourne Again Shell}
+
+\url{https://cs.wikipedia.org/wiki/Debian_Almquist_shell}
+\url{https://wiki.archlinux.org/index.php/Dash}
+
+\section{Sh - Bourne Shell}
+
+todo
+
+\section{Dash - Debian Almquist Shell}
+
+todo
+
+\section{Zsh - Z Shell}
+
+todo
+
+\url{http://zsh.sourceforge.net/FAQ/}
+
+\section{Práce v příkazové řádce}
+todo: tady bych chtel shrnout obecne to, ze se pisou prikazy jako text a uzivatel vse vidi jako text. co z toho plyne za nasledky a jak je snadne udelat chybu
+
+\section{Nastavení shellu}
+
+GNU/Linuxové distribuce, které nabízejí předpřipravené prostředí, mají pro výchozí shell bash připravené takzvané rc soubory, které nějakým způsobem upravují běžící interaktivní shell. Jednou z nejviditelnějších změn je nastavení proměnné PS1, o které bude řec v pozdější kapitole, která určuje styl promptu. Ve výchozím nastavení bashe, tedy po spuštění bashe bez načtení rc souborů (bash --norc), se v PS1 zobrazuje pouze název shellu, jeho verze a zdali je uživatel root. Po načtení výchozích rc souborů se v PS1 ukazují informace jako je například jméno uživatele, jméno počítače a co je velmi důležité, jméno aktualního adresáře.
+
+Tyto informace jdou snadno získat použitím některých základních příkazů, například whoami, hostname, pwd. Protože tyto informace jsou důležité a potřebujeme je vedět pořád, chceme je mít pořád na očích.
+
+\section{Terminál}
+todo: asi by se hodilo napsat i neco o tech programech, ve kterych shell bezi
+
+%-----------------------------------------------------------------------------
+
+
 \chapter{Cíl práce}
 Napsat o tom, ze cilem prace je usnadnit praci v prikazove radce a sepsat zakladni funkcionalitu debuggeru.
+
+
+
+\section{Motivace}
+
+todo: ?
+
+
+\section{Existující řešení}
+
+Mezi seznamem různých zajímavých řešeních awesome ( github.com/sindresorhus/awesome ) existuje i podsekce awesome-shell ( github.com/alebcay/awesome-shell ), ve které lze nalézt spoustu užitečných nástrojů pro práci s příkazovou řádkou, nebo psaním skripů v bashi.
+
+Spousta těchto nástrojů je nad rámec této práce. 
+
+
+\section{Bash frameworky pro psaní skriptů}
+
+Existuje mnoho projektů, jejiž cílem je vytvořit framework v bashi, který má nějakým způsobem zjednodušit vytváření, především větších, skriptů v bashi. Spousta dnešních vývojářů je zvyklá na objektově orientovaný přístup k programovaní a je tedy pro těžké vytvořit větší program, který by zůstal přehledný.
+
+\subsection{Bash OO framework}
+Bash OO framework ( \url{github.com/niieani/bash-oo-framework} ) je framework napasny v bashi, ktery umoznuje vytvaret tridy, vyjimky a testy. Jeho cilem je vytvorit prostredi pro psani skriptu, kde se bude snadneji psat citelny kod, bez casti, ktere se opakuji.
+
+%
+%
+%
+%
+%
+
+\section{Bash frameworky pro správu doplňků}
+
+Existuje spousta věcí, které uživatel příkazové řádky potřebuje občas řešit. Řešení pro daný problém je víc. Buď si uživatel vyřeší problém sám, nebo bude hledat řešení na internetu. Shellovské frameworky, které umějí i spravovat doplňky, mohou mít řešení pro daný problém. Instalace a použítí pak bude velmi jednoduché, intuitivnií a bude zde nějaká záruka o fuknčnosti a kvalitě.
+
+Přestože je tato práce převážně o shellu bash, zsh je v tomto mnohem rozšířenější.
+
+\subsection{Oh My Zsh}
+
+Oh My Zsh ( \url{ohmyz.sh} ) je framework pro Zsh.
+
+\subsection{Bash-it}
+
+Bash-it ( \url{http://github.com/Bash-it/bash-it} )
+
+( itsfoss.com/bash-it-terminal-tool/ ) 
+
+%
+%
+%
+
+\section{Bash frameworky pro úpravu promptu}
+
+\subsection{Liquid Prompt}
+
+Projekt liquidpromp \url{github.com/nojhan/liquidprompt} je adaptivní prompt v interaktivním bashi.
+
+\subsection{Sexy Bash Prompt}
+
+Projekt sexy-bash-prompt \url{https://github.com/twolfson/sexy-bash-prompt} je další používaný prompt v interaktivním bashi.
+
+%------------------------------------------------------------------------------
 
 
 \chapter{Analýza a návrh}
@@ -117,10 +234,25 @@ V latexovych komentarich jsou nejake odkazy o historii.
 
 \section{Fungování shellu}
 
+\subsection{Životní cyklus příkazu}
+
+todo: popsat, co vsechno se stane, od napsani prikazu az po jeho vykonani
+
 \subsection{Gramatika shellu}
 Soubor s gramatikiou bashe, parse.y, ma pres 6000 radek. Chtel bych zde napsat zjednodusenou gramatiku, ktera by se dala snadno pochopit (ono to zas tak slozite neni).
 
 Popsat jakym zpusobem parsuje gramatiku BASH (yacc) a jakym to delaji parsery bashlex a bashast.
+
+
+
+\subsubsection{Projekty parsující shell}
+https://github.com/bemeurer/beautysh/blob/master/beautysh/beautysh.py
+
+\subsubsection{Bashlex}
+https://github.com/idank/bashlex/blob/master/bashlex/parser.py
+
+\subsubsection{Bashast}
+https://github.com/neloe/libbash/blob/master/bashast/bashast.g
 
 
 % https://github.com/idank/bashlex/blob/master/bashlex/parser.py
@@ -132,7 +264,7 @@ Popsat jakym zpusobem parsuje gramatiku BASH (yacc) a jakym to delaji parsery ba
 Popsat základní principy jak funguje shell. Popsat procesy v unixu, fork, exec, co vsechno se musi stat, aby shell mohl spustit prikaz.
 
 \subsection{Struktura BASHe}
-Zdrojovy kod je rozdelen do souboru, mozna by bylo dobre popsat popsat co ktery soubor dela, aby si ctenar udelal.
+todo: Zdrojovy kod je rozdelen do souboru, mozna by bylo dobre popsat popsat co ktery soubor dela, aby si ctenar udelal alespon trosku obrazek.
 
 % bash git repo
 % git clone git://git.savannah.gnu.org/bash.git
@@ -142,10 +274,15 @@ Zdrojovy kod je rozdelen do souboru, mozna by bylo dobre popsat popsat co ktery 
 
 \section{Debugovaní shellu} %-------------------------------------------------
 
-\subsection{Debugovaní BASHe}
-Jeste jsem se k tomu nedostal, ale chtel bych si odkrokovat v gdb par zakladnich veci, abych videl co se tam deje. Mozna by stalo za to septat i sem.
+% ZADANI
+tohle je jeden bod zadani: "Proveďte rešerši existujících nástrojů pro statickou analýzu, krokování a hledání chyb v BASH skriptech."
+
+\subsection{Debugovaní Bashe}
+todo: navod na debugovani bashe primo pomoci gdb. (tohle nakonec pro moji praci nebylo potreba) 
 
 \subsection{Interní nástroje}
+
+todo: popsat to, jake nastroje ma v sobe bash zabudovane v zakladu
 
 \subsubsection{Debugovací mód BASHe (jak funguje shopt s extdebug)}
 shopt s extdebug
@@ -154,15 +291,36 @@ shopt s extdebug
 priklady do skriptu
 
 \subsubsection{PS0, PS4}
-PS0 bude v novém bashi, my ji proto nebudeme používat, PS4 se vypisuje při debugovaní
+PS0 bude v novém bashi, my ji proto nebudeme používat, PS4 se vypisuje při debugovaní.
+todo: ps0 se nakonec nepovedlo
 
 \subsection{Externí nástroje}
 
 \subsection{BASH Debugger}
 todo: popsat jak funguje, co vsechno umi, nejake priklady
-% http://bashdb.sourceforge.net/
+\url{http://bashdb.sourceforge.net/}
 
-\section{Možnosti debugování v interaktivním shellu} %------------------------
+
+\subsection{BashEclipse}
+BashEclipse je plugin do Eclipse, ktery umi krokovat v gui eclipse.
+
+\url{http://unix.stackexchange.com/questions/131491/is-there-a-gui-debugger-for-shell-scripts}
+\url{https://sourceforge.net/projects/shelled/}
+\url{https://sourceforge.net/projects/basheclipse/}
+
+%
+%
+%
+%
+%
+\section{Možnosti debugování v interaktivním shellu}
+
+Nebyl nalezen žádný nástroj pro debugování interaktivního shellu. todo
+
+\subsection{Definice debugování interaktivního shellu}
+todo: nema cenu debugovat jednoduche prikazy, ale slozite ano. chceme umet rozkrokovat pipy a subshelly (tedy to co nam to dela ted)
+
+
 
 \subsection{GNU Readline}
 GNU Readline umožnuje přemapovat enter tak, abysme mohli spustit prikaz v nami definovane funkci. Problémem je, že takto upravený příkaz se uloží do historie. Dalším problémem jsou víceřádkové příkazy, tedy takové, pro jejichž napsání musíme několikrát zmáčknout enter.
@@ -175,8 +333,13 @@ Zprovoznění základní funkcionality by bylo snadné, vzhledem ke komplexnosti
 Současné řešení. Při zapnutém extdebug je možné příkazy nepustit a jen evalovat poslední příkaz z historie. TODO: je potřeba popsat základní chování historie (např mezera na začátku příkazu, atd.)
 
 
+
+
+
 \section{Logování výstupu}
 Napsat o tom, jak a proc logovat vystup skriptu. Jak to delat ve skriptech, jak to delat v interaktivnim shellu. Moznosti zapinani debugovani ve skriptech. Popsat prikaz jak prikaz script, tak i logovani pres exec. Popsat co se tam vsechno deje.
+
+todo: tohle jsem zkousel a nebylo to uplne jednoduche, vzhledem k tomu, ze to neni v zadani bych to mozna uplne vynechal
 
 
 
@@ -189,36 +352,124 @@ Popsat jak funguji nektere testovaci frameworky.shunit2, roundup
 
 % https://bmizerany.github.io/roundup/
 
-\section{Požadavky na interaktivní debugger} %------------------------
-Zde by mohly byt sepsany obecne pozadavky na to, co by interaktivni debugger mel vlastne delat.
 
 \section{Chování uživatelů v příkazové řádce} %------------------------
-Napadlo me udelat aketu o tom, jak se uzivatele chovaji v prikazove radce. Napriklad jaky pouzivaji shell, jaky maji PS1, nastavenou historii, logovani atd, jake pouzivaji aliasy, jestli si delaji skripty na kazdou vec, atd.
+todo: tohle je asi uplne zbytecne. podle me uplne staci to, ze frameworky maji vysoky pocet instalaci, takze se tyto veci pouzivaji
 
-Asi by stalo za to vysledovat chovani studentu predmetu PS1 a pomoci jim v prevenci chyb ktere delaji.
+""Napadlo me udelat anketu o tom, jak se uzivatele chovaji v prikazove radce. Napriklad jaky pouzivaji shell, jaky maji PS1, nastavenou historii, logovani atd, jake pouzivaji aliasy, jestli si delaji skripty na kazdou vec, atd.
+Asi by stalo za to vysledovat chovani studentu predmetu PS1 a pomoci jim v prevenci chyb ktere delaji.""
 
 % https://www.reddit.com/r/programming/comments/697cu/bash_users_what_do_you_have_for_your_ps1/
 
 
+\section{Statická analýza skriptů}
+
+bash ma validaci syntaxe: bash -n, ale to nezjisti skoro zadne chyby.
+
+\subsection{Check Bashisms}
+\url{http://checkbashisms.sourceforge.net/}
+Některé skripty cheme kvůli rychlosti spouštět v Bourne-Shellu. Protože ten je pouze podmnožina bashe, tento nástroj najde výskyty syntaxe, která je podporovaná pouze v bashi a v Bourne-Shellu nemusí fungovat správně.
+
+\subsection{Explain Shell}
+Tato analýza nehledá chyby, ale vyparsuje vložený kód a vyhledá příslušnou dokumentaci v manuálových stránkách. Využívá knihovny bashlex, kterou využijeme v našem debuggeru.
+\url{http://www.explainshell.com/}
+
+
+\subsection{ShellCheck}
+todo: tady bych se mohl rozepsat vic. o tom, ze to je napsane v haskellu, o tom ze existuje databaze veci, ktere se ve skriptech hledaji a ze ke kazdym je wiki..
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Realizace}
 
+% ZADANI
+v zadani je:
+Navrhněte a implementujte nástroj, který umožní psát uživatelské skripty pro analýzu příkazů a ovlivňování jejich spouštění a vykonávání. = to jsou hooky
+
+Nástroj musí umožňovat krokovat složitější skripty po jednotlivých příkazech. = to je debugger
+
+Pro analýzu spouštěných skriptů využijte vhodný nástroj z rešeršní části. = to je shellcheck
+
+
+
+
+%
+%
+%
+%
+%
 \section{Nespouštění příkazů}
 Pro zabránění spouštění používáme DEBUG trap.
+todo: popsat problemy a reseni
 
+
+%
+%
+%
+%
+%
+\section{Implementace debuggeru}
+todo: napsat o tom, ze cast je napsana v pythonu a ze se cela vec spousti v pre-hooku, takze to je presne ten cas, kdy se muze prikaz debuggovat a originalni prikaz se nespusti.
+
+popsat parsovani v bashlex a jak se cela vec predava do bashe
+
+%
+%
+%
+%
+%
 \section{Hooks}
-Aby byl kód přehledný, veškerá funkcionalita je rozdělena do hooků, nebo-li modulů, které obsahují kód, který je spuštěn před, nebo i po vykonání příkazu. Kód vykonaný před příkazem může rozhodnout, zda-li má dojít k zabránění vykonání příkazu.
+Aby byl kód přehledný, kromě bezpečných příkazů je funkcionalita je rozdělena do hooků, nebo-li modulů, které obsahují kód, který je spuštěn před, nebo i po vykonání příkazu. Kód vykonaný před příkazem může rozhodnout, zda-li má dojít k zabránění vykonání příkazu.
 
+
+\subsection{Implementace hooků}
+todo: napsat o tom, že se hooky pousti automaticky pred i po a ze je snadne vytvorit vlastni hook
+
+\subsection{Hooky před vykonáním příkazu}
+todo: napsat co všechno můžu dělat
+
+\subsection{Hooky po vykonáním příkazu}
+todo: napsat co všechno můžu dělat
+
+\subsection{Předvytvořené hooky}
+todo: napsat o tom, že 
+
+\subsection{Shellcheck hook}
+todo: tohle je nejlepsi vec, kterou cele commash umi. tady by to mozna chtelo ukazat pripady, kdy se to hodi. taky popsat to, ze nektere veci jdou snadno zakazat
+
+\subsection{Bashlex hook}
+todo: tohle je bashovska cast debuggeru
+
+\subsection{Explain RC hook}
+
+\subsection{Notfound hook}
+
+%
+%
+%
+%
+%
 \section{Bezpečný mód}
-Bezpečný mód umožňuje dvě základní věci. Tou jednodušší je pouze vypsání efektu příkazu, který má nějaké destruktivní. Složitější varianta dovoluje vracení do stavu před vykonáním příkazu.
+Bezpečný mód umožňuje dvě základní věci. Tou jednodušší je pouze vypsání efektu příkazu, který má nějaké destruktivní následky. Složitější varianta dovoluje vracení do stavu před vykonáním příkazu.
+
+todo: napsat o tom, ze po zkouseni jsem dosel k zaveru, ze je lepsi uzivateli nejprve ukazat co se deje, co se stane a jake ma moznosti. castokrat uz 
+
+
+\subsection{Bezpečné rm}
+todo: napsat o tom, jak to je vyřešené a proč. napsat, ze rm -i i rm -I je k ničemu a proč je naše verze lepší
+popsat, jak funguje freedestkop.org trash a ze ukladame seznam souboru, ktere byly smazany jednim rm, aby sel cely spusteny prikaz rm vratit 
+
 
 \section{Historie}
 Popsat jak jsem vyresil ukladani historie prikazu, ukladani vystupu, navratove kody, jak vracet nasledky prikazu do puvodniho stavu.
+todo: historie taky neni v zadani a moc jsem to nedoresil. teoreticky by na to sel napsat pre a post hook, ktery zaznamena vsechno potrebne a zapise to nekam do souboru.
 
 
 
 
 \begin{conclusion}
+
+	todo: urcite bych napsal. ze nikdo nic podobneho neudelal a ohlasy byly celkem pozitivni. pokud se toho chytne alespon par lidi a budou hlasit chyby, co je potreba vylepsit, nebo dokonce i prispivat, mohl by z toho byt jednou opravdu vyborny pomocnik
+
 	sem napište závěr Vaší práce
 \end{conclusion}
 
