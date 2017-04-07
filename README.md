@@ -1,5 +1,7 @@
 # install packages
-    sudo apt install latexmk texlive texmaker texlive-lang-czechslovak texlive-generic-extra
+    sudo apt install latexmk texlive texmaker texlive-lang-czechslovak texlive-generic-extra myspell-cs
+
+In Texmaker, go to: Options -> Configure Texmaker-> Editor and set the dictionary.
 
 # create pdf
     make

@@ -64,7 +64,19 @@ Jedním ze základních bodů UNIXové filosofie je mít jednoduché programy, k
 
 Tyto základní příkazy je možné řetězit a tím vytvářet užitečné jednořádkové skripty.
 
-TODO: napsat o tom, ze pro zacatecnika to muze byt neintuitivni, musi si pamatovat spoustu prikazu. o navratovych kodech, o historii prikazu a o logovani
+TODO: napsat o tom, ze pro začátečníka to může byt neintuitivní, musí si pamatovat spoustu příkazu. o návratových kódech, o historii prikazu a o logovani
+
+
+\section{Motivace}
+
+TODO: napsat motivaci pro kazdou cast
+
+Debugger
+
+Hooks
+
+Safe commands
+
 
 % https://www.gnu.org/software/coreutils/coreutils.html
 % http://www.tldp.org/LDP/GNU-Linux-Tools-Summary/GNU-Linux-Tools-Summary.pdf
@@ -80,21 +92,67 @@ TODO: napsat o tom, ze pro zacatecnika to muze byt neintuitivni, musi si pamatov
 
 \chapter{Definice a pojmy}
 
-prompt
-shell
-interaktivni
-debugger
-gnu
-linux
-root
-hook
-terminal
+Příkazová řádka, anglicky Command Line Interface, je uživatelské rozhraní ovládané příkazy. Příkazy spuštěné z příkazové řádky vypisují výstup také na příkazovou řádku a další interakce se spuštěným programem probíhá zase zadáváním příkazů. Na rozdíl od textového nebo grafického rozhraní uživatel nemůže nijak zasahovat do již vypsané či vykreslené části.
 
-todo: spousta veci nema cesky ekvivalent, zde bych mohl tyto pojmy vysvetlit.
+TODO: obrazek prikazove radky, tui a gui
+% https://cs.wikipedia.org/wiki/Textov%C3%A9_u%C5%BEivatelsk%C3%A9_rozhran%C3%AD
+
+Shellem se obecně myslí uživatelské prostředí pro využívání funkcí jádra operačního systému. V této práci budeme slovem shell označovat právě interpret příkazů v příkazové řádce. Tedy program, ovládaný příkazy, který umí spouštět ostatní programy a zajišťovat jejich vstup a zobrazovat jejich výstup.
+
+Prompt je krátký řetězec znaků, který se objeví na začátku řádky, do které se bude vepisovat příkaz v příkazové řádce. Je používán k zobrazování důležitých informací, jako například, ve kterém adresáři se uživatel nachází či jaké je jméno počítače, na kterém se nachází.
+% http://www.linfo.org/prompt.html
+
+
+GNU je projekt zabývající se tvorbou a propagací svobodného software. Cílem je vytvořit kompletní svobodný operační systém unixového typu. Protože jádro operačního systému od GNU s názvem Hurd nebylo tak úspěšné, začalo se používat jádro Linux. Kombinace operačního systému GNU a jádra Linux se označuje jako GNU/Linux. GNU vytvořilo i svůj shell, Bash. Sada základních příkazů, jejichž existence je předpokládána v nějaké formě na každém operačním systému, se jmenuje GNU coreutils. Patří do ní příkazy jako ls, cp, rm, atd. Je důležité si uvědomit, že příkazy jako cd, echo jsou vestavěné příkazy shellu Bash.
+
+% https://www.gnu.org/software/bash/
+% https://www.gnu.org/software/coreutils/coreutils.html
+
+Terminál byl z historického hlediska elektronické zařízení k základní komunikaci s počítačem. Dnes se v operačních systémech spouští terminálové emulátory, ve kterých lze spustit různé programy. Nejčastěji je to právě shell.
+
 
 \chapter{Historie shellu a dnešní využití}
 
 Napsat o tom, ze bash je dneska nejcastejsi, protoze linux je vlastne GNU/Linux a bash je GNU bash. Zsh je lepsi snad uplne ve vsem. Sh, resp Dash je rychlejsi.
+
+\section{UNIX}
+
+todo: historie unixu
+
+\section{Linux}
+
+% https://www.amazon.com/Just-Fun-Story-Accidental-Revolutionary/dp/0066620732
+
+% unix timeline for students
+% http://unix.harley.com/instructors/timeline.html
+% http://www.harley.com/books/sg3.html
+
+% Recommended UNIX Books
+% http://www.it.northwestern.edu/research/user-services/sscc/booklist.html
+
+% https://www.goodreads.com/book/show/104745.The_Art_of_UNIX_Programming
+
+\section{Shell}
+
+\begin{figure}[htb]\centering
+	\includegraphics[width=\textwidth]{./images/tmp_shell_history}
+	\caption{Historie Shellu}
+	\label{fig:shell_history}
+\end{figure}
+
+V latexovych komentarich jsou nejake odkazy o historii.
+
+% uvod, prehled csh, ksh, bash.
+% https://www.ibm.com/developerworks/library/l-linux-shells/
+
+% clanek od bourna z 1983, uvod do shellu, drtiva vetsina plati i dneska
+%https://ia800300.us.archive.org/1/items/byte-magazine-1983-10/1983_10_BYTE_08-10_UNIX.pdf
+
+% puvodni shell z unix v6
+%https://github.com/JNeitzel/v6shell
+
+
+
 
 \section{Bash - Bourne Again Shell}
 
@@ -130,14 +188,10 @@ todo: asi by se hodilo napsat i neco o tech programech, ve kterych shell bezi
 %-----------------------------------------------------------------------------
 
 
-\chapter{Cíl práce}
 Napsat o tom, ze cilem prace je usnadnit praci v prikazove radce a sepsat zakladni funkcionalitu debuggeru.
 
 
 
-\section{Motivace}
-
-todo: ?
 
 
 \section{Existující řešení}
@@ -195,39 +249,8 @@ Projekt sexy-bash-prompt \url{https://github.com/twolfson/sexy-bash-prompt} je d
 
 \chapter{Analýza a návrh}
 
-
-
-\section{Historie UNIXu}
-
-% unix timeline for students
-% http://unix.harley.com/instructors/timeline.html
-% http://www.harley.com/books/sg3.html
-
-% Recommended UNIX Books
-% http://www.it.northwestern.edu/research/user-services/sscc/booklist.html
-
-\section{Historie shellu}
-
-\begin{figure}[htb]\centering
-	\includegraphics[width=\textwidth]{./images/tmp_shell_history}
-	\caption{Historie Shellu}
-	\label{fig:shell_history}
-\end{figure}
-
-V latexovych komentarich jsou nejake odkazy o historii.
-
-% uvod, prehled csh, ksh, bash.
-% https://www.ibm.com/developerworks/library/l-linux-shells/
-
-% clanek od bourna z 1983, uvod do shellu, drtiva vetsina plati i dneska
-%https://ia800300.us.archive.org/1/items/byte-magazine-1983-10/1983_10_BYTE_08-10_UNIX.pdf
-
-% puvodni shell z unix v6
-%https://github.com/JNeitzel/v6shell
-
-
-
-%^ Historie shellu %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Cíl práce}
+todo
 
 
 
@@ -335,31 +358,7 @@ Současné řešení. Při zapnutém extdebug je možné příkazy nepustit a je
 
 
 
-
-\section{Logování výstupu}
-Napsat o tom, jak a proc logovat vystup skriptu. Jak to delat ve skriptech, jak to delat v interaktivnim shellu. Moznosti zapinani debugovani ve skriptech. Popsat prikaz jak prikaz script, tak i logovani pres exec. Popsat co se tam vsechno deje.
-
-todo: tohle jsem zkousel a nebylo to uplne jednoduche, vzhledem k tomu, ze to neni v zadani bych to mozna uplne vynechal
-
-
-
-
-\section{Automatizované spouštění příkazů}
-Popsat jak se dají automaticky spouštět příkazy. At uz lokalne, nebo vzdalene. Popsat jak rekonstrukci z typescriptu, tak treba Tcl, Expect.
-
-\subsection{Testování shell skriptů}
-Popsat jak funguji nektere testovaci frameworky.shunit2, roundup
-
 % https://bmizerany.github.io/roundup/
-
-
-\section{Chování uživatelů v příkazové řádce} %------------------------
-todo: tohle je asi uplne zbytecne. podle me uplne staci to, ze frameworky maji vysoky pocet instalaci, takze se tyto veci pouzivaji
-
-""Napadlo me udelat anketu o tom, jak se uzivatele chovaji v prikazove radce. Napriklad jaky pouzivaji shell, jaky maji PS1, nastavenou historii, logovani atd, jake pouzivaji aliasy, jestli si delaji skripty na kazdou vec, atd.
-Asi by stalo za to vysledovat chovani studentu predmetu PS1 a pomoci jim v prevenci chyb ktere delaji.""
-
-% https://www.reddit.com/r/programming/comments/697cu/bash_users_what_do_you_have_for_your_ps1/
 
 
 \section{Statická analýza skriptů}
@@ -462,6 +461,7 @@ popsat, jak funguje freedestkop.org trash a ze ukladame seznam souboru, ktere by
 \section{Historie}
 Popsat jak jsem vyresil ukladani historie prikazu, ukladani vystupu, navratove kody, jak vracet nasledky prikazu do puvodniho stavu.
 todo: historie taky neni v zadani a moc jsem to nedoresil. teoreticky by na to sel napsat pre a post hook, ktery zaznamena vsechno potrebne a zapise to nekam do souboru.
+todo: slo by snadno udelat: podobna historie co je ted, jen se ulozi odkud se prikaz spustil
 
 
 \section{Instalace}
@@ -469,25 +469,54 @@ todo: odkaz na github, vypsat sem to je i tam, tedy: tvorba virtualniho stroje a
 popsat, ze se predopklada instalace do ~/.commash
 
 \section{Testování}
+
+
+% ----------------------------------------------------------------------------
+%
+% TESTOVANI
+%
+% ----------------------------------------------------------------------------
+\chapter{Testování}
+
+
+\subsection{Testování shell skriptů}
+Popsat jak funguji nektere testovaci frameworky.shunit2, roundup
+
+
+\section{Automatizované spouštění příkazů}
+Popsat jak se dají automaticky spouštět příkazy. At uz lokalne, nebo vzdalene. Popsat jak rekonstrukci z typescriptu, tak treba Tcl, Expect.
+
+\subsection{Expect}
+todo: jak se pracuje s expectem
+
 Pro testování byl zvolen skriptovací jazyk Expect, který je rozšířením jazyka Tcl. Lze tedy velice snadno otestovat chování Comma-shellu a jeho částí pro různé vstupy.
 
 Testy se skládají ze vstupů a z řetězců, které se očekávájí na výstupu. Přes Expect se potom vytvoří nová instance bashe, ve které se automaticky načte Comma-shell a postupně se posílají vstupy a sledují se výstupy pro očekáváné řetězce.
 
 Testy jsou rozdělené na menší části, kde každá testuje jednu konkrétní věc. Přes skript lze pustit sérii všech testů.
 
+\subsection{Testování Debuggeru}
 
+\subsection{Testování Hooks}
 
+\subsection{Testování Bezpečných příkazů}
+
+\subsection{Měření paměťových nároků}
+
+% ----------------------------------------------------------------------------
 %
+% ZAVER
 %
-%
-%
-%
+% ----------------------------------------------------------------------------
 \begin{conclusion}
 
 	todo: urcite bych napsal. ze nikdo nic podobneho neudelal a ohlasy byly celkem pozitivni. pokud se toho chytne alespon par lidi a budou hlasit chyby, co je potreba vylepsit, nebo dokonce i prispivat, mohl by z toho byt jednou opravdu vyborny pomocnik
 
 	sem napište závěr Vaší práce
 \end{conclusion}
+
+
+
 
 \bibliographystyle{csn690}
 \bibliography{mybibliographyfile}
