@@ -12,3 +12,7 @@ In Texmaker, go to: Options -> Configure Texmaker-> Editor and set the dictionar
 # books
 Learning the bash Shell, 3rd Edition
 https://github.com/Ricky-Wilson/Programming-books/blob/master/PDF/Learning%20the%20bash%20Shell,%203rd%20Edition.pdf
+
+# svg to pdf
+    sudo apt install librsvg2-bin
+    rsvg-convert -f pdf -o FILE.{pdf,svg}

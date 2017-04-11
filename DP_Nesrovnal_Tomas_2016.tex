@@ -113,15 +113,33 @@ GNU je projekt zabývající se tvorbou a propagací svobodného software. Cíle
 Terminál byl z historického hlediska elektronické zařízení k základní komunikaci s počítačem. Dnes se v operačních systémech spouští terminálové emulátory, ve kterých lze spustit různé programy. Nejčastěji je to právě shell.
 
 
+Provádění příkazů můžeme rozdělit na dvě kategorie. Jednou z nich je interaktivní režim, kdy interpret spouští příkazy tak, jak je uživatel píše do příkazové řádky. V tomto režimu může uživatel také používat klávesové zkratky, aliasy, automatické doplňování a další funkce v interaktivním režimu. Druhou kategorií je dávkový režim, kdy uživatel nejprve příkazy napíše do souboru. Takovému souboru obsahujícímu příkazy se říká skript. Takový soubor může být zavolán interpretem shellu, který postupně vykoná všechny příkazy. Tento postup se hodí pro složitější a opakující se příkazy.
+
 \chapter{Historie shellu a dnešní využití}
 
 Napsat o tom, ze bash je dneska nejcastejsi, protoze linux je vlastne GNU/Linux a bash je GNU bash. Zsh je lepsi snad uplne ve vsem. Sh, resp Dash je rychlejsi.
 
 \section{UNIX}
 
-todo: historie unixu
+Unix je rodina operačních systémů, které zvládnou spustit více úkonů najednou a do kterých se v jeden okamžik může připojit více uživatelů. Historie těchto sytému sahá až na konec sedmdesátých let, kdy v Bell laboratořích firmy AT\&T byl v jazyce C vytvořen systém UNIX, jehož název byl zaregistrován jako ochranná známka. Časovou osu ukazuje obrázek \ref{fig:unixhistory}. Specifikace "Single UNIX Specification" je souhrn standardu, které operační systém musí splňovat a dodržovat, aby se mohl označovat za UNIX.
+
+Filosofie Unixu je sada doporučení a pravidel, která vznikla postupem času dle zkušeností tvůrců Unixu. Filosofie Unixu zdůrazňuje tvoření jednoduchého, přehledného a hlavně snadno rozšiřitelného a znovupoužitelného softwaru. Váží si programátorův čas více, než čas práce počítače. Nejznámější pravidlo je tvořit programy, které dělají jen jednu věc a dělají jí správně, rychle a bez chyb. Takové programy lze použít jako filtry a skládat je za sebe. To se často používá v příkazové řádce, kdy se pomocí rour spojují výstupy programů se vstupy jiných programů. Zdánlivě složitý úkol tak lze udělat rychle a efektivně bez nutnosti programování v nějakém jazyce.
+
+
+\begin{figure}
+	\includegraphics[width=1.0\textwidth]{./images/Unix_history-simple_rot_big}
+	\caption{Historie unixu}
+	\label{fig:unixhistory}
+\end{figure}
+
+% https://en.wikipedia.org/wiki/File:Unix_history-simple.svg
+% XXX: mozna https://simple.wikipedia.org/wiki/File:Unix_timeline.en.svg ?
+
+% ZDROJ: https://edux.fit.cvut.cz/courses/BI-PS1/_media/lectures/01/bi-ps1-p01-introduction-01.pdf
 
 \section{Linux}
+Linux je otevřený a svobodný Unix-like operační sytém. Linuxem se obecně myslí GNU operační systém s jádrem Linux. Unix-like znamená, že přestože je takový operační systém velice podobný systému Unix, nemá certifikaci "Single UNIX Specification". Linuxová distribuce je GNU/Linuxový systém, který většinou obsahuje balíčkovací systém, kterým je snadné doinstalovat ostatní programy. Linuxové distribuce jsou i předpřipravené, s grafickým prostředím. Například v této práci ukazujeme návod na vytvoření takového připraveného systému, GNU/Linuxové distribuci Debian s předpřipraveným grafickým prostředím LXDE a aplikacemi z rodiny LXDE.
+
 
 % https://www.amazon.com/Just-Fun-Story-Accidental-Revolutionary/dp/0066620732
 
