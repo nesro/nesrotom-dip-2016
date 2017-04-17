@@ -117,7 +117,17 @@ Provádění příkazů můžeme rozdělit na dvě kategorie. Jednou z nich je i
 
 \chapter{Historie shellu a dnešní využití}
 
-Napsat o tom, ze bash je dneska nejcastejsi, protoze linux je vlastne GNU/Linux a bash je GNU bash. Zsh je lepsi snad uplne ve vsem. Sh, resp Dash je rychlejsi.
+V této kapitole stručně shrneme historii rodin nepoužívanějších operačních systému a shellů, které se v nich používají. 
+
+% Napsat o tom, ze bash je dneska nejcastejsi, protoze linux je vlastne GNU/Linux a bash je GNU bash. Zsh je lepsi snad uplne ve vsem. Sh, resp Dash je rychlejsi.
+
+\section{Windows}
+
+
+Operační systém Windows je obecně uživatelsky přívětivější, protože skoro vše je možné nastavit přes grafické rozhraní. Ovšem ne vždy je grafické prostředí dostupné a příkazová řádka je jediná možnost, jak ovládat počítač.
+
+% https://en.wikipedia.org/wiki/Shell_(computing)#Microsoft_Windows
+% -> https://en.wikipedia.org/wiki/Windows_shell
 
 \section{UNIX}
 
@@ -156,11 +166,11 @@ Linux je otevřený a svobodný Unix-like operační sytém. Linuxem se obecně 
 
 \begin{figure}[htb]\centering
 	\includegraphics[width=\textwidth]{./images/tmp_shell_history}
-	\caption{Historie Shellu}
+	\caption{Historie Unixového Shellu}
 	\label{fig:shell_history}
 \end{figure}
 
-V latexovych komentarich jsou nejake odkazy o historii.
+% V latexovych komentarich jsou nejake odkazy o historii.
 
 % uvod, prehled csh, ksh, bash.
 % https://www.ibm.com/developerworks/library/l-linux-shells/
@@ -172,26 +182,97 @@ V latexovych komentarich jsou nejake odkazy o historii.
 %https://github.com/JNeitzel/v6shell
 
 
+\section{cmd.exe}
+
+Shellem v operačním systému MS-DOS a PC-DOS byl COMMAND.COM, 16-bitový intepretr příkazů. V novějších systémech Windows byl tento shell nahrazen CMD.EXE, 32-bitovým interpretem příkazů. V CMD.EXE byla dostupná emulace COMMAND.COM, pro zpětnou kompatibilitu. 
+
+Tato příkazová řádka, shell, již umí přesměrovávat vstupy a výstupy a to jak do souboru tak mezi procesy. Také je schopná vykonávat příkazy ze souborů, které se nazývají dávkové a zpravidla mívají příponu bat.
+
+% https://en.wikipedia.org/wiki/COMMAND.COM
+
+% https://en.wikipedia.org/wiki/PowerShell
+% https://technet.microsoft.com/en-us/library/bb490954.aspx
+
+\section{Power Shell}
+
+Protože je základní příkazová řádka Windows omezená co se funkcionality týče, existují další shelly pro operační systémy Windows, často i s otevřeným zdrojovým kódem. Firma Microsoft chtěla vytvořit i svůj shell, který bude umět více věcí. S jeho vývojem začala v roce 2002 a po 3 letech jej zveřejnila jako Microsoft Command Shell (MSH) s krycím jménem Monad, který byl později přejmenován na Power Shell.
+
+Power Shell je integrován s platformou .NET od Microsoftu. Je tedy možné využívat již vytvořené funkce a nástroje, které usnadní a urychlí vývoj.
+
+Oproti cmd.exe umí Power Shell mnoho věcí. Power Shell umožňuje spouštět příkazy v intervalech, nebo v nějaký přesný čas. Přibyly konstrukce pro větvení. Příkazy je možné spouštět na pozadí, nebo vzdáleně.
 
 
-\section{Bash - Bourne Again Shell}
+% https://technet.microsoft.com/en-us/library/2005.11.scripting.aspx
+% http://www.makeuseof.com/tag/command-prompt-vs-windows-powershell-whats-difference/
 
-\url{https://cs.wikipedia.org/wiki/Debian_Almquist_shell}
-\url{https://wiki.archlinux.org/index.php/Dash}
 
+\section{v9 - Thomson Shell}
+
+Pro první shell pro systém UNIX napsal Ken Thomson v roce 1971 a byl nazván V9 shell. Jednalo se již o uživatelský program, tedy spuštěný mimo jádro operačního sytému. Shell byl velice jednoduchý a některá základní funkcionalita byla umožněna dalšími programy. Například expanze parametrů byla zajišťována příkazem glob. Základní větvení, if, bylo také jako samostatný program.
+
+V9 shell přinesl syntaxi pro přesměrování a pipelining. Uměl spouštět více oddělených příkazů a dokázal příkazy spouštět na pozadí. Naopak chyběla třeba podpora pro spouštění skriptů. 
+
+Díky jednoduchosti a oddělenosti ostatní funkcionality měly zdrojové kódy pouze 900 řádek v jazyce C.
+
+Originalní zdrojové kódy jsou stále dostupné, \url{https://github.com/yvesnrb/Thompson-Shell}. Projekt Osh, \url{https://v6shell.org/}, obsahuje jak port tohoto původního shellu, tak i jeho vylepšenou verzi.
+
+
+% TODO: cite book https://en.wikipedia.org/wiki/The_Unix_Programming_Environment
+
+%
+%
+%
 \section{Sh - Bourne Shell}
 
-todo
+Bourne shell byl vytvořen pro UNIX V7 v roce 1977 Stephenem Bournem v laboratořích Bell a AT\&T. Na rozdíl od Thomsonova v9 shellu umí Bourne shell spouštět příkazy ze souborů, skriptů. Šlo tedy psát znovupoužitelné sady příkazů, které zjednodušili a urychlili vývoj různých aplikací. Interaktivní režim je samozřejmě podporován také.
 
+Bourne shell přinesl také podporu smyček, proměnných, signály, subshelly a HERE dokumenty. Skripty v shellu mohly sloužit i jako filtry. Z tohoto shellu poté začaly vznikat další, jak je vidět na obrázku \ref{fig:shell_history}.
+
+Dnes se Bourne shell stále používá. Je totiž menší, rychlejší a stabilnější než ostatní shelly. Má také minimum závislostí na externí knihovny.
+
+%
+%
+%
 \section{Dash - Debian Almquist Shell}
 
+Dash je moderní implementace Bourne Shellu. Snaží se být stále malý a rychlý, ale přesto třeba i bezpečný a stabilní při chybách systému. Důležitý je fakt, že tento shell splňuje standardy POSIX 1003.2 a 1003.2a, tedy standardy o regulárních výrazech, respektive jak se má chovat shell a jeho základní nástroje.
+
+Tento shell byl nastaven jako shell, který spouští příkazy při bootování i skripty, které mají jako shebang /bin/sh na operačních systémech Ubuntu a Debian.
+
+% \url{https://www.in-ulm.de/~mascheck/various/ash/#dash}
+% \url{https://cs.wikipedia.org/wiki/Debian_Almquist_shell}
+% \url{https://wiki.archlinux.org/index.php/Dash}
+% https://wiki.ubuntu.com/DashAsBinSh
+
+%
+%
+%
+\section{Ksh - Korn Shell}
+
 todo
 
+%
+%
+%
+\section{Bash - Bourne Again Shell}
+
+Bash je open source shell projektu GNU. Bash se snaží být zpětně kompatibilní s Bourne shellem, tedy skripty napsané v Bourne shellu pravděpodobně půjdou spustit i v Bashi. Naopak to je problém, který se řeší program checkbashisms, o kterém bude řeč dále.
+
+
+
+% !!!
+% http://www.aosabook.org/en/bash.html?cm_mc_uid=36339891185014923692137&cm_mc_sid_50200000=1492436376
+
+
+%
+%
+%
 \section{Zsh - Z Shell}
 
 todo
 
 \url{http://zsh.sourceforge.net/FAQ/}
+
 
 \section{Práce v příkazové řádce}
 todo: tady bych chtel shrnout obecne to, ze se pisou prikazy jako text a uzivatel vse vidi jako text. co z toho plyne za nasledky a jak je snadne udelat chybu
@@ -223,10 +304,10 @@ Spousta těchto nástrojů je nad rámec této práce.
 
 \section{Bash frameworky pro psaní skriptů}
 
-Existuje mnoho projektů, jejiž cílem je vytvořit framework v bashi, který má nějakým způsobem zjednodušit vytváření, především větších, skriptů v bashi. Spousta dnešních vývojářů je zvyklá na objektově orientovaný přístup k programovaní a je tedy pro těžké vytvořit větší program, který by zůstal přehledný.
+Existuje mnoho projektů, jejichž cílem je vytvořit framework v bashi, který má nějakým způsobem zjednodušit vytváření, především větších, skriptů v bashi. Spousta dnešních vývojářů je zvyklá na objektově orientovaný přístup k programovaní a je tedy pro těžké vytvořit větší program, který by zůstal přehledný.
 
 \subsection{Bash OO framework}
-Bash OO framework ( \url{github.com/niieani/bash-oo-framework} ) je framework napasny v bashi, ktery umoznuje vytvaret tridy, vyjimky a testy. Jeho cilem je vytvorit prostredi pro psani skriptu, kde se bude snadneji psat citelny kod, bez casti, ktere se opakuji.
+Bash OO framework ( \url{github.com/niieani/bash-oo-framework} ) je framework napasny v bashi, ktery umoznuje vytvaret tridy, vyjimky a testy. Jeho cílem je vytvořit prostredi pro psani skriptu, kde se bude snadneji psat citelny kod, bez casti, ktere se opakuji.
 
 %
 %
@@ -236,7 +317,7 @@ Bash OO framework ( \url{github.com/niieani/bash-oo-framework} ) je framework na
 
 \section{Bash frameworky pro správu doplňků}
 
-Existuje spousta věcí, které uživatel příkazové řádky potřebuje občas řešit. Řešení pro daný problém je víc. Buď si uživatel vyřeší problém sám, nebo bude hledat řešení na internetu. Shellovské frameworky, které umějí i spravovat doplňky, mohou mít řešení pro daný problém. Instalace a použítí pak bude velmi jednoduché, intuitivnií a bude zde nějaká záruka o fuknčnosti a kvalitě.
+Existuje spousta věcí, které uživatel příkazové řádky potřebuje občas řešit. Řešení pro daný problém je víc. Buď si uživatel vyřeší problém sám, nebo bude hledat řešení na internetu. Shellovské frameworky, které umějí i spravovat doplňky, mohou mít řešení pro daný problém. Instalace a použití pak bude velmi jednoduché, intuitivní a bude zde nějaká záruka o fuknčnosti a kvalitě.
 
 Přestože je tato práce převážně o shellu bash, zsh je v tomto mnohem rozšířenější.
 
