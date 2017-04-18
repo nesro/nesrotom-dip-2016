@@ -284,12 +284,22 @@ GNU/Linuxové distribuce, které nabízejí předpřipravené prostředí, mají
 Tyto informace jdou snadno získat použitím některých základních příkazů, například whoami, hostname, pwd. Protože tyto informace jsou důležité a potřebujeme je vedět pořád, chceme je mít pořád na očích.
 
 \section{Terminál}
-todo: asi by se hodilo napsat i neco o tech programech, ve kterych shell bezi
+
+
+% Terminál byl z historického hlediska elektronické zařízení k základní komunikaci s počítačem. Dnes se v operačních systémech spouští terminálové emulátory, ve kterých lze spustit různé programy. Nejčastěji je to právě shell.
+
+Protože je terminál elektronické zařízení, ukážeme zde pouze emulátory takových terminálů.
+
+Prvním druhem jsou programy, které vytvoří nové okno v desktopovém prostředí operačního systému. Na operačních systémech Linux je to zpravidla X Window System.
+
+Druhým druhem jsou programy, které se spustí už v nějakém terminálu a emulují další terminál. To se hodí například při vzdálené práci. Takový emulátor běží na straně serveru a pokud se přeruší spojení, terminál zůstane neporušen.
+
+% https://en.wikipedia.org/wiki/List_of_terminal_emulators
 
 %-----------------------------------------------------------------------------
 
 
-Napsat o tom, ze cilem prace je usnadnit praci v prikazove radce a sepsat zakladni funkcionalitu debuggeru.
+% Napsat o tom, ze cilem prace je usnadnit praci v prikazove radce a sepsat zakladni funkcionalitu debuggeru.
 
 
 
@@ -327,9 +337,7 @@ Oh My Zsh ( \url{ohmyz.sh} ) je framework pro Zsh.
 
 \subsection{Bash-it}
 
-Bash-it ( \url{http://github.com/Bash-it/bash-it} )
-
-( itsfoss.com/bash-it-terminal-tool/ ) 
+Bash-it ( \url{http://github.com/Bash-it/bash-it} , \url{http://itsfoss.com/bash-it-terminal-tool/} ) je framework pro Bash.
 
 %
 %
@@ -360,7 +368,14 @@ todo
 
 \subsection{Životní cyklus příkazu}
 
-todo: popsat, co vsechno se stane, od napsani prikazu az po jeho vykonani
+
+\begin{figure}[htb]\centering
+	\includegraphics[width=\textwidth]{./images/shell_arch2}
+	\caption{Architekture}
+	\label{fig:shell_arch}
+\end{figure}
+
+% todo: popsat, co vsechno se stane, od napsani prikazu az po jeho vykonani
 
 \subsection{Gramatika shellu}
 Soubor s gramatikiou bashe, parse.y, ma pres 6000 radek. Chtel bych zde napsat zjednodusenou gramatiku, ktera by se dala snadno pochopit (ono to zas tak slozite neni).
@@ -370,13 +385,13 @@ Popsat jakym zpusobem parsuje gramatiku BASH (yacc) a jakym to delaji parsery ba
 
 
 \subsubsection{Projekty parsující shell}
-https://github.com/bemeurer/beautysh/blob/master/beautysh/beautysh.py
+\url{https://github.com/bemeurer/beautysh/blob/master/beautysh/beautysh.py}
 
 \subsubsection{Bashlex}
-https://github.com/idank/bashlex/blob/master/bashlex/parser.py
+\url{https://github.com/idank/bashlex/blob/master/bashlex/parser.py}
 
 \subsubsection{Bashast}
-https://github.com/neloe/libbash/blob/master/bashast/bashast.g
+\url{https://github.com/neloe/libbash/blob/master/bashast/bashast.g}
 
 
 % https://github.com/idank/bashlex/blob/master/bashlex/parser.py
@@ -384,11 +399,26 @@ https://github.com/neloe/libbash/blob/master/bashast/bashast.g
 
 % https://stackoverflow.com/questions/5491775/how-to-write-a-shell-lexer-by-hand
 
+
+% TODO: nebude to duplicitni s zivotnim cyklem prikazu?
 \subsection{Spouštění příkazů}
 Popsat základní principy jak funguje shell. Popsat procesy v unixu, fork, exec, co vsechno se musi stat, aby shell mohl spustit prikaz.
 
+Dulezite bude popsat, kdy se spousti debug trap a ze muzeme prikazy spoustet pres exec.
+
+
 \subsection{Struktura BASHe}
-todo: Zdrojovy kod je rozdelen do souboru, mozna by bylo dobre popsat popsat co ktery soubor dela, aby si ctenar udelal alespon trosku obrazek.
+% todo: Zdrojovy kod je rozdelen do souboru, mozna by bylo dobre popsat popsat co ktery soubor dela, aby si ctenar udelal alespon trosku obrazek.
+
+Tady je popsane, jak bash funguje: \url{http://www.aosabook.org/en/bash.html?cm_mc_uid=36339891185014923692137&cm_mc_sid_50200000=1492436376}
+
+Bash diagram \ref{fig:bash_diag}.
+
+\begin{figure}[htb]\centering
+	\includegraphics[width=\textwidth]{./images/bash-article-diagram}
+	\caption{Bash diagram}
+	\label{fig:bash_diag}
+\end{figure}
 
 % bash git repo
 % git clone git://git.savannah.gnu.org/bash.git
@@ -568,8 +598,6 @@ todo: slo by snadno udelat: podobna historie co je ted, jen se ulozi odkud se pr
 \section{Instalace}
 todo: odkaz na github, vypsat sem to je i tam, tedy: tvorba virtualniho stroje a instalace
 popsat, ze se predopklada instalace do ~/.commash
-
-\section{Testování}
 
 
 % ----------------------------------------------------------------------------
