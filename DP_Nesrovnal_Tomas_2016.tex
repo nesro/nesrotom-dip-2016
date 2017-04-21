@@ -244,12 +244,31 @@ Tento shell byl nastaven jako shell, který spouští příkazy při bootování
 % \url{https://wiki.archlinux.org/index.php/Dash}
 % https://wiki.ubuntu.com/DashAsBinSh
 
+
+%
+%
+%
+\section{Csh - C Shell}
+
+C Shell byl vytvořen Bill Joyem v sedmdesátých letech. Hlavní myšlenkou byla syntaxe více podobná jazyku C. Dnes se používá vylepšená verze tcsh.
+
+Přestože není tento shell moc oblíbený v dnešní době, při svém vzniku představil některé nové vlastnosti, které pak začali adaptovat i ostatní shelly. Byla to například historie příkazů, nebo podpora aliasů.
+
+% http://www.tcsh.org/
+% https://en.wikipedia.org/wiki/C_shell
+
+
+
 %
 %
 %
 \section{Ksh - Korn Shell}
 
-todo
+Korn Shell je Unixový shell, který vytvořil David Korn a jeho kolegové z Bell laboratoří na začátku osmdesátých let. Korn Shell byl vyvíjen z Bourne Shellu a zachovává zpětnou kompatibilitu.
+
+Korn Shell umožnuje upravovat psaný příkaz, jako v editorech Vi, nebo Emacs. Podporu spravování spuštěných programů, historie a aliasy příkazů byly převzaty z C Shellu. Korn Shell dovoluje vytvářet asociativní pole a umí pracovat s desetinnými čísly.
+
+% https://en.wikipedia.org/wiki/KornShell
 
 %
 %
@@ -258,7 +277,7 @@ todo
 
 Bash je open source shell projektu GNU. Bash se snaží být zpětně kompatibilní s Bourne shellem, tedy skripty napsané v Bourne shellu pravděpodobně půjdou spustit i v Bashi. Naopak to je problém, který se řeší program checkbashisms, o kterém bude řeč dále.
 
-
+todo
 
 % !!!
 % http://www.aosabook.org/en/bash.html?cm_mc_uid=36339891185014923692137&cm_mc_sid_50200000=1492436376
@@ -269,20 +288,55 @@ Bash je open source shell projektu GNU. Bash se snaží být zpětně kompatibil
 %
 \section{Zsh - Z Shell}
 
-todo
+Z Shell je Unixový shell, pojmenovaný po přihlašovacím jménu profesorovi z Yale, Zhong Shao. Byl v roce 1990 napsán Paulem Falstadem. Ze standardních shellů.
+
+Z Shell nejenom že nabízí nejvíce funkcí mezi používanými Shelly pro Unixové systémy, ale také je kolem něj velká aktivní komunita spravující mnoho pluginů, v čele s Oh My Zsh, o kterém bude řeč dále.
+
+Funkcí navíc oproti ostatním shellům je hodně. Hned po instalaci Z Shellu se uživateli nabídne možnost nastavení, jako například nastavení ukládání historie, nebo automatické doplňování. Z Shell má na rozdíl od Bashe nativní podporu automatického doplňování, která je nejen rychlejší, je více způsobů, jak s ní iteragovat, ale je i snadnější na implementaci do uživatelských skriptů.
+
+Z Shell umožňuje zobrazit hodnotu promptu PS1 i v pravo. Tím se otevírají další možnosti pro zobrazování informací.
+
+Ukládání historie je automaticky sdíleno mezi jednotlivými instancemi Z Shellu. Takové chování je možné nastavit i například v Bashi, ale je to pro to potřeba ukládat každý příkaz do souboru na disk.
+
+Další z věcí ovlivňující pohodlnost práce v Z Shellu je takzvaný globbing, který je lepší než v ostatních shellech. Jedná se o popsání jednoho, nebo několik řetězců, zpravidla názvu souborů, kratším zápisem. Například *.txt se zamění za všechny soubory ve složce s příponou txt. V Z Shellu je ale možné popsat cestu k souborů pomocí zkratek a nechat ji doplnit. Například /h/u/t/s se změní na /home/user/test/script.sh.
+
+Velmi užitečnou funkcí je automatická oprava překlepů. V Bashi je velmi limitovaná oprava příkazů, ale v Z Shellu se opravují nejen názvy příkazů, ale také argumentů. Pokud je argumentem cesta k souboru, který neexistuje, Z Shell navrhne cestu k souboru, který existuje a má podobnou cestu.
+
+Přestože Z Shell se zdá být ve všech směrech lepší než Bash, tak není základním shellem ve většině Linuxových distribucích.
 
 \url{http://zsh.sourceforge.net/FAQ/}
 
 
+%
+%
+%
 \section{Práce v příkazové řádce}
-todo: tady bych chtel shrnout obecne to, ze se pisou prikazy jako text a uzivatel vse vidi jako text. co z toho plyne za nasledky a jak je snadne udelat chybu
 
+Práce v příkazové řádce může být mnohem efektivnější na rozdíl od práce v grafickém prostředí. Při normální práci není tolik nutné používat myš. Složitější, nebo méně používané funkce a programy je zpravidla rychlejší napsat, než vyhledat v nějakém kontextovém menu. To samozřejmě platí až tehdy, kdy uživatel ví, jakým příkazem a s jakými parametry se příkazy spouští.
+
+Nový uživatel, který ještě není s prací v příkazové řádce zběhlý, bude ze začátku méně efektivní, ale časem si základní příkazy zapamatuje a jeho efektivita bude růst.
+
+Další výhodou je možnost používání příkazů ve formě filtrů. I složitou věc je často možné vyřešit pomocí spuštění několika příkazů v rouře za sebou. Příkazy v mezikrocích mohou být také uživatelské skripty.
+
+Velice snadné je také automatizace. Pokud uživatel často potřebuje vykonat nějakou sekvenci příkazů, může složené příkazy vyhledat v historii a třeba z nich vytvořit skript.
+
+Nevýhodou na rozdíl od práce v grafickém prostředí je často fakt, že zpravidla ne všechny potřebné informace jsou stále na očích. Tento problém lze vyřešit rozšířeným a vylepšeným promptem, nebo emulátorem terminálům, které mohou vyhradit nějakou část terminálu pro zobrazování informací. I přes to se stává, že uživatel musí často spouštět nějaké příkazy, které vypíšou nějaké informace.
+
+S rychlejší prací přichází také větší zodpovědnost za spuštěné příkazy. Překlep v příkaze, který provádí nějaké změny může způsobit komplikace. Některé programy se uživatele dotazují, zda-li chce operaci opravdu provést, ale není to pravidlem. Nejlepší prevencí je si tedy příkaz před spuštěním překontrolovat.
+
+
+%
+%
+%
 \section{Nastavení shellu}
 
 GNU/Linuxové distribuce, které nabízejí předpřipravené prostředí, mají pro výchozí shell bash připravené takzvané rc soubory, které nějakým způsobem upravují běžící interaktivní shell. Jednou z nejviditelnějších změn je nastavení proměnné PS1, o které bude řec v pozdější kapitole, která určuje styl promptu. Ve výchozím nastavení bashe, tedy po spuštění bashe bez načtení rc souborů (bash --norc), se v PS1 zobrazuje pouze název shellu, jeho verze a zdali je uživatel root. Po načtení výchozích rc souborů se v PS1 ukazují informace jako je například jméno uživatele, jméno počítače a co je velmi důležité, jméno aktualního adresáře.
 
 Tyto informace jdou snadno získat použitím některých základních příkazů, například whoami, hostname, pwd. Protože tyto informace jsou důležité a potřebujeme je vedět pořád, chceme je mít pořád na očích.
 
+%
+%
+%
 \section{Terminál}
 
 
@@ -331,10 +385,16 @@ Existuje spousta věcí, které uživatel příkazové řádky potřebuje občas
 
 Přestože je tato práce převážně o shellu bash, zsh je v tomto mnohem rozšířenější.
 
+%
+%
+%
 \subsection{Oh My Zsh}
 
 Oh My Zsh ( \url{ohmyz.sh} ) je framework pro Zsh.
 
+%
+%
+%
 \subsection{Bash-it}
 
 Bash-it ( \url{http://github.com/Bash-it/bash-it} , \url{http://itsfoss.com/bash-it-terminal-tool/} ) je framework pro Bash.
@@ -343,6 +403,9 @@ Bash-it ( \url{http://github.com/Bash-it/bash-it} , \url{http://itsfoss.com/bash
 %
 %
 
+%
+%
+%
 \section{Bash frameworky pro úpravu promptu}
 
 \subsection{Liquid Prompt}
@@ -356,10 +419,21 @@ Projekt sexy-bash-prompt \url{https://github.com/twolfson/sexy-bash-prompt} je d
 %------------------------------------------------------------------------------
 
 
+%
+%
+%
 \chapter{Analýza a návrh}
 
+%
+%
+%
 \section{Cíl práce}
-todo
+
+Prvotním cílem práce bylo navrhnout a vytvořit shell, který bude asistovat studentům na začátku jejich studia shellu. Takový shell by je měl upozorňovat na chyby a navrhovat lepší řešení. Přitom mělo být maximálně využito existujících řešení.
+
+
+
+
 
 
 
