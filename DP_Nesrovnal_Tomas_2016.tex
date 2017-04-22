@@ -478,6 +478,9 @@ V této kapitole vysvětlíme, co všechno všechno důležitého se stane mezi 
 
 Prvním krokem je escapovaní, neboli převod znaků převod znaků, které mají ve svém kontextu speciální význam. V shellu lze tento postup provést pomocí znaku \textbackslash, nebo tím, že řetězec znaků dáme do uvozovek. Příkladem může být znak \#, který značí, že znaky za ním jsou pouze komentář. V ukázce \ref{lst:escape} jsou čtyři příklady zavolání příkazu echo. V prvním případě ale znak \# není vyescapován a Bash ho vyhodnotí jako začátek komentáře, proto se vypíše jen část, oproti ostatním voláním.
 
+% TODO: pridat strong/weak quoting?
+% http://wiki.bash-hackers.org/syntax/quoting
+
 \begin{lstlisting}[language=bash, caption={Escapovaní v shellu}, label={lst:escape}]
 
 $ echo a # b
@@ -491,6 +494,16 @@ a # b
 
 \end{lstlisting}
 
+Druhým krokem je odstranění komentářů. V Bashi lze nastavit, aby se v interaktivním shellu komentáře ignorovali. Slouží k tomu proměnná \textit{interactive\_comments}, v základním nastavení jsou komentáře zapnuté.
+
+Třetím krokem je rozdělení celého vstupu na příkazy. K příkazům patří přesměrovávání vstupů a výstupů. Jednoduchý příkaz je buď přiřazení proměnné, nebo název příkazu. Co je příkaz bude řečeno dále. Příkazů v jednom vstupu může být více. Příkazy mohou být za sebou v rouře, odděleny logickým and nebo or. Příkazy mohou být také odděleny jednoduše pomocí středníku, nebo v případě spouštění ze skriptu i novou řádkou. Stejně může příkazy rozdělovat ampersand, který značí,  že se příkaz spustí na pozadí. Některé konstrukty již z principu obsahují více příkazů, například podmínky nebo smyčky.
+
+Čtvrtým krokem je expanze a substituce. TODO: tohle by mohla byt samostana kaptiola?
+
+Posledním  krokem je samotné spuštění příkazu, popřípadě přiřazení do proměnné. O spouštění příkazů pojednává kapitola \ref{sec:exec}
+
+% http://wiki.bash-hackers.org/syntax/expansion/intro
+
 
 % https://edux.fit.cvut.cz/courses/BI-PS1/_media/lectures/02/bi-ps1-p02-cli-04.pdf
 
@@ -498,7 +511,12 @@ a # b
 %
 %
 \subsection{Gramatika shellu}
+
+
+
 Soubor s gramatikiou bashe, parse.y, ma pres 6000 radek. Chtel bych zde napsat zjednodusenou gramatiku, ktera by se dala snadno pochopit (ono to zas tak slozite neni).
+
+v man bash je gramatika
 
 Popsat jakym zpusobem parsuje gramatiku BASH (yacc) a jakym to delaji parsery bashlex a bashast.
 
@@ -507,9 +525,58 @@ Popsat jakym zpusobem parsuje gramatiku BASH (yacc) a jakym to delaji parsery ba
 \subsubsection{Projekty parsující shell}
 \url{https://github.com/bemeurer/beautysh/blob/master/beautysh/beautysh.py}
 
+%
+%
+%
 \subsubsection{Bashlex}
-\url{https://github.com/idank/bashlex/blob/master/bashlex/parser.py}
 
+Bashlex je knihovna napsaná ve skriptovacím jazyce Python, která zjednodušeně imituje práci vnitřního parseru Bashe. Z velké části se jedná jen o přepsaní zdrojových kódů C.
+
+Existiují rozdíly oproti parseru v Bashi. Za prvé se nespouští žádné příkazy, knihovna umí pouze parsovat. Na rozdíl od pareru Yacc, který používá Bash, je Bashlex reentrantní. Výstupem Bashlexu je kompletní abstraktní syntaktický strom.
+
+TODO jak se pracuje s bashlexem, protoze to pouzivam
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={Výstup z knihovny Bashlex}, label={lst:bashlex}]
+
+$ python
+>>> import bashlex
+>>> parts = bashlex.parse('true && cat <(echo $(echo foo))')
+>>> for ast in parts:
+...     print ast.dump()
+ListNode(pos=(0, 31), parts=[
+  CommandNode(pos=(0, 4), parts=[
+    WordNode(pos=(0, 4), word='true'),
+  ]),
+  OperatorNode(op='&&', pos=(5, 7)),
+  CommandNode(pos=(8, 31), parts=[
+    WordNode(pos=(8, 11), word='cat'),
+    WordNode(pos=(12, 31), word='<(echo $(echo foo))', parts=[
+      ProcesssubstitutionNode(command=
+        CommandNode(pos=(14, 30), parts=[
+          WordNode(pos=(14, 18), word='echo'),
+          WordNode(pos=(19, 30), word='$(echo foo)', parts=[
+            CommandsubstitutionNode(command=
+              CommandNode(pos=(21, 29), parts=[
+                WordNode(pos=(21, 25), word='echo'),
+                WordNode(pos=(26, 29), word='foo'),
+              ]), pos=(19, 30)),
+          ]),
+        ]), pos=(12, 31)),
+    ]),
+  ]),
+])
+
+\end{lstlisting}
+\end{minipage}
+
+
+
+% \url{https://github.com/idank/bashlex/blob/master/bashlex/parser.py}
+
+%
+%
+%
 \subsubsection{Bashast}
 \url{https://github.com/neloe/libbash/blob/master/bashast/bashast.g}
 
@@ -521,7 +588,7 @@ Popsat jakym zpusobem parsuje gramatiku BASH (yacc) a jakym to delaji parsery ba
 
 
 % TODO: nebude to duplicitni s zivotnim cyklem prikazu?
-\subsection{Spouštění příkazů}
+\subsection{Spouštění příkazů}\label{sec:exec}
 Popsat základní principy jak funguje shell. Popsat procesy v unixu, fork, exec, co vsechno se musi stat, aby shell mohl spustit prikaz.
 
 Dulezite bude popsat, kdy se spousti debug trap a ze muzeme prikazy spoustet pres exec.
