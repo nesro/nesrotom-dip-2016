@@ -16,6 +16,11 @@
 
 \usepackage{dirtree} %directory tree visualisation
 
+
+\usepackage{courier}
+% for bash examples
+\usepackage{listings}
+
 % % list of acronyms
 % \usepackage[acronym,nonumberlist,toc,numberedsection=autolabel]{glossaries}
 % \iflanguage{czech}{\renewcommand*{\acronymname}{Seznam pou{\v z}it{\' y}ch zkratek}}{}
@@ -50,6 +55,13 @@
 \website{https://github.com/nesro/nesrotom-dip-2016} %volitelná URL práce, objeví se v tiráži - úplně odstraňte, nemáte-li URL práce
 
 \begin{document}
+
+
+% setting out our listings to be nice
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true,showstringspaces=false,captionpos=b}
+\renewcommand{\lstlistingname}{Ukázka}
+
+
 
 % \newacronym{CVUT}{{\v C}VUT}{{\v C}esk{\' e} vysok{\' e} u{\v c}en{\' i} technick{\' e} v Praze}
 % \newacronym{FIT}{FIT}{Fakulta informa{\v c}n{\' i}ch technologi{\' i}}
@@ -431,26 +443,60 @@ Projekt sexy-bash-prompt \url{https://github.com/twolfson/sexy-bash-prompt} je d
 
 Prvotním cílem práce bylo navrhnout a vytvořit shell, který bude asistovat studentům na začátku jejich studia shellu. Takový shell by je měl upozorňovat na chyby a navrhovat lepší řešení. Přitom mělo být maximálně využito existujících řešení.
 
+Protože nástroj na upozorňování chyb, konkrétně vynikající ShellCheck, již existuje, byla část cíle práce nastavena obecněji na analýzu a ovlivňování příkazů spouštěných z interaktivní příkazové řádky. Tím se v praxi myslí vytvořit nástroj, který dokáže spustit skripty před vykonáním příkazu a být je schopen ovlivnit, nebo zabránit jejich vykonávání.
 
+Protože psaní špatných příkazů, ať je to jejich nesprávné použití, nebo použití nevhodných konstrukcí, může být i jen provedení nechtěné akce, dalším cílem práce je vytvořit sadu upravených základních programů z GNU coreutils, které uživatele nejprve upozorní na změny, které nastanou po spuštění takového příkazu a možnost vrátit stav změněných věcí do původního stavu.
 
+Posledním cílem je vytvořit jednoduchý debugger příkazů spouštěných v interaktivním shellu. Na rozdíl od normálních debuggerů pro shell skripty, například bashdb - BASH Debugger, je cílem takového debuggeru maximální jednoduchost použití. Tím se například myslí spuštění debuggeru s předepsaným posledním příkazem pomocí spuštění jediného příkazu.
 
+Nejdůležitějším cílem práce je vytvořit takový nástroj, který bude neinvazivní při normálním používání příkazové řádky. Nástroj, který bude začátečník intenzivně využívat, zatímco pokročilý uživatel ho bude mít na pozadí a čas od času ho upozorní na nějakou chybu, popřípadě mu pomůže urychlit práci na nějakém nesprávně fungujícím příkazu.
 
-
-
-
+%
+%
+%
 \section{Fungování shellu}
 
+Abychom mohli implementovat jak hooky před a po příkazech, tak přepsat chování základních příkazů z GNU coretuils, je potřeba znát základní procesy, které se dějí při vykonávání příkazů.
+
+Tyto postupy platí pro shell Bash, ale jsou velice podobné i v ostatních Unixových shellech.
+
+
+
+%
+%
+%
 \subsection{Životní cyklus příkazu}
 
+V této kapitole vysvětlíme, co všechno všechno důležitého se stane mezi tím, kdy shell přijme příkaz a než je skutečně vykonán. 
 
 \begin{figure}[htb]\centering
 	\includegraphics[width=\textwidth]{./images/shell_arch2}
-	\caption{Architekture}
+	\caption{Architektura shellu}
 	\label{fig:shell_arch}
 \end{figure}
 
-% todo: popsat, co vsechno se stane, od napsani prikazu az po jeho vykonani
 
+Prvním krokem je escapovaní, neboli převod znaků převod znaků, které mají ve svém kontextu speciální význam. V shellu lze tento postup provést pomocí znaku \textbackslash, nebo tím, že řetězec znaků dáme do uvozovek. Příkladem může být znak \#, který značí, že znaky za ním jsou pouze komentář. V ukázce \ref{lst:escape} jsou čtyři příklady zavolání příkazu echo. V prvním případě ale znak \# není vyescapován a Bash ho vyhodnotí jako začátek komentáře, proto se vypíše jen část, oproti ostatním voláním.
+
+\begin{lstlisting}[language=bash, caption={Escapovaní v shellu}, label={lst:escape}]
+
+$ echo a # b
+a
+$ echo a \# b
+a # b
+$ echo "a # b"
+a # b
+$ echo 'a # b'
+a # b
+
+\end{lstlisting}
+
+
+% https://edux.fit.cvut.cz/courses/BI-PS1/_media/lectures/02/bi-ps1-p02-cli-04.pdf
+
+%
+%
+%
 \subsection{Gramatika shellu}
 Soubor s gramatikiou bashe, parse.y, ma pres 6000 radek. Chtel bych zde napsat zjednodusenou gramatiku, ktera by se dala snadno pochopit (ono to zas tak slozite neni).
 
