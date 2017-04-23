@@ -91,6 +91,7 @@ Comma-shell debugger, tedy ladící program pro příkazy spouštěné z interak
 
 Poslední částí jsou takzvané bezpečné příkazy. Pokud uživatel vykoná příkaz, jehož efekt byl jiný než očekával, chce spustit opačný příkaz, aby napravil svůj omyl, nebo má často mnohem větší problém, pokud šlo například o nesprávné použití programu pro mazání souborů. Cílem bezpečných příkazů je tedy zaprvé umožnit vrátit provedené změny, ale i informovat uživatele o tom, co se stane. Pokud uživatel používá ke specifikování souborů, které mají být cílem nějakého příkazu, je častý omyl vybrat nějaké soubory nechtěně. Nebo například provést příkaz ze špatného adresáře.
 
+Cílem práce je i provést rešerši existujících nástrojů pro statickou analýzu, krokování a hledání chyb v Bash skriptech.
 
 % https://www.gnu.org/software/coreutils/coreutils.html
 % http://www.tldp.org/LDP/GNU-Linux-Tools-Summary/GNU-Linux-Tools-Summary.pdf
@@ -126,6 +127,8 @@ Terminál byl z historického hlediska elektronické zařízení k základní ko
 
 
 Provádění příkazů můžeme rozdělit na dvě kategorie. Jednou z nich je interaktivní režim, kdy interpret spouští příkazy tak, jak je uživatel píše do příkazové řádky. V tomto režimu může uživatel také používat klávesové zkratky, aliasy, automatické doplňování a další funkce v interaktivním režimu. Druhou kategorií je dávkový režim, kdy uživatel nejprve příkazy napíše do souboru. Takovému souboru obsahujícímu příkazy se říká skript. Takový soubor může být zavolán interpretem shellu, který postupně vykoná všechny příkazy. Tento postup se hodí pro složitější a opakující se příkazy.
+
+trap todo?
 
 \chapter{Historie shellu a dnešní využití}
 
@@ -512,6 +515,12 @@ Posledním  krokem je samotné spuštění příkazu, popřípadě přiřazení 
 %
 \subsection{Gramatika shellu}
 
+Gramatika shellu je oproti ostatním jazykům jednoduchá, ale často nejasná. V mnoha případech záleží na kontextu. Dokonce je možné vytvořit proměnnou s názvem shodujícím se s klíčovým slovem.
+
+Popíšeme si ji zde, jak je napsáno v manuálových stránkách Bashe. Kompletní gramatiku lze nalézt v souboru \textit{parse.y}.
+
+
+
 
 
 Soubor s gramatikiou bashe, parse.y, ma pres 6000 radek. Chtel bych zde napsat zjednodusenou gramatiku, ktera by se dala snadno pochopit (ono to zas tak slozite neni).
@@ -523,7 +532,22 @@ Popsat jakym zpusobem parsuje gramatiku BASH (yacc) a jakym to delaji parsery ba
 
 
 \subsubsection{Projekty parsující shell}
-\url{https://github.com/bemeurer/beautysh/blob/master/beautysh/beautysh.py}
+
+
+%
+\subsubsection{Beautysh}
+
+Projekt Beautysh si dává za cíl formátovat shell skripty tak, aby byly čitelnější. Jedná se o malý a jednoduchý projekt. Neprobíhá zde žádné parsování do abstraktního syntaktického stromu. Vstup je jen po řádcích rozlišován pomocí regulárních výrazů.
+
+% Protože gramatika shellu může být bez kontextu nejasná, Beautysh si neporadí například s kódem \ref{lst:beautysh}
+
+% \begin{lstlisting}[language=bash, caption={Beautifysh}, label={lst:beautysh}]
+% done=3;echo done;done
+% \end{lstlisting}
+
+% \url{https://github.com/bemeurer/beautysh/blob/master/beautysh/beautysh.py}
+
+
 
 %
 %
@@ -577,27 +601,54 @@ ListNode(pos=(0, 31), parts=[
 %
 %
 %
-\subsubsection{Bashast}
-\url{https://github.com/neloe/libbash/blob/master/bashast/bashast.g}
+\subsubsection{Libbash}
 
+Libbash je projekt, který vzniknul v roce 2010 na akci Google Summer of Code. Cílem je jako stejně u knihovny Bashlex vytvořit ze vstup kompletní abstraktní syntaktický strom.
+
+Libbash je napsaný v jazyce C++, ale využívá generátor parseru ANTLR, který je v Javě. Gramatika je popsaná v souboru bashast.g
+
+Projekt se stal i součástí Google Summer of Code v roce 2011. Na stránkách operačního systému Gentoo je Libbashi věnovaná stránka, ale na gitových repozitářích není žádná aktivita. Protože má Libbash velký potenciál, je možné, že se projekt obnoví.
+
+
+% https://qiaomuf.wordpress.com/2011/05/05/introduction-to-libbash/
+% http://www.antlr.org/
+% https://wiki.gentoo.org/wiki/Project:Libbash
+% \url{https://github.com/neloe/libbash/blob/master/bashast/bashast.g}
 
 % https://github.com/idank/bashlex/blob/master/bashlex/parser.py
 % https://github.com/neloe/libbash/blob/master/bashast/bashast.g
 
 % https://stackoverflow.com/questions/5491775/how-to-write-a-shell-lexer-by-hand
 
-
+%
+%
+%
 % TODO: nebude to duplicitni s zivotnim cyklem prikazu?
 \subsection{Spouštění příkazů}\label{sec:exec}
-Popsat základní principy jak funguje shell. Popsat procesy v unixu, fork, exec, co vsechno se musi stat, aby shell mohl spustit prikaz.
 
-Dulezite bude popsat, kdy se spousti debug trap a ze muzeme prikazy spoustet pres exec.
+Shell pracuje v uživatelském adresním prostoru. To znamená, že sám o sobě nemůže pracovat s hardwarem, nebo provádět úkony, jako například vytváření procesů. K tomu, aby takovéto operace mohl provádět, volá systémové volání tak, aby jádro operačního systému tyto operace provedlo tak, jak potřebuje shell.
+
+Ke spouštění příkazů se používá systémové volání fork, které vytvoří nový proces tím, že duplikuje proces, jenž fork zavolal.
+
+Pokud je přesměrováván vstup, nebo výstup souborů, je využito systémových volání close pro zavření defaulního výstupu a poté open k otevření výstupu nového.
+
+Pro spouštění příkazů v rouře slouží systémové volání pipe, které v jádře operačního systému vytvoří vyrovnávací paměť pro komunikaci mezi dvěma procesy. Jedná se i o frontu, takže data mohou přicházet rychleji, než je další proces stíhá odebírat.
+
+Důležité je si uvědomit, že ne všechny příkazy potřebují vytváření nových procesů. Například vestavěné příkazy Bashe pracují interně. Takové příkazy fungují mnohem rychleji. Navíc takové příkazy často modifikují nastavení běžícího shellu.
 
 
-\subsection{Struktura BASHe}
+
+
+
+% Dulezite bude popsat, kdy se spousti debug trap a ze muzeme prikazy spoustet pres exec.
+
+% https://www.oskarth.com/unix01/
+
+% \subsection{Struktura BASHe}
 % todo: Zdrojovy kod je rozdelen do souboru, mozna by bylo dobre popsat popsat co ktery soubor dela, aby si ctenar udelal alespon trosku obrazek.
 
-Tady je popsane, jak bash funguje: \url{http://www.aosabook.org/en/bash.html?cm_mc_uid=36339891185014923692137&cm_mc_sid_50200000=1492436376}
+% !!!
+% http://www.aosabook.org/en/bash.html?cm_mc_uid=36339891185014923692137&cm_mc_sid_50200000=1492436376
 
 Bash diagram \ref{fig:bash_diag}.
 
@@ -615,25 +666,126 @@ Bash diagram \ref{fig:bash_diag}.
 
 \section{Debugovaní shellu} %-------------------------------------------------
 
-% ZADANI
-tohle je jeden bod zadani: "Proveďte rešerši existujících nástrojů pro statickou analýzu, krokování a hledání chyb v BASH skriptech."
+Cílem této práce je i provést rešerši existujících nástrojů pro statickou analýzu, krokování a hledání chyb v BASH skriptech.
 
-\subsection{Debugovaní Bashe}
-todo: navod na debugovani bashe primo pomoci gdb. (tohle nakonec pro moji praci nebylo potreba) 
 
+%
+\subsection{Chyby v Bashi}
+
+Pokud se najde takový kód, který vypadá správně, ale při jeho vykonávání nastane něco nečekaného, je dobrou praktikou zmenšit takový  kód pouze na tu část, se kterou je něco špatného.
+
+Uživatel pak může chování nahlásit vývojářům Bashe. Pro ověření toho, že něco špatně, může uživatel debuggovat přímo instanci Bashe pomocí debuggeru GNU gdb.
+
+
+
+%
 \subsection{Interní nástroje}
 
-todo: popsat to, jake nastroje ma v sobe bash zabudovane v zakladu
+Bash sám o sobě obsahuje několik nástrojů, které pomáhají uživateli najít chyby. 
 
-\subsubsection{Debugovací mód BASHe (jak funguje shopt s extdebug)}
-shopt s extdebug
+Následující nastavení shellu xtrace, verbose, nounset. errexit a functrace se nastavují přes příkaz set, který existuje i v původním Bourne Shellu. Naopak nastavení extdebug se nastavuje příkazem shopt, který v Bourne Shellu není. Detailní informace jsou v manuálových stránkách Bashe, nebo v nápovědě k příkazům set a shopt.
 
-\subsubsection{set x, u, v, e}
-priklady do skriptu
+\subsubsection{xtrace}
 
+Xtrace je nastavaní shellu, které po expanzi každého jednoduchého příkazu zobrazí expandovanou hodnotu proměnné PS4. Proměnná PS4 je podobná proměnné PS1, která značí prompt, jen je vypisována právě s výstupem xtrace.
+
+\begin{lstlisting}[language=bash, caption={Výstup z knihovny Bashlex}, label={lst:bashlex}]
+bash-4.3$ set -x
+bash-4.3$ t=foo
++ t=foo
+bash-4.3$ echo $t
++ echo foo
+foo
+\end{lstlisting}
+
+Z ukázky je vidět, že základní hodnota proměnné PS4 je \textit{+}.
+
+\subsubsection{verbose}
+
+Verbose je nastavení shellu, které vypisuje všechny řádky tak, jak jsou čteny.
+
+\begin{lstlisting}[language=bash, caption={Výstup z knihovny Bashlex}, label={lst:bashlex}]
+bash-4.3$ set -v
+bash-4.3$ t=foo
+t=foo
+bash-4.3$ echo $t
+echo $t
+foo
+\end{lstlisting}
+
+Nastavení xtrace a verbose lze kombinovat.
+
+\begin{lstlisting}[language=bash, caption={Výstup z knihovny Bashlex}, label={lst:bashlex}]
+bash-4.3$ set -xv
+bash-4.3$ t=foo
+t=foo
++ t=foo
+bash-4.3$ echo $t
+echo $t
++ echo foo
+foo
+\end{lstlisting}
+
+
+\subsubsection{nounset}
+
+Nastavení nounset způsobí, že pokud se při expanzi proměnných a nespeciálních parametrů narazí na nějakou nedefinovanou, Bash to bude brát jako chybu.
+
+\begin{lstlisting}[language=bash, caption={nounset}, label={lst:unbound}]
+bash-4.3$ set -u
+bash-4.3$ echo $t
+bash: t: unbound variable
+bash-4.3$ echo $?
+1
+\end{lstlisting}
+
+
+\subsubsection{errexit}
+
+Nastavení errexit způsobí, že pokud roura, list příkazů, složený příkaz skončí s nenulovou návratovou hodnotou tak se instance Bashe ukončí. Výjimkou jsou místa, která testují návratovou hodnotu, jako jsou podmínky, nebo cykly. Další výjimkou jsou příkazy v seznamu spojené logickým and nebo or, pokud nejsou na jeho konci.
+
+Logické or je právě jeden způsobů, jak i s takovým nastavením spustit příkaz, který má nenulovou návratovou hodnotu. Kterýkoliv příkaz následovaný \texttt{|| true} neukončí shell ani s nastavením errexit.
+
+Nevýhodou takového nastavení je často nemožnost testování návratových kódů pomocí proměnné \textit{\$?}.
+
+Výhodou je však fakt, že pokud ve skriptu skončí nečekaně nějaký příkaz chybou, často nechceme, aby se pokračovalo ve vykonávání dalších příkazů, protože to může způsobit pouze nepořádek.
+
+Ukázka \ref{lst:errexit} ukazuje, že při nastavení errexit se příkaz echo již neprovede, protože se instance Bashe ukončí.
+
+\begin{lstlisting}[language=bash, caption={errexit}, label={lst:errexit}]
+bash-4.3$ bash -c "set -e; false; echo foo"
+bash-4.3$ bash -c "false; echo foo"
+foo
+\end{lstlisting}
+
+%
+%
+%
+\subsubsection{functrace}
+
+Nastavení functrace způsobí, že se DEBUG a RETURN traps dědí do funkcí, substitucí a subshellů. O použití těchto trap bude řeč v TODO.
+
+
+%
+%
+%
+\subsubsection{extdebug}
+
+Extdebug je nastavení, které v Bashi zapne pokročilý debugovací režim.
+
+První změnou je, že příkaz \texttt{declare -F} pro danou funkci řekne, ve kterém souboru a na jakém řádku byla deklarována.
+
+Druhou změnou je chování DEBUG trap. Pokud DEBUG trap vrátí nenulovou hodnotu, další příkaz je přeskočen a není vykonán. Pokud DEBUG trap vrátí jako návratovou hodnotu číslo dva a shell vykonává příkazy ve funkci, nebo zpracovává soubor, je simulován návrat z takové funkce respektive souboru.
+
+Třetí změnou je, že se nastavují proměnné \texttt{BASH\_ARGC} a \texttt{BASH\_ARGV}. Tyto proměnné obsahují informace o execution call stack. (TODO: nejak cesky?)
+
+Poslední změnou je, že DEBUG, RETURN a ERR trap jsou děděny do funkcí a subshellů.
+
+%
 \subsubsection{PS0, PS4}
 PS0 bude v novém bashi, my ji proto nebudeme používat, PS4 se vypisuje při debugovaní.
 todo: ps0 se nakonec nepovedlo
+
 
 \subsection{Externí nástroje}
 
