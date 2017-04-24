@@ -880,6 +880,7 @@ Ukázkou grafického prostředí z Eclipse při debugování shell skriptu přes
 	\label{fig:bash_eclipse}
 \end{figure}
 
+% http://www.tldp.org/LDP/abs/html/devref1.html
 % http://www.linuxjournal.com/content/more-using-bashs-built-devtcp-file-tcpip
 % \url{http://unix.stackexchange.com/questions/131491/is-there-a-gui-debugger-for-shell-scripts}
 % \url{https://sourceforge.net/projects/shelled/}
@@ -917,6 +918,8 @@ I v interaktivním shellu se často setkáme s použitím cyklů, for a while. U
 
 Následující kapitoly shrnují možnosti, kterými by šel debugger interaktivního shellu implementovat.
 
+Základní funkcionalita, která je nutná pro vytvoření takového programu je ta, že příkazy napsané do shellu je možné nevykonat a místo toho spustit nějaký vlastní kód.
+
 \subsection{GNU Readline}
 
 GNU Readline umožnuje přemapovat klávesu enter tak, že se před i po řetězec znaků dopíšou nějaké další znaky. Myšlenka byla taková, že se příkaz obalí voláním funkce, ve které se příkaz spustí, popřípadě se zapne nějaký debugger, nebo se vykonají jiné skripty.
@@ -933,14 +936,44 @@ running: "echo test"
 test
 \end{lstlisting}
 
+%
+%
 \subsection{Napsání nového REPLu}
-Zprovoznění základní funkcionality by bylo snadné, vzhledem ke komplexnosti BASHe však téměř nemožné mít stejné chování jako v BASHi.
 
+Další možností, jak ovládat všechny příkazy k vykonání, je napsat celý mechanismus, který se stará o čtení příkazů, jejich vykonání a vypsání dalšího promptu. Takové smyčce se také říká REPL z anglického read-eval-print loop.
 
+Základní implementace by mohla být velice jednoduchá a napsaná v Bashi. Smyčka by mohla být součástí skriptu, který se pustí hned po startu Bashe.
+
+Největší problém toho řešení je fakt, že uživatel není v shellu, ale v našem skriptu. To by mělo za následek například to, že by stavené aliasy v základu nefungovali. Takových případů by se nashromáždilo víc a výsledkem práce by byla omezená verze shellu.
+
+% https://brennan.io/2015/01/16/write-a-shell-in-c/
+% https://www.gnu.org/software/libc/manual/html_node/Implementing-a-Shell.html#Implementing-a-Shell
+
+%
+%
+\subsection{Patch do Bashe}
+
+Celý mechanismus pro kontrolu příkazů a jejich nespouštění by mohl být napsán jako patch do zdrojového kódu Bashe. Přestože by takové řešení bylo nejrobustnější, instalace nového shellu je krok, který by mohl odradit nějaké uživatele.
+
+%
+%
 \subsection{DEBUG trap}
-Současné řešení. Při zapnutém extdebug je možné příkazy nepustit a jen evalovat poslední příkaz z historie. TODO: je potřeba popsat základní chování historie (např mezera na začátku příkazu, atd.)
 
+DEBUG trap se spustí před vykonáním každého příkazu. Pokud je zapnutý pokročilý debugovací mód pomocí extdebug a návratová hodnota DEBUG trap je nenulová, následující příkaz je přeskočen, tedy nevykonán.
 
+Problém, který zde nastává, je ten, že DEBUG trap se spouští pro každý jednoduchý příkaz a ne pro celý vstup. Na ukázce \ref{lst:debugtrap} je nastavena DEBUG trap tak, že se vypíše zpracovávaný příkaz, který lze přeskočit.
+
+\begin{lstlisting}[language=bash, caption={DEBUG trap}, label={lst:debugtrap}]
+bash-4.3$ trap 'echo "(trap: $BASH_COMMAND)"' DEBUG
+bash-4.3$ echo foo | grep oo
+(trap: echo foo)
+(trap: grep oo)
+foo
+\end{lstlisting}
+
+Pokud chceme spustit kód jen jednou pro celý vstup, můžeme použít trik, kdy nebudeme spouštět vůbec nic, tedy DEBUG trap vrátí vždy nenulovou hodnotu a v první DEBUG trap spustit celý vstup pomocí příkazu eval. Tento vstup můžeme získat z historie shellu, protože ta se uloží ještě před vykonáním příkazu.
+
+Protože toho řešení bylo vybráno jako nejvhodnější a realizováno, detailní popis celého postupu je v sekci \ref{sec:debugtraprealization}.
 
 
 % https://bmizerany.github.io/roundup/
@@ -948,17 +981,36 @@ Současné řešení. Při zapnutém extdebug je možné příkazy nepustit a je
 
 \section{Statická analýza skriptů}
 
-bash ma validaci syntaxe: bash -n, ale to nezjisti skoro zadne chyby.
+Statická analýza skriptů znamená prozkoumat, analyzovat skript a hledat v něm například nějaké problémy. Nejdůležitější je, že při této analýze není skript vykonáván.
 
+
+%
+%
+\subsection{Vestavěná statická analýza}
+
+Při volání skriptu Bashem můžeme použít parametr -n, nebo použít příkaz set -n, kde n značí noexec, tedy mód, ve kterém se nebudou spouštět příkazy.
+
+V takovém módu lze nalézt syntaktické chyby, ale například se nekontroluje existence volaných příkazů. Tato metoda  tedy nepomůže proti překlepům.
+
+
+%
+%
 \subsection{Check Bashisms}
-\url{http://checkbashisms.sourceforge.net/}
+
 Některé skripty cheme kvůli rychlosti spouštět v Bourne-Shellu. Protože ten je pouze podmnožina bashe, tento nástroj najde výskyty syntaxe, která je podporovaná pouze v bashi a v Bourne-Shellu nemusí fungovat správně.
 
+% \url{http://checkbashisms.sourceforge.net/}
+
+%
+%
 \subsection{Explain Shell}
+
 Tato analýza nehledá chyby, ale vyparsuje vložený kód a vyhledá příslušnou dokumentaci v manuálových stránkách. Využívá knihovny bashlex, kterou využijeme v našem debuggeru.
-\url{http://www.explainshell.com/}
 
+% \url{http://www.explainshell.com/}
 
+%
+%
 \subsection{ShellCheck}
 todo: tady bych se mohl rozepsat vic. o tom, ze to je napsane v haskellu, o tom ze existuje databaze veci, ktere se ve skriptech hledaji a ze ke kazdym je wiki..
 
@@ -981,7 +1033,7 @@ Pro analýzu spouštěných skriptů využijte vhodný nástroj z rešeršní č
 %
 %
 %
-\section{Nespouštění příkazů}
+\section{Nespouštění příkazů}\label{sec:debugtraprealization}
 Pro zabránění spouštění používáme DEBUG trap.
 todo: popsat problemy a reseni
 
