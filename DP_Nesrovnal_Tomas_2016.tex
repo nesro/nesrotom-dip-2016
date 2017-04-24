@@ -782,24 +782,111 @@ Třetí změnou je, že se nastavují proměnné \texttt{BASH\_ARGC} a \texttt{B
 Poslední změnou je, že DEBUG, RETURN a ERR trap jsou děděny do funkcí a subshellů.
 
 %
-\subsubsection{PS0, PS4}
-PS0 bude v novém bashi, my ji proto nebudeme používat, PS4 se vypisuje při debugovaní.
-todo: ps0 se nakonec nepovedlo
+%
+%
+\subsubsection{PS4}
+PS4 je proměnná, která se vypisuje při zapnutém xtrace. Přestože v základu je nastavena pouze za \textit{+}, existuje mnoho použití, které mohou pomoci vyznat se ve vypisovaném kódu. 
+
+V ukázce \ref{lst:ps4} je jednoduchý skript, který před každým příkazem vypíše číslo řádky, ze které byl spuštěn. Důležité je, že při nastavení PS4 musí použít jednoduché uvozovky, aby došlo k expanzi proměnné LINENO až při samotném výpisu xtrace.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={ps4}, label={lst:ps4}]
+bash-4.3$ cat -n ps4.sh 
+     1	#!/bin/bash
+     2	
+     3	u() {
+     4		echo bar
+     5	}
+     6	
+     7	t() {
+     8		echo foo
+     9		u
+    10	}
+    11	
+    12	
+    13	PS4='[line: ${LINENO}] '
+    14	set -x
+    15	
+    16	t
+bash-4.3$ ./ps4.sh 
+[line: 16] t
+[line: 8] echo foo
+foo
+[line: 9] u
+[line: 4] echo bar
+bar
+\end{lstlisting}
+\end{minipage}
+
+%
+%
+%
+\subsubsection{PS0}
+
+PS0 je proměnná, která je nová pro Bash ve verzi 4.4. V době psaní této práce je již verze 4.4 vydaná a stabilní, ale stále není jako výchozí v Linuxových operačních systémech.
+
+Stejně jako v případě proměnné PS4, může být obsahem volání funkce ze subshellu. Problémem ale je, že taková funkce nemůže jednoduše ovlivňovat stav mimo svůj subshell, proto se hodí spíše jen pro výpis informací.
+
+Stejné funkcionality se dá dosáhnout v Bashi před verzí 4.4 pomocí kombinace DEBUG trap a PROMPT\_COMMAND. To je mimo jiné způsob, na kterém pracuje právě Comma-shell a o kterém bude řeč dále. TODO ref
+
+V ukázce \ref{lst:ps0} je vidět výpis proměnné PS0 před výpisem příkazu.
+
+\begin{lstlisting}[language=bash, caption={ps0}, label={lst:ps0}]
+bash-4.4$ PS0="[before]\n"; PS1="[after]\n$ "
+[after]
+$ echo foo
+[before]
+foo
+[after]
+$ 
+\end{lstlisting}
+
+
+% https://seasonofcode.com/posts/debug-trap-and-prompt_command-in-bash.html
+% http://stromberg.dnsalias.org/~strombrg/PS0-prompt/
 
 
 \subsection{Externí nástroje}
 
-\subsection{BASH Debugger}
-todo: popsat jak funguje, co vsechno umi, nejake priklady
-\url{http://bashdb.sourceforge.net/}
+
+
+\subsection{Bash Debugger}
+
+Bash Debugger je nástroj, který má stejnou syntaxi a chování jako debugger GNU gdb. Bash Debugger umí nastavit breakpoint, tedy místo, na které když se dostane interpretr shellu, tak se vykonávání skriptu zastaví a uživatel může zkoumat stav instance shellu, krokovat do následujících příkazů, nebo si nechat zobrazit zásobník volání.
+
+Bash Debugger má výhodu v tom, že sám je napsaný v Bashi. Je tak velice snadné zasahovat do běžícího skriptu svými příkazy.
+
+Funkčnost debuggeru závisí na nastavení DEBUG trap, která je spuštěna před každým příkazem, V DEBUG trapě se pokaždé zkontroluje, zda-li nemá být skript pozastaven, nebo zda není registrovaná nějaká událost. Také EXIT a INT trapy jsou nastavené, aby debugger běžel i po skončení, respektive přerušení skriptu.
+
+todo: vic ukazek
+
+% todo: popsat jak funguje, co vsechno umi, nejake priklady
+% \url{http://bashdb.sourceforge.net/}
 
 
 \subsection{BashEclipse}
-BashEclipse je plugin do Eclipse, ktery umi krokovat v gui eclipse.
 
-\url{http://unix.stackexchange.com/questions/131491/is-there-a-gui-debugger-for-shell-scripts}
-\url{https://sourceforge.net/projects/shelled/}
-\url{https://sourceforge.net/projects/basheclipse/}
+BashEclipse je plugin do integrovaného vývojového prostředí Eclipse. Pro svůj běh vyžaduje nainstalovaný editor ShellEd.
+
+BashEclipse funguje také na DEBUG trap. Na začátek každého skriptu, který chceme debugovat musíme přidat speciální soubor \texttt{\_DEBUG.sh}. V tomto souboru se nastaví spojení s TCP/IP socketem ze souboru /dev/tcp/localhost/33333, ze kterého se čtou příkazy, které se v DEBUG trap vykonají.
+
+Zbytek debuggeru je napsán jako doplněk Eclipse.
+
+Ukázkou grafického prostředí z Eclipse při debugování shell skriptu přes BashEclipse je obrázek \ref{fig:bash_eclipse}.
+
+\begin{figure}
+	\includegraphics[width=1.0\textwidth]{./images/bash_eclipse}
+	\caption{Bash eclipse}
+	\label{fig:bash_eclipse}
+\end{figure}
+
+% http://www.linuxjournal.com/content/more-using-bashs-built-devtcp-file-tcpip
+% \url{http://unix.stackexchange.com/questions/131491/is-there-a-gui-debugger-for-shell-scripts}
+% \url{https://sourceforge.net/projects/shelled/}
+% \url{https://sourceforge.net/projects/basheclipse/}
+
+
+
 
 %
 %
@@ -808,19 +895,47 @@ BashEclipse je plugin do Eclipse, ktery umi krokovat v gui eclipse.
 %
 \section{Možnosti debugování v interaktivním shellu}
 
-Nebyl nalezen žádný nástroj pro debugování interaktivního shellu. todo
+Nebyl nalezen žádný externí nástroj pro debugování interaktivního shellu. Pokud chce uživatel hledat chybu v jednom příkazu co spouští, může mu pomoci nastavení xtrace, aby například viděl, do jakých hodnot expandují proměnné.
 
-\subsection{Definice debugování interaktivního shellu}
+Nejčastějším postupem je však spouštění příkazů postupně.
+
+%
+%
+\subsection{Definice debugování v interaktivním shellu}
 todo: nema cenu debugovat jednoduche prikazy, ale slozite ano. chceme umet rozkrokovat pipy a subshelly (tedy to co nam to dela ted)
 
+Pro debugování skriptů a programů existuje mnoho nástrojů, které definují, jaké operace a možnosti od takového nástroje očekáváme. Mezi takové základní operací patří možnost zastavit vykonávání skriptu nebo programu na určitém místě, nebo za určitých podmínek. Po takovém zastavení mít možnost zobrazit si další informace.
 
+V interaktivním shellu se zpravidla nepouštějí příkazy v takovém množství, že by se uživatel chtěl zastavit mezi nimi. V shellu lze příkazy spouštět v rouře a v takovém případě je vhodné vykonávání příkazu pozastavit a nechat si například vypsat výstup, který je následně určen jako vstup do dalšího programu.
+
+I v interaktivním shellu se často setkáme s použitím cyklů, for a while. U for cyklu uživatele může zajímat přes jaké hodnoty iterátoru bude tělo cyklu spuštěno, popřípadě spustit tělo cyklu s vlastním iterátorem.
+
+
+
+
+\subsection{Možnosti realizování debuggeru interaktivního shellu}
+
+Následující kapitoly shrnují možnosti, kterými by šel debugger interaktivního shellu implementovat.
 
 \subsection{GNU Readline}
-GNU Readline umožnuje přemapovat enter tak, abysme mohli spustit prikaz v nami definovane funkci. Problémem je, že takto upravený příkaz se uloží do historie. Dalším problémem jsou víceřádkové příkazy, tedy takové, pro jejichž napsání musíme několikrát zmáčknout enter.
-TODO: ukázka.
+
+GNU Readline umožnuje přemapovat klávesu enter tak, že se před i po řetězec znaků dopíšou nějaké další znaky. Myšlenka byla taková, že se příkaz obalí voláním funkce, ve které se příkaz spustí, popřípadě se zapne nějaký debugger, nebo se vykonají jiné skripty.
+
+Tuto myšlenku se podařilo implementovat, je vidět na ukázce \ref{lst:readline_hack}. V této ukázce už je vidět modifikovaná řádka vstupu, ta se však objeví až po zmáčknutí klávesy enter. Příkaz bind říká, že po zmáčknutí klávesy enter se před vstup má vložit řetězec znaků ", '" a za vstup znak "'". Znak "," způsobí volání funkce s názvem ",", tento název byl zvolen tématicky jako je název práce.
+
+Bohužel má tento postup řadu nevýhod, z nichž některé dělají celou myšlenku nepoužitelnou. Největší nevýhodou je, že nelze napsat víceřádkový příkaz, protože při psaní dalšího řádku zapůsobí obalovaní vstupu do funkce. Další nevýhodou je, že se příkaz ke spuštění změní, což může působit velice rušivě. Nevýhodou také je, že takto modifikovaný příkaz se uloží do historie, ale to je věc, která by šla ošetřit.
+
+\begin{lstlisting}[language=bash, caption={Modifikace Readline}, label={lst:readline_hack}]
+bash-4.3$ ,() { echo "running: \"$@\""; eval "$@"; }
+bash-4.3$ bind "RETURN: \"\e[1~, '\e[4~'\n\""
+bash-4.3$ , 'echo test'
+running: "echo test"
+test
+\end{lstlisting}
 
 \subsection{Napsání nového REPLu}
 Zprovoznění základní funkcionality by bylo snadné, vzhledem ke komplexnosti BASHe však téměř nemožné mít stejné chování jako v BASHi.
+
 
 \subsection{DEBUG trap}
 Současné řešení. Při zapnutém extdebug je možné příkazy nepustit a jen evalovat poslední příkaz z historie. TODO: je potřeba popsat základní chování historie (např mezera na začátku příkazu, atd.)
