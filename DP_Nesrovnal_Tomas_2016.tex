@@ -552,7 +552,7 @@ Projekt Beautysh si dává za cíl formátovat shell skripty tak, aby byly čite
 %
 %
 %
-\subsubsection{Bashlex}
+\subsubsection{Bashlex}\label{sec:bashlex}
 
 Bashlex je knihovna napsaná ve skriptovacím jazyce Python, která zjednodušeně imituje práci vnitřního parseru Bashe. Z velké části se jedná jen o přepsaní zdrojových kódů C.
 
@@ -997,33 +997,91 @@ V takovém módu lze nalézt syntaktické chyby, ale například se nekontroluje
 %
 \subsection{Check Bashisms}
 
-Některé skripty cheme kvůli rychlosti spouštět v Bourne-Shellu. Protože ten je pouze podmnožina bashe, tento nástroj najde výskyty syntaxe, která je podporovaná pouze v bashi a v Bourne-Shellu nemusí fungovat správně.
+Některé skripty chceme kvůli rychlosti spouštět v Bourne-Shellu. Protože ten je pouze podmnožina Bashe, nástroj Check Bashisms najde výskyty takové syntaxe, která je podporovaná pouze v Bashi a v Bourne-Shellu nemusí fungovat správně.
 
-% \url{http://checkbashisms.sourceforge.net/}
+Check Bashisms je skript napsaný v jazyce Perl a obsahuje sadu regulárních výrazů označující neportabilní syntaxi, které jsou hledané ve vstupním souboru.
+
+% \url{https://sourceforge.net/projects/checkbaskisms/}
+% https://linux.die.net/man/1/checkbashisms
 
 %
 %
 \subsection{Explain Shell}
 
-Tato analýza nehledá chyby, ale vyparsuje vložený kód a vyhledá příslušnou dokumentaci v manuálových stránkách. Využívá knihovny bashlex, kterou využijeme v našem debuggeru.
+Projekt Explain Shell, provádí statickou analýzu kódu, ale nehledá v něm chyby, ale pouze vyparsuje vstupní kód a vyhledá příslušnou dokumentaci v manuálových stránkách. Využívá se zde knihovny bashlex, která zde byla popsána \ref{sec:bashlex}.
+
+Manuálové stránky, ze kterých se vybírá jsou z operačního systému Ubuntu.
 
 % \url{http://www.explainshell.com/}
 
 %
 %
 \subsection{ShellCheck}
-todo: tady bych se mohl rozepsat vic. o tom, ze to je napsane v haskellu, o tom ze existuje databaze veci, ktere se ve skriptech hledaji a ze ke kazdym je wiki..
+
+ShellCheck je nástroj, který varuje před chybami a dokonce dává návrhy na vylepšení ve skriptech v Bashi, i Bourne Shellu. Nástroj je dostupný jak online, tak jej lze snadno nainstalovat.
+
+Shellcheck si dává za cíl tři základní věci. Za prvé pomoci nezkušeným uživatelům shellu, upozornit je na základní chyby srozumitelně, protože základní hlášení chyb v shellu může působit zmateně.
+
+Druhý cíl je upozorňovat a vysvětlit uživatelům používající středně pokročilé praktiky možné nestandardní chování, nebo na syntaxi, která není intuitivní.
+
+Posledním cílem je upozornit pokročilé uživatele na okrajové případy a nástrahy. Například skript může pracovat dobře, dokud nemá zpracovat soubor obsahující mezeru v názvu.
+
+ShellCheck obsahuje galerii špatného kódu s přehledem základních chyb. Na jeho stránkách je však také podrobně popsán každý případ, který se hledá a na který se upozorňuje.
+
+ShellCheck je napsaný v čistě funkcionálním jazyce Haskell postavený v systému Cabal. Obsahuje parser, který tvoří abstraktní syntaktický strom. Zdroje chyb, varování a doporučení, které ShellCheck hledá jsou kontrolovány jak při tvoření abstraktního syntaktického stromu, tak je zde i soubor pravidel, ve kterých se hledá shoda s příkazy na vstupu.
+
+ShellCheck je velice aktivní projekt a používá se často na testovacích serverech, jako je například Travis CI.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={ShellCheck}, label={lst:debugtrap}]
+bash-4.3$ ~/.cabal/bin/shellcheck ~/.commash/tmp/shellcheck_example.sh 
+
+In /home/n/.commash/tmp/shellcheck_example.sh line 5:
+if (( $n > 3.5 )); then
+      ^-- SC2004: $/${} is unnecessary on arithmetic variables.
+           ^-- SC2079: (( )) doesn't support decimals. Use bc or awk.
+
+
+In /home/n/.commash/tmp/shellcheck_example.sh line 9:
+if [[ $1 == $n ]]; then
+            ^-- SC2053: Quote the rhs of == in [[ ]] to prevent glob matching.
+\end{lstlisting}
+\end{minipage}
+
+% https://www.linux.com/blog/shellcheck-code-check-shell-scripts
+% http://www.dennyzhang.com/shellcheck/
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Realizace}
 
-% ZADANI
-v zadani je:
-Navrhněte a implementujte nástroj, který umožní psát uživatelské skripty pro analýzu příkazů a ovlivňování jejich spouštění a vykonávání. = to jsou hooky
+Cílem této práce má být multifunkční nástroj do interaktivní příkazové řádky. První funkcí je umět analyzovat příkazy před jejich vykonáváním, případně je nevykonat. Druhou funkcí je debugger, který umožní krokovat spouštěné příkazy, nebo spouštět pouze jejich část. Poslední funkcí je sada příkazů, která obaluje základní příkazy z GNU coreutils a umožňuje vrátit změny provedené těmito příkazy, nebo rovnou uživateli vysvětlit, co přesně se stane a upozornit ho na jeho chyby.
 
-Nástroj musí umožňovat krokovat složitější skripty po jednotlivých příkazech. = to je debugger
+Vytvořený nástroj se jmenuje Comma-shell a je to otevřený software. Nejaktuálnější zdrojové kódy, ukázky a návod na instalaci jsou na Githubu https://github.com/nesro/commash
 
-Pro analýzu spouštěných skriptů využijte vhodný nástroj z rešeršní části. = to je shellcheck
+%
+\section{Virtuální stroj}
+
+Pokud si chce uživatel vyzkoušet Comma-shell v bezpečném a izolovaném prostředí, je dobrou praxí vytvořit si virtuální stroj pouze pro tento účel.
+
+todo: opsat ty prikazy z githubu?
+
+%
+\section{Instalace Comma-shellu}
+
+Instalace Comma-shellu byla navrhnuta tak, aby byla co nejjednodušší. V ukázce \ref{lst:csinstall} je příklad instalace v operačním systému vycházejícího z Debianu, například Ubuntu.
+
+Nejprve se aktualizují a nainstalují potřebné balíčky. Proč jsou tyto konkrétní balíčky potřeba bude vysvětleno dále. Po nainstalování je dobré stáhnout aktuální verzi z Githubu a spustit hlavní soubor. Ten zjistí, že Comma-shell není nainstalovaný a instalaci spustí.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={Instalace Comma-shellu}, label={lst:csinstall}]
+sudo apt update
+sudo apt install git cabal-install python-pip xdotool -y
+sudo pip install bashlex
+git clone https://github.com/nesro/commash ~/.commash
+source ~/.commash/comma.sh
+\end{lstlisting}
+\end{minipage}
 
 
 
@@ -1034,19 +1092,19 @@ Pro analýzu spouštěných skriptů využijte vhodný nástroj z rešeršní č
 %
 %
 \section{Nespouštění příkazů}\label{sec:debugtraprealization}
-Pro zabránění spouštění používáme DEBUG trap.
-todo: popsat problemy a reseni
+V možnostech realizování debuggeru interaktivního shellu (todo ref) bylo zmíněno mnoho možností. Pro realizaci byla nakonec vybráno řešení s DEBUG trap.
+
+Celé řešení je postavené na tom, že DEBUG trap stále vrací nenulovou hodnotu, takže žádné příkazy nejsou vykonány.
+
+Bash obsahuje proměnnou PROMPT\_COMMAND, která je vykonána před každém vypsání promptu. Comma-shell v této proměnné volá funkci, která nastaví, že následující DEBUG trap je první v pořadí po odeslání příkazu k jeho vykonání.
+
+DEBUG trap, která má vykonat nějaký kód tak učiní pomocí funkce eval. Eval je vestavěná funkce v shellu, která vykoná příkaz, který ji byl předán argumentem.
+
+DEBUG trap má informace pouze o jednoduchém příkazu, který se má vykonat. Příkaz k vykonání se uloží do historie ještě před zavolání první DEBUG trap. Kód, který vykonává funkce eval je tedy vzat jako ten poslední z historie.
+
+TODO: implementovat minimalni verzi a ukazat ji tady?
 
 
-%
-%
-%
-%
-%
-\section{Implementace debuggeru}
-todo: napsat o tom, ze cast je napsana v pythonu a ze se cela vec spousti v pre-hooku, takze to je presne ten cas, kdy se muze prikaz debuggovat a originalni prikaz se nespusti.
-
-popsat parsovani v bashlex a jak se cela vec predava do bashe
 
 %
 %
@@ -1078,6 +1136,23 @@ todo: tohle je bashovska cast debuggeru
 \subsection{Explain RC hook}
 
 \subsection{Notfound hook}
+
+
+%
+%
+%
+%
+%
+\section{Implementace debuggeru}
+
+Implementace debuggeru je rozdělena na dvě části. První část je hook, který se spustí před příkazem a zjišťuje se v něm, zda-li má být debuggování aktivní. Pokud ano, je zavolán skript napsaný v jazyce Python, ve kterém se použije knihovna Bashlex. Výstupem tohoto skriptu je na standardním výstupu informace pro uživatele, které možnosti má. Na chybovém výstupu jsou kódy v shellu odpovídající jednotlivým akcím, které pak hook v Comma-shellu vykoná po tom, co od uživatele přečte jeho požadovanou akci.
+
+Použití knihovny Bashlex je velice jednoduché a intuitivní. Nejprve je celý vstup parsován a je vytvořen abstraktní syntaktický strom. Poté je projde celý strom znovu s naší třídou, která definuje metody pro jednotlivé uzle. Příklad takové metody je visitpipe, která se zavolá, když se v abstraktním syntaktickém stromě narazí na rouru. V takové metodě máme přístup k pozici roury a z této informace můžeme uživateli nabídnout nějaké akce, třeba vykonat všechny příkazy až do té konkretní roury.
+
+
+\section{Použití a možnosti debuggeru}
+
+todo
 
 %
 %
