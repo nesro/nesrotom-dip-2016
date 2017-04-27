@@ -1112,31 +1112,127 @@ TODO: implementovat minimalni verzi a ukazat ji tady?
 %
 %
 \section{Hooks}
-Aby byl kód přehledný, kromě bezpečných příkazů je funkcionalita je rozdělena do hooků, nebo-li modulů, které obsahují kód, který je spuštěn před, nebo i po vykonání příkazu. Kód vykonaný před příkazem může rozhodnout, zda-li má dojít k zabránění vykonání příkazu.
+
+Hooks mají v adresářové struktuře vyhrazenou vlastní složku, ze které se automaticky načtou všechny soubory. Comma-shell poskytuje funkce, s nimiž lze zaregistrovat hook spouštěný před, nebo po i s jeho prioritou. Priorita slouží s řazení posloupnosti hooků, protože bez nich by byly spouštěny v pořadí abecedního seřazení podle názvů, což není vždy žádané.
+
+Pokud hook spuštěný před příkazem vrátí nenulovou návratovou hodnotu, není následující příkaz vykonán. Vykonáváním příkazu v tomto kontextu se nemyslí zabránění spuštění příkazu z DEBUG trap, ale samotné vykonání příkazu přes eval v první DEBUG trap po zobrazení promptu v interaktivní příkazové řádce.
+
+Díky této modularitě je velice jednoduché vytvořit vlastní kontroly příkazů ke spuštění. Je také možné vytvářet různé statistiky a logy akcí.
 
 
 \subsection{Implementace hooků}
-todo: napsat o tom, že se hooky pousti automaticky pred i po a ze je snadne vytvorit vlastni hook
+
+Při startu Comma-shell se vyvoří dvě pole. Jedno je určené pro hooky před a druhé pro hooky vykonávané po příkazu. Všechny soubory ze složky hooks vykonají pomocí příkazu source. V hook souborech se pak volají příkazy, které přidají vstupní funkce hooků spolu s jejich prioritou do předpřipravených polí.
+
+Pokud se v hlavní DEBUG trap má vykonat příkaz přes eval, jsou před ním zavolány všechny zaregistrované hooky. Pokud některý z nich vrátí nenulovou hodnotu, příkaz se nevykoná. Pokud k vykonání dojde, jsou následně zavolány všechny hooky určené po vykonání příkazu.
+
+Vstupním funkcím hooku jsou předány dva argumenty. Prvním z nich je časová známka, která je stejná pro všechny hooky a s přesností na nanosekundy může sloužit jako jedinečný identifikátor příkazu. Druhým argumentem je jen spouštěný příkaz. Přestože si ho hook může sám přečíst z historie, pokud bude vnitřní fungování v budoucnu změněno, nebude problém se zpětnou kompatibilitou.
 
 \subsection{Hooky před vykonáním příkazu}
-todo: napsat co všechno můžu dělat
+
+Hooky před spuštění příkazů mohou sloužit ke kontrole příkazu, nebo například zaznamenání místa spuštění. Možné je jen vypsat nějaké doporučené používání příkazu, pokud je někde zvolen pracovní kodex.
 
 \subsection{Hooky po vykonáním příkazu}
-todo: napsat co všechno můžu dělat
+
+Jednou z nejdůležitějších věcí v hooku spuštěném po příkazu je přístup k návratovému kódu. Můžeme tak provádět akce závislé například na chybách příkazů.
 
 \subsection{Předvytvořené hooky}
-todo: napsat o tom, že 
 
-\subsection{Shellcheck hook}
-todo: tohle je nejlepsi vec, kterou cele commash umi. tady by to mozna chtelo ukazat pripady, kdy se to hodi. taky popsat to, ze nektere veci jdou snadno zakazat
+Comma-shell obsahuje v základu několik předvytvořených hooků. Některé z nich si zde popíšeme. 
+
+
+%
+\subsection{ShellCheck hook}
+
+ShellCheck na nástroj na kontrolu skriptů v Bashi nebo Bourne Shellu. ShellCheck hook však vytvoří z příkazu, který se má vykonat skript, který následně ShellCheck zkontroluje. Pokud jsou nalezeny nějaké problémy, varování, nebo doporučení, vypíše se uživateli zpráva, na základě které se může rozhodnout příkaz nespouštět, upravit, nebo vypnout upozornění na danou chybu.
+
+Protože ShellCheck je určen pro skripty, některé případy, na které upozorňuje nejsou v interaktivním shellu moc relevantní. ShellCheck například kontroluje, zda byl příkaz cd, který změní aktuální adresář, ošetřen tak, že pokud selže, skript se přizpůsobí. Například pokud se chce skript přepnout do nějaké složky a v ní mazat soubory. Pokud příkaz cd selže v interaktivním shellu, uživatel je o situaci informován a může se podle toho zařídit.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={ShellCheck}, label={lst:sccat}]
+n@t:~$ cat x | grep y
+,: ShellCheck: 
+cat x | grep y
+    ^-- SC2002: Useless cat. Consider 'cmd < file | ..' or 'cmd file | ..' instead.
+,: Now what? [r]un, [s]top, [i]gnore, [p]retype: s
+,: Stopping the command.
+\end{lstlisting}
+\end{minipage}
+
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={ShellCheck}, label={lst:csfor}]
+n@t:~$ for f in $(ls *.txt); do echo $f; done
+,: ShellCheck: 
+for f in $(ls *.txt); do echo $f; done
+         ^-- SC2045: Iterating over ls output is fragile. Use globs.
+              ^-- SC2035: Use ./*glob* or -- *glob* so names with dashes won't become options.
+                              ^-- SC2086: Double quote to prevent globbing and word splitting.
+,: Now what? [r]un, [s]top, [i]gnore, [p]retype: s
+,: Stopping the command.
+
+\end{lstlisting}
+\end{minipage}
+
+
+
+
+% https://github.com/koalaman/shellcheck/wiki/SC2164
 
 \subsection{Bashlex hook}
 todo: tohle je bashovska cast debuggeru
 
 \subsection{Explain RC hook}
 
+Explain RC hook je hook vykonávaný po skončení příkazu. Jediné co dělá je, že pokud je návratová hodnota různá od nuly, vypíše hlášku o nestandardní návratové hodnotě.
+
+Ukázka \ref{lst:exprchook} ukazuje spuštění příkazu man s neexistujícím příkazem. Přestože příkaz man sám o sobě hlášku vypíše, hook vypíše další informace, které byly získány z manuálové stránky příkazu man.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={Explain RC hook}, label={lst:exprchook}]
+n@t:~$ man noexistingcmd
+No manual entry for noexistingcmd
+,: return code warning: $? == 16 (At least one of the pages/files/keywords didn't exist or wasn't matched.)
+\end{lstlisting}
+\end{minipage}
+
+Ukázka \ref{lst:exprchook2} zase ukazuje situaci, kdy byl příkaz ukončen klávesovou zkratkou Ctrl-C.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={Explain RC hook}, label={lst:exprchook2}]
+n@t:~$ cat
+^C
+,: return code warning: $? == 130 (Script terminated by Control-C)
+\end{lstlisting}
+\end{minipage}
+
+
 \subsection{Notfound hook}
 
+Když Bash hledá příkaz k vykonání a nepodaří se mu ho najít, jako poslední možnost zkusí zavolat funkci command\_not\_found\_handle, které jako argument předá příkaz, který nebyl nalezen.
+
+Comma-shell přepíše funkci command\_not\_found\_handle tak, aby nedělala nic, jen vrátila návratový kód 127. V hooku spuštěném po příkazu se otestuje, zda-li je návratová hodnota 127 a pokud ano, zavolá se kód obstarávající logiku, pokud příkaz není nalezen.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={Explain RC hook}, label={lst:exprchook2}]
+n@t:~$ le asdf
+,notfound: Command not found.
+,notfound: [1] choose: "let asdf"
+,notfound: [2] choose: "ln asdf"
+,notfound: [3] choose: "ls asdf"
+,notfound: [a]bort executing
+,notfound: [e]dit the wrong command
+,notfound: [p]re-type edited
+,notfound: [s]uggest package for "le"
+,notfound: [r]emove command from hisory
+s
+,notfound: executing: /usr/lib/command-not-found -- "le"
+The program 'le' is currently not installed. You can install it by typing:
+sudo apt install le
+\end{lstlisting}
+\end{minipage}
+
+V ukázce \ref{lst:exprchook2} je vidět notfound hook v akci. Uživatel může spustit příkaz, který zamýšlel, zastavit vykonávání
 
 %
 %
