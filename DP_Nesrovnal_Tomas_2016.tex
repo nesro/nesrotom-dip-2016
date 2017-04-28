@@ -1239,16 +1239,105 @@ V ukázce \ref{lst:exprchook2} je vidět notfound hook v akci. Uživatel může 
 %
 %
 %
-\section{Implementace debuggeru}
+\section{Implementace debuggeru v interaktivním shellu}
+
+V následujících sekcích bude představen debugger určený do interaktivního shellu. Jedná se tedy o takové použití, že uživatel chce krokovat, nebo částečně spouštět příkazy spouštěné v interaktivním režimu shellu.
 
 Implementace debuggeru je rozdělena na dvě části. První část je hook, který se spustí před příkazem a zjišťuje se v něm, zda-li má být debuggování aktivní. Pokud ano, je zavolán skript napsaný v jazyce Python, ve kterém se použije knihovna Bashlex. Výstupem tohoto skriptu je na standardním výstupu informace pro uživatele, které možnosti má. Na chybovém výstupu jsou kódy v shellu odpovídající jednotlivým akcím, které pak hook v Comma-shellu vykoná po tom, co od uživatele přečte jeho požadovanou akci.
 
 Použití knihovny Bashlex je velice jednoduché a intuitivní. Nejprve je celý vstup parsován a je vytvořen abstraktní syntaktický strom. Poté je projde celý strom znovu s naší třídou, která definuje metody pro jednotlivé uzle. Příklad takové metody je visitpipe, která se zavolá, když se v abstraktním syntaktickém stromě narazí na rouru. V takové metodě máme přístup k pozici roury a z této informace můžeme uživateli nabídnout nějaké akce, třeba vykonat všechny příkazy až do té konkretní roury.
 
 
-\section{Použití a možnosti debuggeru}
+\section{Použití a možnosti debuggeru v interaktivním shellu}
 
-todo
+V této kapitole budou ukázány některé možnosti použití debuggeru v interaktivním shellu.
+
+V ukázce \ref{lst:dbginteractivesubhsell} je z příkazové řádky spuštěn příkaz obsahující konstrukt subshellu. Tedy kód, který se vykoná v nové instanci shellu. Demonstrativní příklad nejprve volá vestavěný příkaz echo, jehož argument, který je string obsahuje výstup ze subshellu s voláním příkazu date, pro vypsání aktuálního roku. Pokud by uživatel chtěl zobrazit pouze obsah subshellu, musel by vykopírovat tu část příkazu jemu odpovídající a spustit. Debugger interaktivního shellu však dokáže tuto práci nejen urychlit, ale také ukáže, které součásti lze spustit samostatně.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={Debugger interaktivního shellu - subshell}, label={lst:dbginteractivesubhsell}]
+n@t:~$ echo "the year is $(date +%Y)" | grep 2017
+,: commash debugger:
+
+echo "the year is $(date +%Y)" | grep 2017
+                  ^-- [1] show substituion: $(date +%Y)
+                               ^-- [2] show pipe flow: echo "the year is $(date +%Y)" 
+
+,: Select your option, [0] debug whole cmd, [q]uit, [r]un normally 1
+,: Executing: "echo "$(date +%Y)""
+2017
+
+,: What now? [q]uit, [p]retype and debug just the next command
+\end{lstlisting}
+\end{minipage}
+
+V ukázce \ref{lst:dbginteractivepipe} je stejný příkaz jako v ukázce \ref{lst:dbginteractivesubhsell}, ale uživatel provádí akci, kde si zobrazí výstup před druhou rourou.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={Debugger interaktivního shellu - subshell}, label={lst:dbginteractivepipe}]
+n@t:~$ echo "the year is $(date +%Y)" | grep 2017
+,: commash debugger:
+
+echo "the year is $(date +%Y)" | grep 2017
+                  ^-- [1] show substituion: $(date +%Y)
+                               ^-- [2] show pipe flow: echo "the year is $(date +%Y)" 
+
+,: Select your option, [0] debug whole cmd, [q]uit, [r]un normally 2
+,: Executing: "echo "the year is $(date +%Y)" "
+the year is 2017
+
+,: What now? [q]uit, [p]retype and debug just the next command
+\end{lstlisting}
+\end{minipage}
+
+V ukázce \ref{lst:dbginteractiveforcycle1} je příklad debuggování for cyklu. For cyklus se v shellu často používá na provedení operace pro několik souborů, které jsou specifikované v hlavičce for cyklu. Zde je jsou tyto soubory označeny \texttt{*.txt}. Comma-shell debugger umožňuje zobrazit hodnoty, přes které bude postupně spuštěno tělo for cyklu.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={Debugger interaktivního shellu - výpis hodnot iterátoru for cyklu }, label={lst:dbginteractiveforcycle1}]
+n@t:/tmp/csfor$ for i in *.txt; do echo "$i"; done
+,: commash debugger:
+
+for i in *.txt; do echo "$i"; done
+    ^-- [1] show values of iterator: i
+                   ^-- [2] run with custom iterator: echo "$i";
+
+,: Select your option, [0] debug whole cmd, [q]uit, [r]un normally 1
+,: Executing: "csit=0;for i in *.txt; do (( csit++ )); echo "( $csit ) i = $i"; done"
+( 1 ) i = a.txt
+( 2 ) i = b.txt
+( 3 ) i = c.txt
+
+,: What now? [q]uit, [p]retype and debug just the next command
+\end{lstlisting}
+\end{minipage}
+
+V další ukázce \ref{lst:dbginteractiveforcycle2} na ten samý for cyklus jako v ukázce \ref{lst:dbginteractiveforcycle1} je tělo for cyklu spuštěno s iterátorem, který interaktivně zapsal uživatel.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={Debugger interaktivního shellu - změna iterátoru for cyklu}, label={lst:dbginteractiveforcycle2}]
+n@t:/tmp/csfor$ for i in *.txt; do echo "$i"; done
+,: commash debugger:
+
+for i in *.txt; do echo "$i"; done
+    ^-- [1] show values of iterator: i
+                   ^-- [2] run with custom iterator: echo "$i";
+
+,: Select your option, [0] debug whole cmd, [q]uit, [r]un normally 2
+,: Executing: "read -p "set iterator \"i\" value: " i; echo "$i";"
+set iterator "i" value: test
+test
+
+,: What now? [q]uit, [p]retype and debug just the next command
+\end{lstlisting}
+\end{minipage}
+
+
+
+
+
+\section{Implementace debuggeru shell skriptů}
+
+
 
 %
 %
@@ -1256,15 +1345,191 @@ todo
 %
 %
 \section{Bezpečný mód}
-Bezpečný mód umožňuje dvě základní věci. Tou jednodušší je pouze vypsání efektu příkazu, který má nějaké destruktivní následky. Složitější varianta dovoluje vracení do stavu před vykonáním příkazu.
 
-todo: napsat o tom, ze po zkouseni jsem dosel k zaveru, ze je lepsi uzivateli nejprve ukazat co se deje, co se stane a jake ma moznosti. castokrat uz 
+Bezpečný mód umožňuje dvě základní věci. Tou jednodušší je pouze vypsání efektu příkazu, který má nějaké destruktivní následky. Druhá funkcionalita dovoluje vracení do stavu před vykonáním příkazu.
+
+Některé příkazy, jako například rm pro mazání souborů mají zabudovanou nějakou ochranu před nechtěným spuštěním, ale ta je z našeho pohledu buď nedostatečná, nebo je až moc striktní a zabírá příliš času, před samotným vykonáním příkazu.
+
+Při navrhování bezpečných příkazů byl důraz na myšlenku zobrazit uživateli nějaký souhrn akcí co se stanou. Odsouhlasení základního chování by mělo být zmáčknutí pouze jedné klávesy. Při tom by mělo být možné nechat si vypsat nějaké detailnější informace, především pokud uživatel v souhrnu uvidí něco, s čím nepočítal, nebo co jej překvapilo.
+
+Poslední důležitou věcí je nemít přepsané názvy nebezpečných příkazů na ty bezpečné z Comma-shellu. V takovém případě by si uživatel mohl zvyknout na dané chování a nebral by svoje akce jako absolutní. To by pro něj mohl být problém na systému, kde není Comma-shell s bezpečnými příkazy nainstalován. Jak se vidět na ukázce \ref{lst:rmwrapp1} V základním nastavení se například název rm přepíše aliasem tak, aby informoval uživatele.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={Přepsání nebezpečných příkazů}, label={lst:rmwrapp1}]
+n@t:~$ rm test
+,: Use ,rm for commash wrapper or /bin/rm for original rm.
+\end{lstlisting}
+\end{minipage}
 
 
-\subsection{Bezpečné rm}
-todo: napsat o tom, jak to je vyřešené a proč. napsat, ze rm -i i rm -I je k ničemu a proč je naše verze lepší
-popsat, jak funguje freedestkop.org trash a ze ukladame seznam souboru, ktere byly smazany jednim rm, aby sel cely spusteny prikaz rm vratit 
+%
+\subsection{Comma-shell rm}
 
+Příkaz rm z balíčku GNU coreutils obsahuje dva přepínače, které mají sloužit proti smazání nechtěných souborů. První přepínač -i, znamená výzvu před každým smazaným souborem. Jak je vidět na ukázce \ref{lst:rmwrapp2}, je potřeba skutečně odsouhlasit každý mazaný soubor.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={rm}, label={lst:rmwrapp2}]
+n@t:/tmp/rmtest$ mkdir -p dir
+n@t:/tmp/rmtest$ touch {a..b}.txt dir/{c..d}.txt
+n@t:/tmp/rmtest$ /bin/rm -ir ./*
+/bin/rm: remove regular empty file './a.txt'? y
+/bin/rm: remove regular empty file './b.txt'? y
+/bin/rm: descend into directory './dir'? y
+/bin/rm: remove regular empty file './dir/c.txt'? y
+/bin/rm: remove regular empty file './dir/d.txt'? y
+/bin/rm: remove directory './dir'? y
+\end{lstlisting}
+\end{minipage}
+
+Druhý přepínač je -I. V manuálových stránkách příkazu rm se píše, že je uživatel vyzván jednou, pokud odstraňuje tři, nebo více soubrů, nebo pokud je mazána složka rekurzivně. U tohoto přepínače je také napsáno, že je méně rušivý, než přepínač -i, ale stejně chrání před většinou chyb. V ukázce \ref{lst:rmwrapp3} je vidět příklad použití tohoto přepínače. Přestože je uživatel upozorněn o tom, že se bude něco mazat, už není upozorněn o tom, co se bude mazat.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={rm s }, label={lst:rmwrapp3}]
+n@t:/tmp/rmtest$ mkdir -p dir
+n@t:/tmp/rmtest$ touch {a..b}.txt dir/{c..d}.txt
+n@t:/tmp/rmtest$ /bin/rm -Ir ./*
+/bin/rm: remove 3 arguments recursively? y
+n@t:/tmp/rmtest$ 
+\end{lstlisting}
+\end{minipage}
+
+Z našeho pohledu jsou oba tyto přepínače v praxi nepoužitelné. Jeden je moc striktní a druhý je zbytečný. Myšlenkou Comma-shell rm je zobrazit dostatečně komplexní souhrn toho, co se bude mazat tak, aby se uživatel mohl rychle rozhodnout, zda-li chce skutečně tyto soubory smazat, nebo se chce detailněji podívat na to, co všechno se bude mazat, například v podsložkách.
+
+Další funkcionalitou Comma-shell rm je schopnost obnovovat mazané soubory. Tato funkcionalita je zajištěna použitím koše ze specifikace FreeDestkop. Pokud Comma-shell rm smaže nějaké soubory tak, že je přesune do koše, vytvoří soubor s informací kdy, odkud a co bylo smazáno. Uživatel tedy má možnost nejen obnovit z koše soubory, které potřebuje, ale je možné obnovit všechny soubory smazané jedním příkazem rm.
+
+Implementace koše podle specifikace FreeDestkop není úplně triviální, proto Comma-shell rm používá externí nástroj pro práci s tímto košem, trash-cli.
+
+% https://github.com/andreafrancia/trash-cli
+% https://www.freedesktop.org/wiki/Specifications/trash-spec/
+
+V ukázce \ref{lst:rmwrapp4} je příklad podobný \ref{lst:rmwrapp3} a \ref{lst:rmwrapp2}. Uživatel je informován o tom, které soubory se budou mazat a po potvrzení trvalého smazání je spuštěn originální příkaz rm.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={rm s }, label={lst:rmwrapp4}]
+n@t:/tmp/rmtest$ mkdir -p dir3
+n@t:/tmp/rmtest$ touch {a..b}.txt dir3/{c..d}.txt f
+n@t:/tmp/rmtest$ ,rm -r *
+,rm: Files to remove:
+,rm:    Directory: "dir3" (with 2 files)
+,rm:    Removing file: "/tmp/rmtest/f"
+,rm:    2 files with extension "txt"
+,rm: Choose:
+,rm:    [r]emove files
+,rm:    [q]uit
+,rm:    [t]rash files
+,rm:    [s]how more files
+r
+,rm: /bin/rm -r a.txt b.txt dir3 f
+\end{lstlisting}
+\end{minipage}
+
+
+V ukázce \ref{lst:rmwrapp5} se maže složitější adresářová struktura a uživatel se rozhodl vypsat si více souborů ke smazání. Comma-shell rm vypisuje pouze obsah adresářů ze složky, ve které se začíná mazat, pro úplný seznam si už uživatel musí vypsat obsah adresáře sám.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={rm s }, label={lst:rmwrapp5}]
+n@t:/tmp/rmtest$ mkdir -p dir3/dir4
+n@t:/tmp/rmtest$ touch {a..b}.txt dir3/{c..d}.txt dir3/dir4/{e..f}.txt g
+n@t:/tmp/rmtest$ ,rm -r *
+,rm: Files to remove:
+,rm:    Directory: "dir3" (with 3 files)
+,rm:    Removing file: "/tmp/rmtest/g"
+,rm:    2 files with extension "txt"
+,rm: Choose:
+,rm:    [r]emove files
+,rm:    [q]uit
+,rm:    [t]rash files
+,rm:    [s]how more files
+s
+,rm: all files:
+    a.txt
+    b.txt
+    dir3 (,: directory with 3 files)
+        ./dir3/c.txt
+        ./dir3/dir4 (,: directory with 2 files)
+        ./dir3/d.txt
+    g
+,rm: Choose:
+,rm:    [r]emove files
+,rm:    [q]uit
+,rm:    [t]rash files
+,rm:    [s]how all files
+q
+\end{lstlisting}
+\end{minipage}
+
+V ukázce \ref{lst:rmwrapp6} je použití Comma-shell rm pro přesunutí souborů do koše. Soubory se pomocí trash-put mažou postupně, včetně složek, aby bylo snadnější upozorňovat na chyby.
+
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={,rm - přesouvání do koše}, label={lst:rmwrapp6}]
+n@t:/tmp/rmtest$ mkdir -p dir3/dir4
+n@t:/tmp/rmtest$ touch {a..b}.txt dir3/{c..d}.txt dir3/dir4/{e..f}.txt g
+n@t:/tmp/rmtest$ ,rm -r *
+,rm: Files to remove:
+,rm:    Directory: "dir3" (with 3 files)
+,rm:    Removing file: "/tmp/rmtest/g"
+,rm:    2 files with extension "txt"
+,rm: Choose:
+,rm:    [r]emove files
+,rm:    [q]uit
+,rm:    [t]rash files
+,rm:    [s]how all files
+t
+,rm trash: trying to trash: "/tmp/rmtest/a.txt" ok
+,rm trash: trying to trash: "/tmp/rmtest/b.txt" ok
+,rm trash: trying to trash: "/tmp/rmtest/dir3" ok
+,rm trash: trying to trash: "/tmp/rmtest/g" ok
+,rm trash: Done. Use ,t or ,trash handle trashed bundles
+\end{lstlisting}
+\end{minipage}
+
+V ukázce \ref{lst:rmwrapp7} je obnova souborů z předchozí ukázky \ref{lst:rmwrapp6}. Po zavolání příkazu pro zobrazení balíčků smazaných souborů a vybrání jednoho podle času, místa a seznamu souborů si uživatel mimo jiné může nechat zobrazit detailní výpis souborů přesunutých do koše. Soubory může z koše pernamentně odstranit, nebo je obnovit. Pro odstranění se používá příkaz trashcli-rm. Pro obnovu souborů se používá příkaz trashcli-restore. 
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={,rm - obnova souborů }, label={lst:rmwrapp7}]
+n@t:/tmp/rmtest$ ,t
+,rm: This is a wrapper. Real trash is located at ~/.local/share/Trash
+,rm: Choose the bundle:
+    [1] ",rm -r *" from: /tmp/rmtest at 2017.04.28 20:06:38
+    [q]uit
+,rm: Chosen bundle 2017-04-28-20-06-38-461442374.
+    [a]nother - select different bundle
+    [s]how all trashed files
+    [r]estore
+    [d]iscard from the trash
+    [q]uit
+Showing all deleted files:
+    -rw-rw-r-- 1 n n 0 dub 28 20:06 /tmp/rmtest/a.txt
+    -rw-rw-r-- 1 n n 0 dub 28 20:06 /tmp/rmtest/b.txt
+    drwxrwxr-x 3 n n 4096 dub 28 19:21 /tmp/rmtest/dir3
+    -rw-rw-r-- 1 n n 0 dub 28 20:06 /tmp/rmtest/g
+,rm: Chosen bundle 2017-04-28-20-06-38-461442374.
+    [a]nother - select different bundle
+    [s]how all trashed files
+    [r]estore
+    [d]iscard from the trash
+    [q]uit
+restore
+,rm: restoring /tmp/rmtest/a.txt
+,rm: restoring /tmp/rmtest/b.txt
+,rm: restoring /tmp/rmtest/dir3
+,rm: restoring /tmp/rmtest/g
+,rm: bundle restored.
+\end{lstlisting}
+\end{minipage}
+
+
+\subsection{Další bezpečné příkazy}
+
+Cílem práce bylo implementovat základní příkazy ze sady GNU coreutils, podobně jako právě Comma-shell rm. Tyto příkazy zde budou popsány pouze stručně a bez ukázek, protože jsou velice podobné Comma-shell rm.
+
+Za prvé jsou to příkazy chgrp, chmod a chown. todo
+
+Za druhé jsou to příkazy cp, ln, mv, mkdir. todo: ochrana proti přepsání souboru.
+
+
+% http://lingrok.org/xref/coreutils/src/
 
 \section{Historie}
 Popsat jak jsem vyresil ukladani historie prikazu, ukladani vystupu, navratove kody, jak vracet nasledky prikazu do puvodniho stavu.
