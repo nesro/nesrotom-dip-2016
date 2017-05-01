@@ -16,3 +16,7 @@ https://github.com/Ricky-Wilson/Programming-books/blob/master/PDF/Learning%20the
 # svg to pdf
     sudo apt install librsvg2-bin
     rsvg-convert -f pdf -o FILE.{pdf,svg}
+
+# dropbox mirror
+
+[https://www.dropbox.com/sh/s4skf2zfqf8vyyf/AADUT-uZlE6XNuh8bTnX8G9Va?dl=0](https://www.dropbox.com/sh/s4skf2zfqf8vyyf/AADUT-uZlE6XNuh8bTnX8G9Va?dl=0)

@@ -45,14 +45,18 @@
 \authorFN{Nesrovnal} %příjmení autora
 \authorWithDegrees{Bc. Tomáš Nesrovnal} %jméno autora včetně současných akademických titulů
 \supervisor{Ing. Jan Baier}
-\acknowledgements{Doplňte, máte-li komu a za co děkovat. V~opačném případě úplně odstraňte tento příkaz.}
-\abstractCS{V~několika větách shrňte obsah a přínos této práce v~češtině. Po přečtení abstraktu by se čtenář měl mít čtenář dost informací pro rozhodnutí, zda chce Vaši práci číst.}
-\abstractEN{Sem doplňte ekvivalent abstraktu Vaší práce v~angličtině.}
+\acknowledgements{Děkuji svému vedoucímu Ing. Janu Baierovi za cenné rady a nápady.}
+\abstractCS{Comma-shell je nástroj pro lepší práci v interaktivním shellu, určený především pro uživatele seznamující se shellem. První částí je debugger, který umí spouštět, nebo analyzovat příkazy po částech. Druhou částí je framework pro spouštění uživatelských skriptů před a po spuštění příkazu včetně několika předpřipravených, například statická analýza kódu pomocí nástroje ShellCheck, která umí zabránit spuštění chybného příkazu. Poslední částí je sada přepsaných několika základních příkazů z GNU coreutils, které jsou méně náchylné na chyby uživatele a lze vrátit změny jimi provedené.}
+% V~několika větách shrňte obsah a přínos této práce v~češtině. Po přečtení abstraktu by se čtenář měl mít čtenář dost informací pro rozhodnutí, zda chce Vaši práci číst.
+
+\abstractEN{Comma-shell is a tool to enhance the work in the interactive shell, primarily for new shell users. The first part is a debugger that can run or analyse commands by parts. The second part is a framework for executing user scripts before and after running commands from the shell. Some of these scripts are already made, for example static analysis done by ShellCheck, which can cancel execution of the bad command. The last part is a set of wrappers of some basic commands from GNU coreutils, these wrappers are more user friendly and changes they make can be reverted.}
+% Sem doplňte ekvivalent abstraktu Vaší práce v~angličtině.
+
 \placeForDeclarationOfAuthenticity{V~Praze}
 \declarationOfAuthenticityOption{4} %volba Prohlášení (číslo 1-6)
-\keywordsCS{Nahraďte seznamem klíčových slov v češtině oddělených čárkou.}
-\keywordsEN{Nahraďte seznamem klíčových slov v angličtině oddělených čárkou.}
-\website{https://github.com/nesro/nesrotom-dip-2016} %volitelná URL práce, objeví se v tiráži - úplně odstraňte, nemáte-li URL práce
+\keywordsCS{GNU, Bash, shell, debugger}
+\keywordsEN{GNU, Bash, shell, debugger}
+\website{https://github.com/nesro/commash/} %volitelná URL práce, objeví se v tiráži - úplně odstraňte, nemáte-li URL práce
 
 \begin{document}
 
@@ -1064,9 +1068,13 @@ Vytvořený nástroj se jmenuje Comma-shell a je to otevřený software. Nejaktu
 
 Pokud si chce uživatel vyzkoušet Comma-shell v bezpečném a izolovaném prostředí, je dobrou praxí vytvořit si virtuální stroj pouze pro tento účel.
 
-todo: opsat ty prikazy z githubu?
+Instalace byla otestována na virtuálním stroji s operačním systémem \texttt{debian-8.7.1-amd64}. Je nutné nastavit minimálně 2GB operační paměti RAM, jinak je možné, že instalace kompilace některých částí, zejména ShellChecku skončí neúspěchem.
 
-%
+Virtuální stroj, který byl použit pro toto testování je VirtualBox verze \texttt{5.0.32\_Ubuntu r112930}, pod operačním systémem založeným na Ubuntu 16.04 LTS.
+
+% http://gensho.acc.umu.se/debian-cd/current/amd64/iso-cd/debian-8.7.1-amd64-lxde-CD-1.iso
+
+
 \section{Instalace Comma-shellu}
 
 Instalace Comma-shellu byla navrhnuta tak, aby byla co nejjednodušší. V ukázce \ref{lst:csinstall} je příklad instalace v operačním systému vycházejícího z Debianu, například Ubuntu.
@@ -1082,7 +1090,6 @@ git clone https://github.com/nesro/commash ~/.commash
 source ~/.commash/comma.sh
 \end{lstlisting}
 \end{minipage}
-
 
 
 
@@ -1103,7 +1110,6 @@ DEBUG trap, která má vykonat nějaký kód tak učiní pomocí funkce eval. Ev
 DEBUG trap má informace pouze o jednoduchém příkazu, který se má vykonat. Příkaz k vykonání se uloží do historie ještě před zavolání první DEBUG trap. Kód, který vykonává funkce eval je tedy vzat jako ten poslední z historie.
 
 TODO: implementovat minimalni verzi a ukazat ji tady?
-
 
 
 %
@@ -1173,6 +1179,8 @@ for f in $(ls *.txt); do echo $f; done
 
 \end{lstlisting}
 \end{minipage}
+
+
 
 
 
@@ -1337,6 +1345,72 @@ test
 
 \section{Implementace debuggeru shell skriptů}
 
+Bash debugger je nejpoužívanější a zaběhlý debugger skriptů napsaných v Bashi. Pracuje se s ním stejně jako s GNU gdb, takže práce s ním může být snadná pro někoho, kdo s GNU gdb má již zkušenosti. Bash debugger je založený na DEBUG trap, je tedy založený čistě na vnitřních nástrojích Bashe pro debuggování.
+
+
+
+Comma-shell debugger shell skriptů se pro to snaží jít jinou cestou. Využívá podobných postupů, jako je Comma-shell debugger v interaktivním shellu. Práce v takovém debuggeru by měla být jednoduchá a natolik intuitivní, že není potřeba studovat žádnou manuálovou stránku. Příkazy, které je možné vykonat budou zobrazeny v menu a budou se spouštět zmáčknutím jedné klávesy.
+
+Práce s tímto debuggerem je taková, že je uživateli nabízené menu pro každý příkaz první úrovně, tedy příkaz, který není v žádné funkci, ani součástí smyček, nebo podmínek. V takovém menu, pokud tomu příkaz odpovídá, je možné vstoupit do tohoto příkazu a krokovat příkazy v něm.
+
+V ukázce \ref{lst:dbgscript} je příklad použití debuggeru na skript, který začíná for cyklem. Uživatel zvolí možnost krokovat cyklem s vlastním iterátorem. Následně krokuje příkazy uvnitř tohoto for cyklu.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={Debugger shell skriptu}, label={lst:dbgscript}]
+n@t:~/.commash/script$ /home/n/.commash/script/commash_script.sh test.sh 
+,dbg: Next command:
+
+for i in 1 2
+do
+	echo "another $i"
+	uname
+done
+
+,dbg: Choose:
+,dbg:    [1] show values of iterator: i
+,dbg:    [2] run body with custom iterator: i
+,dbg:    [3] step through iterations with custom iterator: i
+,dbg:    [4] step in for body: i
+,dbg:    [r]un
+,dbg:    [q]quit	
+,dbg: eval begin
+  ,dbg: stepping in for cycle
+  ,dbg: set iterator "i" value: TEST
+  ,dbg: Next command:
+
+echo "another $i"
+
+  ,dbg: Choose:
+  ,dbg:    [r]un
+  ,dbg:    [q]quit	
+  ,dbg: eval begin:
+
+another TEST
+
+  ,dbg: eval end
+  ,dbg: Next command:
+
+uname
+
+  ,dbg: Choose:
+  ,dbg:    [r]un
+  ,dbg:    [q]quit	
+  ,dbg: eval begin:
+
+Linux
+
+  ,dbg: eval end
+  ,dbg: input in context has ended
+  ,dbg: stepping out for cycle
+
+,dbg: eval end
+\end{lstlisting}
+\end{minipage}
+
+
+Implementace je podobná jako v Comma-shell debugger v interaktivním shellu. Základem je parsovací knihovna Bashlex, která je spouštěna ve skriptu v jazyce Python. Tento skript je volán ze skriptu v Bashi, pro který jsou vraceny jak jednotlivé příkazy, tak i položky menu. S každou položkou do menu je vrácen i kód, který je v Bashi potom vykonán pomocí kostruktu eval.
+
+Pokud se vstoupí do nějakého cyklu nebo podmínky, je hlavní část debuggeru zavolána rekurzivně na tělo podmínky nebo cyklu. Nastavování například iterátorů je zapsáno také jako kód v Bashi, který se vykoná ještě před tímto rekurzivním voláním.
 
 
 %
@@ -1531,15 +1605,10 @@ Za druhé jsou to příkazy cp, ln, mv, mkdir. todo: ochrana proti přepsání s
 
 % http://lingrok.org/xref/coreutils/src/
 
-\section{Historie}
-Popsat jak jsem vyresil ukladani historie prikazu, ukladani vystupu, navratove kody, jak vracet nasledky prikazu do puvodniho stavu.
-todo: historie taky neni v zadani a moc jsem to nedoresil. teoreticky by na to sel napsat pre a post hook, ktery zaznamena vsechno potrebne a zapise to nekam do souboru.
-todo: slo by snadno udelat: podobna historie co je ted, jen se ulozi odkud se prikaz spustil
-
-
-\section{Instalace}
-todo: odkaz na github, vypsat sem to je i tam, tedy: tvorba virtualniho stroje a instalace
-popsat, ze se predopklada instalace do ~/.commash
+%\section{Historie}
+%Popsat jak jsem vyresil ukladani historie prikazu, ukladani vystupu, navratove kody, jak vracet nasledky prikazu do puvodniho stavu.
+%todo: historie taky neni v zadani a moc jsem to nedoresil. teoreticky by na to sel napsat pre a post hook, ktery zaznamena vsechno potrebne a zapise to nekam do souboru.
+%todo: slo by snadno udelat: podobna historie co je ted, jen se ulozi odkud se prikaz spustil
 
 
 % ----------------------------------------------------------------------------
@@ -1549,30 +1618,124 @@ popsat, ze se predopklada instalace do ~/.commash
 % ----------------------------------------------------------------------------
 \chapter{Testování}
 
+%
+\section{Jednotkový test}
 
+Jednotkový test, anglicky unit test, je metoda software testování, při které jsou kontrolovány individuální jednotky zdrojového kódu testovány na funkčnost. 
+
+%
 \subsection{Testování shell skriptů}
-Popsat jak funguji nektere testovaci frameworky.shunit2, roundup
+
+Ukážeme si zde dva způsoby testování shell skriptů.
+
+Tím prvním jsou klasické jednotkové testy, kdy se skripty testují přes jejich rozhraní, které nabízí. Jsou to buď jednotlivé funkce, nebo celé skripty.
+
+Druhým způsobem je testování, které simuluje uživatele v příkazové řádce a následně se testuje výstup pro určité řetězce. Tento postup je vhodný, pokud je hlavním cílem testování správná interakce v příkazové řádce a nikoli jen spouštění skriptu. Příkladem takového testování může být připojení se na vzdálený počítač a spuštění nějakých příkazů.
 
 
+% https://www.ibm.com/developerworks/community/blogs/brian/entry/when_to_use_expect_scripting_and_when_to_avoid_it10?lang=en
+
+\section{shUnit2}
+
+shUnit je framework na unit testy, tedy jednotkové testy, z rodiny frameworků xUnit. Framework nabízí funkce na testování podmínek, jako například test, zdali se dvě hodnoty rovnají. Tyto funkce potom uživatel může použít ve svých funkcí pro zjištění, jestli jeho kód funguje správně.
+
+Framework spouští funkce které napsal uživatel. Vyhledává funkce pro jednorázové nastavení a závěrečné čistění, ale také nastavení a čištění před každou uživatelskou funkcí.
+
+% https://github.com/kward/shunit2
+
+%\section{roundup}
+% https://github.com/bmizerany/roundup
+
+\section{Bats}
+Bats je framework pro Bash, který splňuje specifikaci TAP, Test Anything Protocol.
+
+Příklad testu Bats je v ukázce \ref{lst:bats}. Jednotlivé testy jsou v test blocích uvozených příkazem @test a popiskem testu. V takovém bloku lze volat externí skripty nebo funkce příkazem run. Bats při tom naplní obsah proměnných, obsahují návratové kódy, výstup jako celek, nebo pole jednotlivých řádek, pomocí kterých může uživatel kontrolovat, zdali byl jeho skript nebo funkce úspěšná.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash, caption={Bats}, label={lst:bats}]
+@test "A test I don't want to execute for now" {
+  skip
+  run foo
+  [ "$status" -eq 0 ]
+}
+\end{lstlisting}
+\end{minipage}
+
+% http://testanything.org/
+
+
+
+%
 \section{Automatizované spouštění příkazů}
+
 Popsat jak se dají automaticky spouštět příkazy. At uz lokalne, nebo vzdalene. Popsat jak rekonstrukci z typescriptu, tak treba Tcl, Expect.
 
 \subsection{Expect}
-todo: jak se pracuje s expectem
 
-Pro testování byl zvolen skriptovací jazyk Expect, který je rozšířením jazyka Tcl. Lze tedy velice snadno otestovat chování Comma-shellu a jeho částí pro různé vstupy.
+Expect je rozšířením jazyka Tcl. Hlavním účelem je automatizace interakcí s programy, které nabízejí nějakou formu textového terminálového uživatelského rozhraní.
 
-Testy se skládají ze vstupů a z řetězců, které se očekávájí na výstupu. Přes Expect se potom vytvoří nová instance bashe, ve které se automaticky načte Comma-shell a postupně se posílají vstupy a sledují se výstupy pro očekáváné řetězce.
+Expect byl napsán Donem Libesem pro operační systémy z rodiny Unix, ale později se dostal i na systémy Microsoft Windows a další.
+
+Základní práce v jazyce Expect je spouštění programů, například Bash, nebo i třeba ssh. Do takovýchto instancí je možné posílat vstup, stejně tak, jako by ho uživatel psal na klávesnici. Expect potom obsahuje konstrukce pro očekávání nějakého výstupu, podle kterého se může větvit zbytek skriptu.
+
+% https://www.nist.gov/services-resources/software/expect
+% http://expect.sourceforge.net/
+% ISBN 1-56592-090-2
+% http://shop.oreilly.com/product/9781565920903.do
+% https://thepiratebay.org/torrent/7679076/Exploring_Expect_V413HAV
+
+
+\subsection{Testování Comma-shell}
+
+Pro testování byl zvolen skriptovací jazyk Expect. Lze tedy velice snadno otestovat chování Comma-shellu a jeho částí pro různé vstupy.
+
+Testy se skládají ze vstupů a z řetězců, které se očekávají na výstupu. Přes Expect se potom vytvoří nová instance Bashe, ve které se automaticky načte Comma-shell a postupně se posílají vstupy a sledují se výstupy pro očekáváné řetězce.
 
 Testy jsou rozdělené na menší části, kde každá testuje jednu konkrétní věc. Přes skript lze pustit sérii všech testů.
 
-\subsection{Testování Debuggeru}
+V ukázce \ref{lst:expectshellcheck} je část testu v Expectu, která testuje, zdali se pro příkaz zavolá ShellCheck a příkaz se po zmáčknutí klávesy r skutečně spustí. 
 
-\subsection{Testování Hooks}
+% todo: lepsi priklad?
 
-\subsection{Testování Bezpečných příkazů}
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=tcl, caption={Expect test}, label={lst:expectshellcheck}]
+spawn bash
 
-\subsection{Měření paměťových nároků}
+send "var=content\n"
+send "echo itis\$var\n"
+
+expect {
+	timeout {
+			puts "CS_EXPECT_TIMEOUT 1 test_shellcheck.tcl"
+			exp_continue
+	}
+	",: ShellCheck:" {
+		puts "\nPASS 1"
+	}
+}
+
+send "r"
+
+expect {
+	timeout {
+			puts "CS_EXPECT_TIMEOUT 2 test_shellcheck.tcl"
+			exp_continue
+	}
+	"itiscontent" {
+		puts "\nPASS 2"
+		exit 0
+	}
+}
+\end{lstlisting}
+\end{minipage}
+
+
+
+%\subsection{Testování Hooks}
+
+%\subsection{Testování Bezpečných příkazů}
+
+%\subsection{Měření paměťových nároků}
 
 % ----------------------------------------------------------------------------
 %
@@ -1581,12 +1744,26 @@ Testy jsou rozdělené na menší části, kde každá testuje jednu konkrétní
 % ----------------------------------------------------------------------------
 \begin{conclusion}
 
-	todo: urcite bych napsal. ze nikdo nic podobneho neudelal a ohlasy byly celkem pozitivni. pokud se toho chytne alespon par lidi a budou hlasit chyby, co je potreba vylepsit, nebo dokonce i prispivat, mohl by z toho byt jednou opravdu vyborny pomocnik
+Byl vytvořen nástroj Comma-shell, který umožňuje 1 2 3 todo
 
-	sem napište závěr Vaší práce
+Comma-shell vytváří nástroje, které dávají nové možnosti pro implementaci užitečných do interaktivního shellu. Existují nástroje pro zobrazování informací v shellu, ale chyběl zde nástroj možnost komplexní analýzy příkazu ještě před jeho vykonáním.
+
+
+\section{Možnost využití}
+
+Comma-shell využije nejen začátečník, ale i zkušený uživatel. Přestože to v takto rané fázi projektu zřejmě nebude, tak v budoucnu by například bylo možné, aby se firmách, nebo školících zařízeních připravil Comma-shell tak, aby zajistil bezpečnost a informoval uživatele.
+
+
+\section{Další práce}
+
+Základem Comma-shell frameworku pro hooky je připravit prostředí pro další vývoj. Toto prostředí funguje dobře a až na opravu případných chyb jej není potřeba příliš rozšiřovat. Je možné, že se v budoucích verzích Bashe objeví nové debuggovací nástroje tak, že bude možné jádro Comma-shellu přepsat.
+
+Comma-shell debugger a sada bezpečných příkazů mají přirozeně místo pro další vývoj a vylepšování. Především to bude reagování na podněty uživatelů.
+
+	
 \end{conclusion}
 
-
+% ----------------------------------------------------------------------------
 
 
 \bibliographystyle{csn690}
