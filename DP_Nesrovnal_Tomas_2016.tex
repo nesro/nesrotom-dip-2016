@@ -35,9 +35,9 @@
 %\setcounter{secnumdepth}{4}
 
 
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 % ODTUD DAL VSE ZMENTE
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
 \department{Katedra teoretické informatiky}
 \title{Comma-shell, interaktivní debugger shellu}
@@ -134,7 +134,7 @@ Prompt je krátký řetězec znaků, který se objeví na začátku řádky, do 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[language=bash, caption={Prompt v shellu}, label={lst:prompt}]
 n@t:~/Dropbox/g/nesrotom-dip-2016$ echo "$PS1"
-\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ 
+\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$
 \end{lstlisting}
 \end{minipage}
 
@@ -142,7 +142,7 @@ n@t:~/Dropbox/g/nesrotom-dip-2016$ echo "$PS1"
 
 %---
 
-GNU je projekt zabývající se tvorbou a propagací svobodného software. Cílem je vytvořit kompletní svobodný operační systém unixového typu. Protože jádro operačního systému od GNU s názvem Hurd nebylo tak úspěšné, začalo se používat jádro Linux. Kombinace operačního systému GNU a jádra Linux se označuje jako GNU/Linux. GNU vytvořilo i svůj shell, Bash. Sada základních příkazů, jejichž existence je předpokládána v nějaké formě na každém operačním systému, se jmenuje GNU coreutils. Patří do ní příkazy jako ls, cp, rm, atd. Je důležité si uvědomit, že příkazy jako cd, echo jsou vestavěné příkazy shellu Bash, nikoliv samostané programy.
+GNU \cite{gnu} je projekt zabývající se tvorbou a propagací svobodného software. Cílem je vytvořit kompletní svobodný operační systém unixového typu. Protože jádro operačního systému od GNU s názvem Hurd \cite{hurd} nebylo tak úspěšné, začalo se používat jádro Linux. Kombinace operačního systému GNU a jádra Linux se označuje jako GNU/Linux. GNU vytvořilo i svůj shell, Bash. Sada základních příkazů, jejichž existence je předpokládána v nějaké formě na každém operačním systému, se jmenuje GNU coreutils. Patří do ní příkazy jako ls, cp, rm, atd. Je důležité si uvědomit, že příkazy jako cd, echo jsou vestavěné příkazy shellu Bash, nikoliv samostané programy.
 
 % https://www.gnu.org/software/bash/
 % https://www.gnu.org/software/coreutils/coreutils.html
@@ -162,7 +162,7 @@ Trap je příkaz v shellu, který spustí nějaký kód, pokud shell přijme sig
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[language=bash, caption={Ukázka trap v shellu Bash}, label={lst:trap}]
-bash-4.3$ cat trap_example.sh 
+bash-4.3$ cat trap_example.sh
 #!/bin/bash
 
 clean() {
@@ -172,17 +172,17 @@ clean() {
 trap clean SIGHUP SIGINT SIGTERM
 
 sleep 5
-bash-4.3$ ./trap_example.sh 
+bash-4.3$ ./trap_example.sh
 ^Ccleaning!
-bash-4.3$ ./trap_example.sh 
-bash-4.3$ 
+bash-4.3$ ./trap_example.sh
+bash-4.3$
 \end{lstlisting}
 \end{minipage}
 
 %
 \chapter{Historie shellu a dnešní využití}
 
-V této kapitole stručně shrneme historii rodin nepoužívanějších operačních systému a shellů, které se v nich používají. 
+V této kapitole stručně shrneme historii rodin nepoužívanějších operačních systému a shellů, které se v nich používají.
 
 % Napsat o tom, ze bash je dneska nejcastejsi, protoze linux je vlastne GNU/Linux a bash je GNU bash. Zsh je lepsi snad uplne ve vsem. Sh, resp Dash je rychlejsi.
 
@@ -255,7 +255,7 @@ O shellu se říká slovní hříčka v angličtině: \texttt{If you hold a UNIX
 
 \section{cmd.exe}
 
-Shellem v operačním systému MS-DOS a PC-DOS byl COMMAND.COM, 16-bitový intepretr příkazů. V novějších systémech Windows byl tento shell nahrazen CMD.EXE, 32-bitovým interpretem příkazů. V CMD.EXE byla dostupná emulace COMMAND.COM, pro zpětnou kompatibilitu. 
+Shellem v operačním systému MS-DOS a PC-DOS byl COMMAND.COM, 16-bitový intepretr příkazů. V novějších systémech Windows byl tento shell nahrazen CMD.EXE, 32-bitovým interpretem příkazů. V CMD.EXE byla dostupná emulace COMMAND.COM, pro zpětnou kompatibilitu.
 
 Tato příkazová řádka, shell, již umí přesměrovávat vstupy a výstupy a to jak do souboru tak mezi procesy. Také je schopná vykonávat příkazy ze souborů, které se nazývají dávkové a zpravidla mívají příponu bat.
 
@@ -281,7 +281,7 @@ Oproti cmd.exe umí Power Shell mnoho věcí. Power Shell umožňuje spouštět 
 
 První shell pro systém UNIX napsal Ken Thomson v roce 1971 a byl nazván V9 shell. Jednalo se již o uživatelský program, tedy spuštěný mimo jádro operačního sytému. Shell byl velice jednoduchý a některá základní funkcionalita byla umožněna až dalšími programy. Například expanze parametrů byla zajišťována příkazem glob. Základní větvení, if, bylo také jako samostatný program.
 
-V9 shell přinesl syntaxi pro přesměrování a pipelining. Uměl spouštět více oddělených příkazů a dokázal příkazy spouštět na pozadí. Naopak chyběla třeba podpora pro spouštění skriptů. 
+V9 shell přinesl syntaxi pro přesměrování a pipelining. Uměl spouštět více oddělených příkazů a dokázal příkazy spouštět na pozadí. Naopak chyběla třeba podpora pro spouštění skriptů.
 
 Díky jednoduchosti a oddělenosti ostatní funkcionality měly zdrojové kódy pouze 900 řádek v jazyce C.
 
@@ -488,7 +488,7 @@ Spousta těchto nástrojů je nad rámec této práce. Představíme si zde něk
 Existuje mnoho projektů, jejichž cílem je vytvořit framework v bashi, který má nějakým způsobem zjednodušit vytváření, především větších, skriptů v bashi. Spousta dnešních vývojářů je zvyklá na objektově orientovaný přístup k programovaní a je tedy pro těžké vytvořit větší program, který by zůstal přehledný.
 
 \subsection{Bash OO framework}
-Bash OO framework je framework napsaný v Bashi, který umožňuje vytvářet třídy, výjimky a testy. Cílem je nabídnout možnost skriptovat  v Basi objektově. Takový kód je potom může být přehlednější a modulárnější. 
+Bash OO framework je framework napsaný v Bashi, který umožňuje vytvářet třídy, výjimky a testy. Cílem je nabídnout možnost skriptovat  v Basi objektově. Takový kód je potom může být přehlednější a modulárnější.
 
 % \url{github.com/niieani/bash-oo-framework}
 
@@ -511,10 +511,12 @@ Přestože je tato práce převážně o shellu Bash, pro Z Shell existuje nást
 
 Oh My Zsh je nástroj pro Z shell. Má otevřený kód a je vyvíjen komunitou. Jeho cílem je spravovat konfiguraci Z Shellu. Lze přes něj instalovat spoustu doplňků, ať se jedná o barevné schéma v terminálu, nebo nástroje pro lepší práci s verzovacími systémy.
 
+Ukázkou takového barevného schématu je \ref{fig:zsh_theme}.
+
 \begin{figure}[htb]\centering
 	\includegraphics[width=\textwidth]{./images/zsh_theme}
 	\caption{Barevné schéma do Z Shellu}
-	\label{fig:shell_history}
+	\label{fig:zsh_theme}
 \end{figure}
 
 % http://ohmyz.sh
@@ -548,12 +550,12 @@ Příkladem může být práce s verzovacím systémem, kdy se uživatel napří
 
 \subsection{Sexy Bash Prompt}
 
-Projekt sexy-bash-prompt je další používaný prompt v interaktivním Bashi. Umožňuje vypisovat informace o stavu větví ve verzovacím systému git.
+Projekt sexy-bash-prompt je další používaný prompt v interaktivním Bashi. Umožňuje vypisovat informace o stavu větví ve verzovacím systému git. Obrázek \ref{fig:sexy_prompt} ukazuje příklad takového promptu.
 
 \begin{figure}[htb]\centering
 	\includegraphics[width=\textwidth]{./images/sexy_prompt_edited}
 	\caption{Ukázka Sexy Bash Prompt}
-	\label{fig:shell_history}
+	\label{fig:sexy_prompt}
 \end{figure}
 
 % https://github.com/twolfson/sexy-bash-prompt
@@ -595,7 +597,7 @@ Tyto postupy platí pro shell Bash, ale jsou velice podobné i v ostatních Unix
 %
 \subsection{Životní cyklus příkazu}
 
-V této kapitole vysvětlíme, co všechno všechno důležitého se stane mezi tím, kdy shell přijme příkaz a než je skutečně vykonán. 
+V této kapitole vysvětlíme, co všechno všechno důležitého se stane mezi tím, kdy shell přijme příkaz a než je skutečně vykonán.
 
 \begin{figure}[htb]\centering
 	\includegraphics[width=\textwidth]{./images/shell_arch2}
@@ -705,7 +707,7 @@ Projekt Beautysh si dává za cíl formátovat shell skripty tak, aby byly čite
 %
 \subsubsection{Bashlex}\label{sec:bashlex}
 
-Bashlex je knihovna napsaná ve skriptovacím jazyce Python, která zjednodušeně imituje práci vnitřního parseru Bashe. Z velké části se jedná jen o přepsaní zdrojových kódů Bashe z jazyka C.
+Bashlex je knihovna napsaná ve skriptovacím jazyce Python \cite{Python}, která zjednodušeně imituje práci vnitřního parseru Bashe. Z velké části se jedná jen o přepsaní zdrojových kódů Bashe z jazyka C.
 
 Existují zde rozdíly oproti parseru v Bashi. Za prvé se nespouští žádné příkazy, knihovna umí pouze parsovat. Na rozdíl od parseru Yacc, který používá Bash, je Bashlex reentrantní. Výstupem Bashlexu je kompletní abstraktní syntaktický strom.
 
@@ -822,7 +824,7 @@ Pokud se pak jedná o jednoduchý příkaz nebo několik takových příkazů, k
 %
 \subsection{Interní nástroje}
 
-Bash sám o sobě obsahuje několik nástrojů, které pomáhají uživateli najít chyby. 
+Bash sám o sobě obsahuje několik nástrojů, které pomáhají uživateli najít chyby.
 
 Následující nastavení shellu xtrace, verbose, nounset. errexit a functrace se nastavují přes příkaz set, který existuje i v původním Bourne Shellu. Naopak nastavení extdebug se nastavuje příkazem shopt, který v Bourne Shellu není. Detailní informace o tomto příkazu jsou v manuálových stránkách Bashe, nebo v nápovědě k příkazům set a shopt.
 
@@ -830,7 +832,7 @@ Následující nastavení shellu xtrace, verbose, nounset. errexit a functrace s
 
 Xtrace je nastavaní shellu, které po expanzi každého jednoduchého příkazu zobrazí expandovanou hodnotu proměnné PS4. Proměnná PS4 je podobná proměnné PS1, která značí prompt, jen je vypisována právě s výstupem xtrace.
 
-\begin{lstlisting}[language=bash, caption={Výstup z knihovny Bashlex}, label={lst:bashlex}]
+\begin{lstlisting}[language=bash, caption={Nastavení xtrace}, label={lst:xtrace}]
 bash-4.3$ set -x
 bash-4.3$ t=foo
 + t=foo
@@ -839,13 +841,13 @@ bash-4.3$ echo $t
 foo
 \end{lstlisting}
 
-Z ukázky je vidět, že základní hodnota proměnné PS4 je \textit{+}.
+Z ukázky \ref{lst:xtrace} je vidět, že základní hodnota proměnné PS4 je \textit{+}.
 
 \subsubsection{verbose}
 
-Verbose je nastavení shellu, které vypisuje všechny řádky tak, jak jsou čteny.
+Verbose je nastavení shellu, které vypisuje všechny řádky tak, jak jsou čteny. V ukázce \ref{lst:verbose} je vidět, že narozdíl od xtrace, nebyla proměnná t ještě expandována.
 
-\begin{lstlisting}[language=bash, caption={Výstup z knihovny Bashlex}, label={lst:bashlex}]
+\begin{lstlisting}[language=bash, caption={Nastavní verbose}, label={lst:verbose}]
 bash-4.3$ set -v
 bash-4.3$ t=foo
 t=foo
@@ -854,9 +856,9 @@ echo $t
 foo
 \end{lstlisting}
 
-Nastavení xtrace a verbose lze kombinovat.
+Nastavení xtrace a verbose lze kombinovat. V ukázce \ref{lst:xv} vidiíme tedy jak proměnnou t před expanzí, tak i po expanzi.
 
-\begin{lstlisting}[language=bash, caption={Výstup z knihovny Bashlex}, label={lst:bashlex}]
+\begin{lstlisting}[language=bash, caption={Výstup z knihovny Bashlex}, label={lst:xv}]
 bash-4.3$ set -xv
 bash-4.3$ t=foo
 t=foo
@@ -926,30 +928,30 @@ Poslední změnou je, že DEBUG, RETURN a ERR trap jsou děděny do funkcí a su
 %
 %
 \subsubsection{PS4}
-PS4 je proměnná, která se vypisuje při zapnutém xtrace. Přestože v základu je nastavena pouze za \textit{+}, existuje mnoho použití, které mohou pomoci vyznat se ve vypisovaném kódu. 
+PS4 je proměnná, která se vypisuje při zapnutém xtrace. Přestože v základu je nastavena pouze za \textit{+}, existuje mnoho použití, které mohou pomoci vyznat se ve vypisovaném kódu.
 
 V ukázce \ref{lst:ps4} je jednoduchý skript, který před každým příkazem vypíše číslo řádky, ze které byl spuštěn. Důležité je, že při nastavení PS4 musí použít jednoduché uvozovky, aby došlo k expanzi proměnné LINENO až při samotném výpisu xtrace.
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[language=bash, caption={ps4}, label={lst:ps4}]
-bash-4.3$ cat -n ps4.sh 
+bash-4.3$ cat -n ps4.sh
      1	#!/bin/bash
-     2	
+     2
      3	u() {
      4		echo bar
      5	}
-     6	
+     6
      7	t() {
      8		echo foo
      9		u
     10	}
-    11	
-    12	
+    11
+    12
     13	PS4='[line: ${LINENO}] '
     14	set -x
-    15	
+    15
     16	t
-bash-4.3$ ./ps4.sh 
+bash-4.3$ ./ps4.sh
 [line: 16] t
 [line: 8] echo foo
 foo
@@ -979,7 +981,7 @@ $ echo foo
 [before]
 foo
 [after]
-$ 
+$
 \end{lstlisting}
 
 
@@ -993,7 +995,7 @@ $
 
 \subsection{Bash Debugger}
 
-Bash Debugger je nástroj, který má stejnou syntaxi a chování jako debugger GNU gdb. Bash Debugger umí nastavit breakpoint, tedy místo, na které když se dostane interpretr shellu, tak se vykonávání skriptu zastaví a uživatel může zkoumat stav instance shellu, krokovat do následujících příkazů, nebo si nechat zobrazit zásobník volání.
+Bash Debugger \cite{bashdb} je nástroj, který má stejnou syntaxi a chování jako debugger GNU gdb. Bash Debugger umí nastavit breakpoint, tedy místo, na které když se dostane interpretr shellu, tak se vykonávání skriptu zastaví a uživatel může zkoumat stav instance shellu, krokovat do následujících příkazů, nebo si nechat zobrazit zásobník volání.
 
 Bash Debugger je možné integrovat do některých textovch editorů, jako je třeba emacs. Na obrázku \ref{fig:bashdb} je použití Bash debuggeru v textovém editoru Emacs. Konkrétně obrázek ukazuje použití breakpointu, po kterém se zobrazí interaktivní rozhraní Bash Debuggeru.
 
@@ -1190,9 +1192,11 @@ ShellCheck je napsaný v čistě funkcionálním jazyce Haskell postavený v sys
 
 ShellCheck je velice aktivní projekt a používá se často na testovacích serverech, jako je například Travis CI.
 
+V ukázce \ref{lst:shellcheck} je výpis ShellChecku pro ukázkový skript.
+
 \begin{minipage}{\linewidth}
-\begin{lstlisting}[language=bash, caption={ShellCheck}, label={lst:debugtrap}]
-bash-4.3$ ~/.cabal/bin/shellcheck ~/.commash/tmp/shellcheck_example.sh 
+\begin{lstlisting}[language=bash, caption={ShellCheck}, label={lst:shellcheck}]
+bash-4.3$ ~/.cabal/bin/shellcheck ~/.commash/tmp/shellcheck_example.sh
 
 In /home/n/.commash/tmp/shellcheck_example.sh line 5:
 if (( $n > 3.5 )); then
@@ -1300,7 +1304,7 @@ Jednou z nejdůležitějších věcí v hooku spuštěném po příkazu je pří
 
 \subsection{Předvytvořené hooky}
 
-Comma-shell obsahuje v základu několik předvytvořených hooků. Některé z nich si zde popíšeme. 
+Comma-shell obsahuje v základu několik předvytvořených hooků. Některé z nich si zde popíšeme.
 
 
 %
@@ -1313,7 +1317,7 @@ Protože ShellCheck je určen pro skripty, některé případy, na které upozor
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[language=bash, caption={ShellCheck}, label={lst:sccat}]
 n@t:~$ cat x | grep y
-,: ShellCheck: 
+,: ShellCheck:
 cat x | grep y
     ^-- SC2002: Useless cat. Consider 'cmd < file | ..' or 'cmd file | ..' instead.
 ,: Now what? [r]un, [s]top, [i]gnore, [p]retype: s
@@ -1325,7 +1329,7 @@ cat x | grep y
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[language=bash, caption={ShellCheck}, label={lst:csfor}]
 n@t:~$ for f in $(ls *.txt); do echo $f; done
-,: ShellCheck: 
+,: ShellCheck:
 for f in $(ls *.txt); do echo $f; done
          ^-- SC2045: Iterating over ls output is fragile. Use globs.
               ^-- SC2035: Use ./*glob* or -- *glob* so names with dashes won't become options.
@@ -1381,7 +1385,7 @@ Když Bash hledá příkaz k vykonání a nepodaří se mu ho najít, jako posle
 Comma-shell přepíše funkci command\_not\_found\_handle tak, aby nedělala nic, jen vrátila návratový kód 127. V hooku spuštěném po příkazu se otestuje, zda-li je návratová hodnota 127 a pokud ano, zavolá se kód obstarávající logiku, pokud příkaz není nalezen.
 
 \begin{minipage}{\linewidth}
-\begin{lstlisting}[language=bash, caption={Explain RC hook}, label={lst:exprchook2}]
+\begin{lstlisting}[language=bash, caption={Explain RC hook}, label={lst:notfoundhook}]
 n@t:~$ le asdf
 ,notfound: Command not found.
 ,notfound: [1] choose: "let asdf"
@@ -1399,7 +1403,7 @@ sudo apt install le
 \end{lstlisting}
 \end{minipage}
 
-V ukázce \ref{lst:exprchook2} je vidět notfound hook v akci. Uživatel může spustit příkaz, který zamýšlel, zastavit vykonávání
+V ukázce \ref{lst:notfoundhook} je vidět notfound hook v akci. Uživatel může spustit příkaz, který zamýšlel, zastavit vykonávání
 
 %
 %
@@ -1428,7 +1432,7 @@ n@t:~$ echo "the year is $(date +%Y)" | grep 2017
 
 echo "the year is $(date +%Y)" | grep 2017
                   ^-- [1] show substituion: $(date +%Y)
-                               ^-- [2] show pipe flow: echo "the year is $(date +%Y)" 
+                               ^-- [2] show pipe flow: echo "the year is $(date +%Y)"
 
 ,: Select your option, [0] debug whole cmd, [q]uit, [r]un normally 1
 ,: Executing: "echo "$(date +%Y)""
@@ -1447,7 +1451,7 @@ n@t:~$ echo "the year is $(date +%Y)" | grep 2017
 
 echo "the year is $(date +%Y)" | grep 2017
                   ^-- [1] show substituion: $(date +%Y)
-                               ^-- [2] show pipe flow: echo "the year is $(date +%Y)" 
+                               ^-- [2] show pipe flow: echo "the year is $(date +%Y)"
 
 ,: Select your option, [0] debug whole cmd, [q]uit, [r]un normally 2
 ,: Executing: "echo "the year is $(date +%Y)" "
@@ -1514,7 +1518,7 @@ V ukázce \ref{lst:dbgscript} je příklad použití debuggeru na skript, který
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[language=bash, caption={Debugger shell skriptu}, label={lst:dbgscript}]
-n@t:~/.commash/script$ /home/n/.commash/script/commash_script.sh test.sh 
+n@t:~/.commash/script$ /home/n/.commash/script/commash_script.sh test.sh
 ,dbg: Next command:
 
 for i in 1 2
@@ -1529,7 +1533,7 @@ done
 ,dbg:    [3] step through iterations with custom iterator: i
 ,dbg:    [4] step in for body: i
 ,dbg:    [r]un
-,dbg:    [q]quit	
+,dbg:    [q]quit
 ,dbg: eval begin
   ,dbg: stepping in for cycle
   ,dbg: set iterator "i" value: TEST
@@ -1539,7 +1543,7 @@ echo "another $i"
 
   ,dbg: Choose:
   ,dbg:    [r]un
-  ,dbg:    [q]quit	
+  ,dbg:    [q]quit
   ,dbg: eval begin:
 
 another TEST
@@ -1551,7 +1555,7 @@ uname
 
   ,dbg: Choose:
   ,dbg:    [r]un
-  ,dbg:    [q]quit	
+  ,dbg:    [q]quit
   ,dbg: eval begin:
 
 Linux
@@ -1620,7 +1624,7 @@ n@t:/tmp/rmtest$ mkdir -p dir
 n@t:/tmp/rmtest$ touch {a..b}.txt dir/{c..d}.txt
 n@t:/tmp/rmtest$ /bin/rm -Ir ./*
 /bin/rm: remove 3 arguments recursively? y
-n@t:/tmp/rmtest$ 
+n@t:/tmp/rmtest$
 \end{lstlisting}
 \end{minipage}
 
@@ -1715,7 +1719,7 @@ t
 \end{lstlisting}
 \end{minipage}
 
-V ukázce \ref{lst:rmwrapp7} je obnova souborů z předchozí ukázky \ref{lst:rmwrapp6}. Po zavolání příkazu pro zobrazení balíčků smazaných souborů a vybrání jednoho podle času, místa a seznamu souborů si uživatel mimo jiné může nechat zobrazit detailní výpis souborů přesunutých do koše. Soubory může z koše permanentně odstranit, nebo je obnovit. Pro odstranění se používá příkaz trashcli-rm. Pro obnovu souborů se používá příkaz trashcli-restore. 
+V ukázce \ref{lst:rmwrapp7} je obnova souborů z předchozí ukázky \ref{lst:rmwrapp6}. Po zavolání příkazu pro zobrazení balíčků smazaných souborů a vybrání jednoho podle času, místa a seznamu souborů si uživatel mimo jiné může nechat zobrazit detailní výpis souborů přesunutých do koše. Soubory může z koše permanentně odstranit, nebo je obnovit. Pro odstranění se používá příkaz trashcli-rm. Pro obnovu souborů se používá příkaz trashcli-restore.
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[language=bash, caption={,rm - obnova souborů }, label={lst:rmwrapp7}]
@@ -1779,7 +1783,7 @@ todo: tohle jeste dodelam a neco sem dopisu.
 %
 \section{Jednotkový test}
 
-Jednotkový test, anglicky unit test, je metoda software testování, při které jsou kontrolovány individuální jednotky zdrojového kódu testovány na funkčnost. 
+Jednotkový test, anglicky unit test, je metoda software testování, při které jsou kontrolovány individuální jednotky zdrojového kódu testovány na funkčnost.
 
 %
 \subsection{Testování shell skriptů}
@@ -1856,7 +1860,7 @@ Testy se skládají ze vstupů a z řetězců, které se očekávají na výstup
 
 Testy jsou rozdělené na menší části, kde každá testuje jednu konkrétní věc. Přes skript lze pustit sérii všech testů.
 
-V ukázce \ref{lst:expectshellcheck} je část testu v Expectu, která testuje, zdali se pro příkaz zavolá ShellCheck a příkaz se po zmáčknutí klávesy r skutečně spustí. 
+V ukázce \ref{lst:expectshellcheck} je část testu v Expectu, která testuje, zdali se pro příkaz zavolá ShellCheck a příkaz se po zmáčknutí klávesy r skutečně spustí.
 
 % todo: lepsi priklad?
 
@@ -1923,7 +1927,7 @@ Základem Comma-shell frameworku pro hooky je připravit prostředí pro další
 
 Comma-shell debugger a sada bezpečných příkazů mají přirozeně místo pro další vývoj a vylepšování. Především to bude reagování na podněty uživatelů.
 
-	
+
 \end{conclusion}
 
 % ----------------------------------------------------------------------------
@@ -1942,18 +1946,18 @@ Comma-shell debugger a sada bezpečných příkazů mají přirozeně místo pro
 \end{description}
 
 
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % %
 % % Tuto kapitolu z výsledné práce ODSTRAŇTE.
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % 
-% 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % %
+%
 % \chapter{Návod k~použití této šablony}
-% 
+%
 % Tento dokument slouží jako základ pro napsání závěrečné práce na Fakultě informačních technologií ČVUT v~Praze.
-% 
+%
 % \section{Výběr základu}
-% 
-% Vyberte si šablonu podle druhu práce (bakalářská, diplomová), jazyka (čeština, angličtina) a kódování (ASCII, \mbox{UTF-8}, \mbox{ISO-8859-2} neboli latin2 a nebo \mbox{Windows-1250}). 
-% 
+%
+% Vyberte si šablonu podle druhu práce (bakalářská, diplomová), jazyka (čeština, angličtina) a kódování (ASCII, \mbox{UTF-8}, \mbox{ISO-8859-2} neboli latin2 a nebo \mbox{Windows-1250}).
+%
 % V~české variantě naleznete šablony v~souborech pojmenovaných ve formátu práce\_kódování.tex. Typ může být:
 % \begin{description}
 % 	\item[BP] bakalářská práce,
@@ -1974,69 +1978,69 @@ Comma-shell debugger a sada bezpečných příkazů mají přirozeně místo pro
 % 		\item jinak zkuste použít šablonu pro kódování \mbox{ISO-8859-2}.
 % 	\end{itemize}
 % \end{enumerate}
-% 
-% 
+%
+%
 % V~anglické variantě jsou šablony pojmenované podle typu práce, možnosti jsou:
 % \begin{description}
 % 	\item[bachelors] bakalářská práce,
 % 	\item[masters] diplomová (magisterská) práce.
 % \end{description}
-% 
+%
 % \section{Použití šablony}
-% 
+%
 % Šablona je určena pro zpracování systémem \LaTeXe{}. Text je možné psát v~textovém editoru jako prostý text, lze však také využít specializovaný editor pro \LaTeX{}, např. Kile.
-% 
+%
 % Pro získání tisknutelného výstupu z~takto vytvořeného souboru použijte příkaz \verb|pdflatex|, kterému předáte cestu k~souboru jako parametr. Vhodný editor pro \LaTeX{} toto udělá za Vás. \verb|pdfcslatex| ani \verb|cslatex| \emph{nebudou} s~těmito šablonami fungovat.
-% 
+%
 % Více informací o~použití systému \LaTeX{} najdete např. v~\cite{wikilatex}.
-% 
+%
 % \subsection{Typografie}
-% 
+%
 % Při psaní dodržujte typografické konvence zvoleného jazyka. České \uv{uvozovky} zapisujte použitím příkazu \verb|\uv|, kterému v~parametru předáte text, jenž má být v~uvozovkách. Anglické otevírací uvozovky se v~\LaTeX{}u zadávají jako dva zpětné apostrofy, uzavírací uvozovky jako dva apostrofy. Často chybně uváděný symbol "{} (palce) nemá s~uvozovkami nic společného.
-% 
+%
 % Dále je třeba zabránit zalomení řádky mezi některými slovy, v~češtině např. za jednopísmennými předložkami a spojkami (vyjma \uv{a}). To docílíte vložením pružné nezalomitelné mezery -- znakem \texttt{\textasciitilde}. V~tomto případě to není třeba dělat ručně, lze použít program \verb|vlna|.
-% 
+%
 % Více o~typografii viz \cite{kobltypo}.
-% 
+%
 % \subsection{Obrázky}
-% 
+%
 % Pro umožnění vkládání obrázků je vhodné použít balíček \verb|graphicx|, samotné vložení se provede příkazem \verb|\includegraphics|. Takto je možné vkládat obrázky ve formátu PDF, PNG a JPEG jestliže používáte pdf\LaTeX{} nebo ve formátu EPS jestliže používáte \LaTeX{}. Doporučujeme preferovat vektorové obrázky před rastrovými (vyjma fotografií).
-% 
+%
 % \subsubsection{Získání vhodného formátu}
-% 
+%
 % Pro získání vektorových formátů PDF nebo EPS z~jiných lze použít některý z~vektorových grafických editorů. Pro převod rastrového obrázku na vektorový lze použít rasterizaci, kterou mnohé editory zvládají (např. Inkscape). Pro konverze lze použít též nástroje pro dávkové zpracování běžně dodávané s~\LaTeX{}em, např. \verb|epstopdf|.
-% 
+%
 % \subsubsection{Plovoucí prostředí}
-% 
+%
 % Příkazem \verb|\includegraphics| lze obrázky vkládat přímo, doporučujeme však použít plovoucí prostředí, konkrétně \verb|figure|. Například obrázek \ref{fig:float} byl vložen tímto způsobem. Vůbec přitom nevadí, když je obrázek umístěn jinde, než bylo původně zamýšleno -- je tomu tak hlavně kvůli dodržení typografických konvencí. Namísto vynucování konkrétní pozice obrázku doporučujeme používat odkazování z~textu (dvojice příkazů \verb|\label| a \verb|\ref|).
-% 
+%
 % \begin{figure}\centering
 % 	\includegraphics[width=0.5\textwidth, angle=30]{cvut-logo-bw}
 % 	\caption[Příklad obrázku]{Ukázkový obrázek v~plovoucím prostředí}\label{fig:float}
 % \end{figure}
-% 
+%
 % \subsubsection{Verze obrázků}
-% 
+%
 % % Gnuplot BW i barevně
 % Může se hodit mít více verzí stejného obrázku, např. pro barevný či černobílý tisk a nebo pro prezentaci. S~pomocí některých nástrojů na generování grafiky je to snadné.
-% 
+%
 % Máte-li například graf vytvořený v programu Gnuplot, můžete jeho černobílou variantu (viz obr. \ref{fig:gnuplot-bw}) vytvořit parametrem \verb|monochrome dashed| příkazu \verb|set term|. Barevnou variantu (viz obr. \ref{fig:gnuplot-col}) vhodnou na prezentace lze vytvořit parametrem \verb|colour solid|.
-% 
+%
 % \begin{figure}\centering
 % 	\includegraphics{gnuplot-bw}
 % 	\caption{Černobílá varianta obrázku generovaného programem Gnuplot}\label{fig:gnuplot-bw}
 % \end{figure}
-% 
+%
 % \begin{figure}\centering
 % 	\includegraphics{gnuplot-col}
 % 	\caption{Barevná varianta obrázku generovaného programem Gnuplot}\label{fig:gnuplot-col}
 % \end{figure}
-% 
-% 
+%
+%
 % \subsection{Tabulky}
-% 
+%
 % Tabulky lze zadávat různě, např. v~prostředí \verb|tabular|, avšak pro jejich vkládání platí to samé, co pro obrázky -- použijte plovoucí prostředí, v~tomto případě \verb|table|. Například tabulka \ref{tab:matematika} byla vložena tímto způsobem.
-% 
+%
 % \begin{table}\centering
 % 	\caption[Příklad tabulky]{Zadávání matematiky}\label{tab:matematika}
 % 	\begin{tabular}{|l|l|c|c|}\hline
@@ -2045,8 +2049,8 @@ Comma-shell debugger a sada bezpečných příkazů mají přirozeně místo pro
 % 		Displayed	& \verb|displaymath|	& \verb|\[...\]|	& \verb|$$...$$|	\tabularnewline \hline
 % 	\end{tabular}
 % \end{table}
-% 
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+%
+% % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
 \chapter{Obsah přiloženého CD}
 
