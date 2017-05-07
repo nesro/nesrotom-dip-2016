@@ -361,7 +361,7 @@ Korn Shell umožnuje upravovat psaný příkaz, jako v editorech Vi, nebo Emacs.
 %
 \section{Bash - Bourne Again Shell}
 
-Bash \cite{bash} \cite{learningthebashshell} \cite{unixprogrammingenvironment} je open source shell projektu GNU. Bash se snaží být zpětně kompatibilní s Bourne shellem, tedy skripty napsané v Bourne shellu pravděpodobně půjdou spustit i v Bashi. Naopak to je problém, který se řeší program checkbashisms, o kterém bude řeč dále.
+Bash \cite{bash} \cite{learningthebashshell} je open source shell projektu GNU. Bash se snaží být zpětně kompatibilní s Bourne shellem, tedy skripty napsané v Bourne shellu pravděpodobně půjdou spustit i v Bashi. Naopak to je problém, který se řeší program checkbashisms, o kterém bude řeč dále.
 
 Bash obsahuje konstrukty pro smyčky. Nejen smyčky while a for, ale i until, což je obdoba smyčky do-while v jazyce C. Pro větvení lze použít klasický příkaz if, ale například i case, což je obdoba switch v jazyce C.
 
