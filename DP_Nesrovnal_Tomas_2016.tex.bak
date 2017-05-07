@@ -706,7 +706,7 @@ for name [ [ in [ word ... ] ] ; ] do list ; done
 %
 \subsubsection{Beautysh}
 
-Projekt Beautysh \cite{beautysh} si dává za cíl formátovat shell skripty tak, aby byly čitelnější. Jedná se o~malý a jednoduchý projekt. Neprobíhá zde žádné parsování do abstraktního syntaktického stromu. Vstup je jen po řádcích rozlišován pomocí regulárních výrazů.
+Projekt Beautysh \cite{beautysh} si dává za cíl formátovat shell skripty tak, aby byly čitelnější. Jedná se o~malý a~jednoduchý projekt. Neprobíhá zde žádné parsování do abstraktního syntaktického stromu. Vstup je jen po řádcích rozlišován pomocí regulárních výrazů.
 
 % Protože gramatika shellu může být bez kontextu nejasná, Beautysh si neporadí například s kódem \ref{lst:beautysh}
 
@@ -1036,7 +1036,7 @@ Funkčnost debuggeru závisí na nastavení DEBUG trap, která je spuštěna př
 
 BashEclipse \cite{basheclipse} je plugin do integrovaného vývojového prostředí Eclipse. Pro svůj běh vyžaduje nainstalovaný editor ShellEd \cite{shelled}.
 
-BashEclipse funguje také na DEBUG trap. Na začátek každého skriptu, který chceme debuggovat musíme přidat speciální soubor \texttt{\_DEBUG.sh}. V~tomto souboru se nastaví spojení s~TCP/IP socketem ze souboru /dev/tcp/localhost/33333, ze kterého se čtou příkazy, které se v~DEBUG trap vykonají.
+BashEclipse funguje také na DEBUG trap. Na začátek každého skriptu, který chceme debuggovat musíme přidat speciální soubor \texttt{\_DEBUG.sh}. V~tomto souboru se nastaví spojení s~TCP/IP socketem ze souboru pro zařízení tcp localhost s portem 3333, ze kterého se čtou příkazy, které se v~DEBUG trap vykonají.
 
 Zbytek debuggeru je napsán jako doplněk Eclipse.
 
@@ -1194,19 +1194,19 @@ Manuálové stránky, ze kterých se vybírá jsou z~operačního systému Ubunt
 %
 \subsection{ShellCheck}
 
-ShellCheck \cite{shellcheck} je nástroj, který varuje před chybami a dokonce dává návrhy na vylepšení ve skriptech v~Bashi, i Bourne Shellu. Nástroj je dostupný jak online, tak jej lze snadno nainstalovat.
+ShellCheck \cite{shellcheck} je nástroj, který varuje před chybami a~dokonce dává návrhy na vylepšení ve skriptech v~Bashi, i~Bourne Shellu. Nástroj je dostupný jak online, tak jej lze snadno nainstalovat.
 
 Shellcheck si dává za cíl tři základní věci. Za prvé pomoci nezkušeným uživatelům shellu, upozornit je na základní chyby srozumitelně, protože základní hlášení chyb v~shellu může působit zmateně.
 
 Druhý cíl je upozorňovat a vysvětlit uživatelům používající středně pokročilé praktiky možné nestandardní chování, nebo na syntaxi, která není intuitivní.
 
-Posledním cílem je upozornit pokročilé uživatele na okrajové případy a nástrahy. Například skript může pracovat dobře, dokud nemá zpracovat soubor obsahující mezeru v~názvu.
+Posledním cílem je upozornit pokročilé uživatele na okrajové případy a~nástrahy. Například skript může pracovat dobře, dokud nemá zpracovat soubor obsahující mezeru v~názvu.
 
 ShellCheck obsahuje galerii špatného kódu s~přehledem základních chyb. Na jeho stránkách je však také podrobně popsán každý případ, který se hledá a na který se upozorňuje.
 
-ShellCheck je napsaný v~čistě funkcionálním jazyce Haskell \cite{haskell} postavený v~systému Cabal. Obsahuje parser, který tvoří abstraktní syntaktický strom. Zdroje chyb, varování a doporučení, které ShellCheck hledá jsou kontrolovány jak při tvoření abstraktního syntaktického stromu, tak je zde i soubor pravidel, ve kterých se hledá shoda s~příkazy na vstupu.
+ShellCheck je napsaný v~čistě funkcionálním jazyce Haskell \cite{haskell} postavený v~systému Cabal. Obsahuje parser, který tvoří abstraktní syntaktický strom. Zdroje chyb, varování a doporučení, které ShellCheck hledá jsou kontrolovány jak při tvoření abstraktního syntaktického stromu, tak je zde i~soubor pravidel, ve kterých se hledá shoda s~příkazy na vstupu.
 
-ShellCheck je velice aktivní projekt a používá se často na testovacích serverech, jako je například Travis CI.
+ShellCheck je velice aktivní projekt a~používá se často na testovacích serverech, jako je například Travis CI.
 % TODO: cite cabal, travis ci
 
 V~ukázce \ref{lst:shellcheck} je výpis ShellChecku pro ukázkový skript.
@@ -1243,7 +1243,7 @@ Vytvořený nástroj se jmenuje Comma-shell a je to otevřený software. Nejaktu
 
 Pokud si chce uživatel vyzkoušet Comma-shell v~bezpečném a izolovaném prostředí, je dobrou praxí vytvořit si virtuální stroj pouze pro tento účel.
 
-Instalace byla otestována na virtuálním stroji s~operačním systémem \texttt{debian-8.7.1-amd64}. Je nutné nastavit minimálně 2GB operační paměti RAM, jinak je možné, že instalace kompilace některých částí, zejména ShellChecku skončí neúspěchem.
+Instalace byla otestována na virtuálním stroji s~operačním systémem debian verze \texttt{8.7.1-amd64}. Je nutné nastavit minimálně 2GB operační paměti RAM, jinak je možné, že instalace kompilace některých částí, zejména ShellChecku skončí neúspěchem.
 
 Virtuální stroj, který byl použit pro toto testování je VirtualBox verze \texttt{5.0.32\_Ubuntu r112930}, pod operačním systémem založeným na Ubuntu 16.04 LTS.
 
@@ -2095,13 +2095,13 @@ Comma-shell debugger a sada bezpečných příkazů mají přirozeně místo pro
 \begin{figure}
 	\dirtree{%
 		.1 readme.txt\DTcomment{stručný popis obsahu CD}.
-		.1 exe\DTcomment{adresář se spustitelnou formou implementace}.
-		.1 src.
-		.2 impl\DTcomment{zdrojové kódy implementace}.
-		.2 thesis\DTcomment{zdrojová forma práce ve formátu \LaTeX{}}.
-		.1 text\DTcomment{text práce}.
-		.2 thesis.pdf\DTcomment{text práce ve formátu PDF}.
-		.2 thesis.ps\DTcomment{text práce ve formátu PS}.
+		.1 commash\DTcomment{git repozitář se zdrojovými kódy Comma-shellu}.
+		.2 comma.sh\DTcomment{hlavní spouštěcí soubor}.
+		.2 README.md\DTcomment{soubor s instrukcemi pro instalaci}.
+		.1 nesrotom-dip-2016\DTcomment{git repozitář s touto prací}.
+		.2 DP\_Nesrovnal\_Tomas\_2016.pdf\DTcomment{text práce, formát PDF}.
+		.2 DP\_Nesrovnal\_Tomas\_2016.tex\DTcomment{zdroj práce, formát \LaTeX{}}.
+		.2 zadani\_DP\_Nesrovnal\_Tomas\_2016.pdf\DTcomment{zadání práce}.
 	}
 \end{figure}
 
