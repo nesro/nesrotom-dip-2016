@@ -49,20 +49,21 @@
 
 % XXX: ten abstrakt jsem musel zkratit, protoze byl jinak pres dve stranky (coz znamena, ze to bylo moc dlouhy)
 
-\abstractCS{Comma-shell je nástroj pro lepší práci v~interaktivním shellu, určený především pro uživatele seznamující se s~shellem. Obsahuje debugger pro spouštění příkazů po částech. Dále framework umožňující spouštět skripty před spuštěním příkazů, například statická analýza kódu pomocí nástroje ShellCheck, zabraňující spuštění chybného příkazu. Sada několika obalů základních příkazů z~GNU coreutils, které jsou méně náchylné na chyby uživatele a lze vrátit změny jimi provedené.}
+\abstractCS{Comma-shell je nástroj pro lepší práci v interaktivním shellu, určený především pro uživatele seznamující se shellem. První částí je debugger, který umí spouštět, nebo analyzovat příkazy po částech. Druhou částí je framework pro spouštění uživatelských skriptů před a po spuštění příkazů. Předpřipravená je například statická analýza kódu pomocí nástroje ShellCheck, která umí zabránit spuštění chybného příkazu. Poslední částí je sada několika přepsaných základních příkazů z GNU coreutils, které jsou méně náchylné na chyby uživatele a lze vrátit změny jimi provedené.}
 
-% Comma-shell je nástroj pro lepší práci v interaktivním shellu, určený především pro uživatele seznamující se shellem. První částí je debugger, který umí spouštět, nebo analyzovat příkazy po částech. Druhou částí je framework pro spouštění uživatelských skriptů před a po spuštění příkazů. Předpřipravená je například statická analýza kódu pomocí nástroje ShellCheck, která umí zabránit spuštění chybného příkazu. Poslední částí je sada několika přepsaných základních příkazů z GNU coreutils, které jsou méně náchylné na chyby uživatele a lze vrátit změny jimi provedené.
+% Comma-shell je nástroj pro lepší práci v~interaktivním shellu, určený především pro uživatele seznamující se s~shellem. Obsahuje debugger pro spouštění příkazů po částech. Dále framework umožňující spouštět skripty před spuštěním příkazů, například statická analýza kódu pomocí nástroje ShellCheck, zabraňující spuštění chybného příkazu. Sada několika obalů základních příkazů z~GNU coreutils, které jsou méně náchylné na chyby uživatele a lze vrátit změny jimi provedené.
 
 % V~několika větách shrňte obsah a přínos této práce v~češtině. Po přečtení abstraktu by se čtenář měl mít čtenář dost informací pro rozhodnutí, zda chce Vaši práci číst.
 
-\abstractEN{Comma-shell is a tool to enhance the work in the interactive shell, primarily for new shell users. It consists of a debugger that can run commands by parts. Next, framework that can execute user scripts before running commands from interactive shell, such as static analysis by ShellCheck. Last part is a set of wrappers of some basic GNU coreutils commands, that can revert their actions.}
+\abstractEN{Comma-shell is a tool to enhance the work in the interactive shell, primarily for new shell users. The first part is a debugger that can run or analyse commands by parts. The second part is a framework for executing user scripts before and after running commands from the shell. Some of these scripts are already made, for example static analysis done by ShellCheck, which can cancel execution of a bad command. The last part is a set of wrappers of some basic commands from GNU coreutils, these wrappers are more user friendly and changes they make can be reverted.}
 
-% Comma-shell is a tool to enhance the work in the interactive shell, primarily for new shell users. The first part is a debugger that can run or analyse commands by parts. The second part is a framework for executing user scripts before and after running commands from the shell. Some of these scripts are already made, for example static analysis done by ShellCheck, which can cancel execution of a bad command. The last part is a set of wrappers of some basic commands from GNU coreutils, these wrappers are more user friendly and changes they make can be reverted.
+% Comma-shell is a tool to enhance the work in the interactive shell, primarily for new shell users. It consists of a debugger that can run commands by parts. Next, framework that can execute user scripts before running commands from interactive shell, such as static analysis by ShellCheck. Last part is a set of wrappers of some basic GNU coreutils commands, that can revert their actions.
+
 % Sem doplňte ekvivalent abstraktu Vaší práce v~angličtině.
 
 \placeForDeclarationOfAuthenticity{V~Praze}
 \declarationOfAuthenticityOption{4} %volba Prohlášení (číslo 1-6)
-\keywordsCS{GNU, Bash, shell, debugger}
+\keywordsCS{GNU, Bash, shell, debugger  \clearpage 	}
 \keywordsEN{GNU, Bash, shell, debugger}
 \website{https://github.com/nesro/commash/} %volitelná URL práce, objeví se v tiráži - úplně odstraňte, nemáte-li URL práce
 
@@ -127,7 +128,7 @@ Textové uživatelské rozhraní také pracuje v~textovém režimu, jako rozhran
 
 \begin{figure}
 	\includegraphics[width=1.0\textwidth]{./images/TUI}
-	\caption{Textové uživatelské rozhraní}
+	\caption{Textové uživatelské rozhraní - FreeDOS Edit \cite{fdedit}}
 	\label{fig:tui}
 \end{figure}
 % https://cs.wikipedia.org/wiki/Textov%C3%A9_u%C5%BEivatelsk%C3%A9_rozhran%C3%AD
@@ -214,7 +215,7 @@ Filosofie Unixu je sada doporučení a pravidel, která vznikla postupem času d
 
 \begin{figure}
 	\includegraphics[width=1.0\textwidth]{./images/Unix_history-simple_rot_big}
-	\caption{Historie unixu}
+	\caption{Historie unixu \cite{unixhistorysvg}}
 	\label{fig:unixhistory}
 \end{figure}
 
@@ -224,7 +225,7 @@ Filosofie Unixu je sada doporučení a pravidel, která vznikla postupem času d
 % ZDROJ: https://edux.fit.cvut.cz/courses/BI-PS1/_media/lectures/01/bi-ps1-p01-introduction-01.pdf
 
 \section{Linux}
-Linux je otevřený a svobodný Unix-like operační sytém. Linuxem se obecně myslí GNU operační systém s~jádrem Linux. Unix-like znamená, že přestože je takový operační systém velice podobný systému Unix, nemá certifikaci "Single UNIX Specification". Linuxová distribuce je GNU/Linuxový systém, který většinou obsahuje balíčkovací systém, kterým je snadné doinstalovat ostatní programy. Linuxové distribuce jsou i předpřipravené, s~grafickým prostředím. Například v~této práci ukazujeme návod na vytvoření takového připraveného systému, GNU/Linuxové distribuci Debian s~předpřipraveným grafickým prostředím LXDE a aplikacemi z~rodiny LXDE.
+Linux \cite{linux} je otevřený a svobodný Unix-like operační sytém. Linuxem se obecně myslí GNU operační systém s~jádrem Linux. Unix-like znamená, že přestože je takový operační systém velice podobný systému Unix, nemá certifikaci "Single UNIX Specification". Linuxová distribuce je GNU/Linuxový systém, který většinou obsahuje balíčkovací systém, kterým je snadné doinstalovat ostatní programy. Linuxové distribuce jsou i předpřipravené, s~grafickým prostředím. Například v~této práci ukazujeme návod na vytvoření takového připraveného systému, GNU/Linuxové distribuci Debian s~předpřipraveným grafickým prostředím LXDE a aplikacemi z~rodiny LXDE.
 
 
 % https://www.amazon.com/Just-Fun-Story-Accidental-Revolutionary/dp/0066620732
@@ -246,7 +247,7 @@ Obrázek \ref{fig:shell_history} ukazuje základní dělení Unixových shellů 
 
 \begin{figure}[htb]\centering
 	\includegraphics[width=\textwidth]{./images/tmp_shell_history}
-	\caption{Historie Unixového Shellu}
+	\caption{Historie Unixového Shellu \cite{2011}}
 	\label{fig:shell_history}
 \end{figure}
 
@@ -529,13 +530,13 @@ Ukázkou takového barevného schématu je \ref{fig:zsh_theme}.
 
 \begin{figure}[htb]\centering
 	\includegraphics[width=\textwidth]{./images/zsh_theme}
-	\caption{Barevné schéma do Z~Shellu}
+	\caption{Barevné schéma do Z~Shellu \cite{ohmyzshimg}}
 	\label{fig:zsh_theme}
 \end{figure}
 
 % http://ohmyz.sh
 
-% TODO vic ukazek
+% TODO vic ukazek?
 
 %
 %
@@ -570,7 +571,7 @@ Projekt sexy-bash-prompt \cite{sexybashprompt} je další používaný prompt v~
 
 \begin{figure}[htb]\centering
 	\includegraphics[width=\textwidth]{./images/sexy_prompt_edited}
-	\caption{Ukázka Sexy Bash Prompt}
+	\caption{Ukázka Sexy Bash Prompt \cite{sexybashprompt}}
 	\label{fig:sexy_prompt}
 \end{figure}
 
@@ -617,7 +618,7 @@ V~této kapitole vysvětlíme, co všechno všechno důležitého se stane mezi 
 
 \begin{figure}[htb]\centering
 	\includegraphics[width=\textwidth]{./images/shell_arch2}
-	\caption{Architektura shellu}
+	\caption{Architektura shellu \cite{historyofshells}}
 	\label{fig:shell_arch}
 \end{figure}
 
@@ -651,7 +652,7 @@ Celý cyklus je také popsán v~diagramu \ref{fig:bash_diag}.
 
 \begin{figure}[htb]\centering
 	\includegraphics[width=\textwidth]{./images/bash-article-diagram}
-	\caption{Bash diagram}
+	\caption{Bash diagram \cite{bashdiagimg}}
 	\label{fig:bash_diag}
 \end{figure}
 
@@ -1036,7 +1037,7 @@ Funkčnost debuggeru závisí na nastavení DEBUG trap, která je spuštěna př
 
 BashEclipse \cite{basheclipse} je plugin do integrovaného vývojového prostředí Eclipse. Pro svůj běh vyžaduje nainstalovaný editor ShellEd \cite{shelled}.
 
-BashEclipse funguje také na DEBUG trap. Na začátek každého skriptu, který chceme debuggovat musíme přidat speciální soubor \texttt{\_DEBUG.sh}. V~tomto souboru se nastaví spojení s~TCP/IP socketem ze souboru pro zařízení tcp localhost s portem 3333, ze kterého se čtou příkazy, které se v~DEBUG trap vykonají.
+BashEclipse funguje také na DEBUG trap. Na začátek každého skriptu, který chceme debuggovat musíme přidat speciální soubor \texttt{\_DEBUG.sh}. V~tomto souboru se nastaví spojení s~TCP/IP socketem ze souboru pro zařízení tcp localhost s~portem 3333, ze kterého se čtou příkazy, které se v~DEBUG trap vykonají.
 
 Zbytek debuggeru je napsán jako doplněk Eclipse.
 
@@ -1982,9 +1983,10 @@ Comma-shell debugger a sada bezpečných příkazů mají přirozeně místo pro
 	\item[dash] Debian Almquist Shell
 	\item[csh] C Shell
 	\item[ksh] Korn Shell
-	\item[zsh] Z Shell
+	\item[zsh] Z~Shell
 	\item[gnu] GNU's Not Unix
-	\item[repl] 
+	\item[repl] Read–eval–print loop
+	\item[cmd] Command
 \end{description}
 
 
@@ -2103,8 +2105,8 @@ Comma-shell debugger a sada bezpečných příkazů mají přirozeně místo pro
 		.1 readme.txt\DTcomment{stručný popis obsahu CD}.
 		.1 commash\DTcomment{git repozitář se zdrojovými kódy Comma-shellu}.
 		.2 comma.sh\DTcomment{hlavní spouštěcí soubor}.
-		.2 README.md\DTcomment{soubor s instrukcemi pro instalaci}.
-		.1 nesrotom-dip-2016\DTcomment{git repozitář s touto prací}.
+		.2 README.md\DTcomment{soubor s~instrukcemi pro instalaci}.
+		.1 nesrotom-dip-2016\DTcomment{git repozitář s~touto prací}.
 		.2 DP\_Nesrovnal\_Tomas\_2016.pdf\DTcomment{text práce, formát PDF}.
 		.2 DP\_Nesrovnal\_Tomas\_2016.tex\DTcomment{zdroj práce, formát \LaTeX{}}.
 		.2 zadani\_DP\_Nesrovnal\_Tomas\_2016.pdf\DTcomment{zadání práce}.
