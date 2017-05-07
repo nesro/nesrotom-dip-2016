@@ -3,6 +3,12 @@
 
 In Texmaker, go to: Options -> Configure Texmaker-> Editor and set the dictionary.
 
+# install vlna
+    # http://petr.olsak.net/ftp/olsak/vlna/vlna-1.5.tar.gz
+    ./configure
+    make
+    sudo make install
+
 # create pdf
     make
 

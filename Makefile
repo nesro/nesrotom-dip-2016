@@ -1,6 +1,6 @@
 all:
+	vlna DP_Nesrovnal_Tomas_2016.tex || true
 	latexmk -pdf DP_Nesrovnal_Tomas_2016.tex
-
 clean:
 	find . -maxdepth 1 -type f \
 		\( \
@@ -40,4 +40,4 @@ clean:
 		-name "*.xdy" -o \
 		-name "*.tdo" \
 		\) -delete
-		
+
