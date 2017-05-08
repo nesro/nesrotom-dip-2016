@@ -81,7 +81,7 @@
 
 \begin{introduction}
 
-% todo: tohle by chtelo asi jeste prepsat, kdyz to bude prvni vec co se bude z prace cist..
+% todo: tohle by chtelo asi jeste prepsat, kdyz to bude prvni vec co se bude z prace cist (a mnohdy take ta posledni)..
 
 Grafické uživatelské rozhraní (GUI) se jednoduše ovládá, ale ne vždy je k~dispozici. To platí zejména při ovládání serverů. V~takových případech musí postačit pouze ovládání v~textovém terminálu.
 
@@ -89,7 +89,7 @@ Rozhraní příkazové řádky (CLI) je základní textové prostředí pro komu
 
 S~příkazovou řádkou jsou často spojovány operační systémy Unixového typu, jako je například GNU/Linux. Jedním ze základních bodů Unixové filosofie je mít jednoduché programy, které dělají pouze jednu věc, ale dělají ji dobře. To platí zejména pro základní příkazy ze sady GNU Coreutils, tedy příkazy pro základní manipulaci se soubory, shellem a textem.
 
-Tyto základní příkazy je možné řetězit, používat je jako filtr, a tím vytvářet užitečné jednořádkové skripty. Pro začátečníka je zde prostor pro mnoho chyb, protože chyba může vzniknout mezi rourami a tím zůstává pro uživatele skryta.
+Tyto základní příkazy je možné řetězit, používat je jako filtr a tím vytvářet užitečné jednořádkové skripty. Pro začátečníka je zde prostor pro mnoho chyb, protože chyba může vzniknout mezi rourami a tím zůstává pro uživatele skryta.
 
 V~základním nastavení shellu je také skryto mnoho věcí, které jsou důležité. Například návratové kódy. Občas je těžké rozeznat, že příkaz skončil chybou. Všechny tyto faktory představují překážky pro nové uživatele shellu.
 
@@ -104,7 +104,7 @@ Comma-shell hooks jsou skripty, které se vykonávají před, nebo po vykonání
 
 Další částí je Comma-shell debugger, což je ladící program pro příkazy spouštěné z~interaktivní příkazové řádky. Pokud uživatel píše složitější program, obsahující například smyčku, nebo roury a příkaz nefunguje tak, jak uživatel očekává, tak nejjednodušší postup je rozdělit si příkaz na podpříkazy a ujistit se, že každý příkaz dělá to, co od něj uživatel očekává. Comma-shell debugger by měl tento postup urychlit tím, že nabídne seznam podpříkazů, které mohou být ze složitého příkazu spuštěny.
 
-Poslední částí jsou takzvané bezpečné příkazy. Může se stát, že uživatel vykoná příkaz, jehož efekt byl jiný než očekával. Potom by chtěl by spustit opačný příkaz, aby napravil svůj omyl. Často má mnohem větší problém, pokud šlo například o~nesprávné použití programu pro mazání souborů. Cílem bezpečných příkazů je tedy zaprvé umožnit vrátit provedené změny, ale i především informovat uživatele o~tom, co se stane ještě před spuštěním příkazu. Pokud uživatel používá ke specifikování souborů, které mají být argumentem nějakého příkazu, nějaký řetězec označující více souborů, je častý omyl vybrat nějaké soubory nechtěně. Nechtěnou chybou může být také například provedení příkazu ze špatného adresáře.
+Poslední částí jsou takzvané bezpečné příkazy. Může se stát, že uživatel vykoná příkaz, jehož efekt byl jiný než očekával. Potom by chtěl spustit opačný příkaz, aby napravil svůj omyl. Často má mnohem větší problém, pokud šlo například o~nesprávné použití programu pro mazání souborů. Cílem bezpečných příkazů je tedy zaprvé umožnit vrátit provedené změny, ale i především informovat uživatele o~tom, co se stane ještě před spuštěním příkazu. Pokud uživatel používá ke specifikování souborů, které mají být argumentem nějakého příkazu, nějaký řetězec označující více souborů, je častý omyl vybrat nějaké soubory nechtěně. Nechtěnou chybou může být také například provedení příkazu ze špatného adresáře.
 
 Cílem práce je i provést rešerši existujících nástrojů pro statickou analýzu, krokování a hledání chyb v~Bash skriptech.
 
@@ -2002,7 +2002,7 @@ expect {
 
 Byl vytvořen nástroj Comma-shell, který zlepšuje práci v~interaktivním shellu nejen novým uživatelům. Nabízí prostředí pro psaní uživatelských skriptů, hooků, před a po vykonání příkazu. Jeden předpřipravený hook, ShellCheck, umí kontrolovat příkazy před jejich vykonáváním a tím varovat uživatele před chybami. Dalším užitečným nástrojem je debugger příkazů spouštěných z~příkazové řádky. Lze je spouštět po částech, které dávají smysl a pomáhá tak zefektivnit práci při hledání chyb. Poslední částí je sada příkazů vylepšujících základní příkazy z~GNU Coreutils. Tyto příkazy jsou více přívětivější k~uživateli zobrazováním více informací a umí vrátit zpět provedené změny.
 
-Comma-shell je frameworkem, který dávajá nové možnosti pro implementaci užitečných nástrojů do interaktivního shellu. Existují nástroje pro zobrazování informací v~shellu, ale chyběl zde nástroj možnost komplexní analýzy příkazu ještě před jeho vykonáním a tím je právě Comma-shell.
+Comma-shell je frameworkem, který dává nové možnosti pro implementaci užitečných nástrojů do interaktivního shellu. Existují nástroje pro zobrazování informací v~shellu, ale chyběl zde nástroj pro komplexní analýzu příkazu ještě před jeho vykonáním a tím je právě Comma-shell.
 
 
 \section{Možnost využití}
@@ -2012,7 +2012,7 @@ Comma-shell využije nejen začátečník, ale i zkušený uživatel. Přestože
 
 \section{Další práce}
 
-Účelem frameworku Comma-shell bylo připravit prostředí pro další vývoj. Toto prostředí funguje dobře a až na opravu případných chyb jej není potřeba příliš rozšiřovat. Je možné, že se v~budoucích verzích Bashe objeví nové debuggovací nástroje tak, že bude možné jádro Comma-shellu přepsat.
+Účelem frameworku Comma-shell bylo připravit prostředí pro další vývoj. Toto prostředí funguje dobře a až na opravu případných chyb jej není potřeba příliš rozšiřovat. Je možné, že se v~budoucích verzích Bashe objeví nové debuggovací nástroje, takže bude možné jádro Comma-shellu přepsat.
 
 Comma-shell debugger a sada bezpečných příkazů mají přirozeně místo pro další vývoj a vylepšování. Především to bude reagování na podněty uživatelů. Dále to může být přidávání funkcionality pro více přepínačů, nebo přidání podpory pro další příkazy z~GNU Coreutils.
 
