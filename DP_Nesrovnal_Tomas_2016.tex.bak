@@ -49,7 +49,7 @@
 
 % XXX: ten abstrakt jsem musel zkratit, protoze byl jinak pres dve stranky (coz znamena, ze to bylo moc dlouhy)
 
-\abstractCS{Comma-shell je nástroj pro lepší práci v interaktivním shellu, určený především pro uživatele seznamující se shellem. První částí je debugger, který umí spouštět a analyzovat příkazy po částech. Druhou částí je framework pro spouštění uživatelských skriptů před a po spuštění příkazů. Předpřipravená je například statická analýza kódu pomocí nástroje ShellCheck, která umí zabránit spuštění chybného příkazu. Poslední částí je sada několika přepsaných základních příkazů z GNU Coreutils, které jsou méně náchylné na chyby uživatele a lze vrátit změny jimi provedené.}
+\abstractCS{Comma-shell je nástroj pro lepší práci v interaktivním shellu, určený především pro uživatele seznamující se s prosředím v shellu. První částí je debugger, který umí spouštět a analyzovat příkazy po částech. Druhou částí je framework pro spouštění uživatelských skriptů před a po spuštění příkazů. Předpřipravená je například statická analýza kódu pomocí nástroje ShellCheck, která umí zabránit spuštění chybného příkazu. Poslední částí je sada několika přepsaných základních příkazů z GNU Coreutils, které jsou méně náchylné na chyby uživatele a lze vrátit změny jimi provedené.}
 
 % Comma-shell je nástroj pro lepší práci v~interaktivním shellu, určený především pro uživatele seznamující se s~shellem. Obsahuje debugger pro spouštění příkazů po částech. Dále framework umožňující spouštět skripty před spuštěním příkazů, například statická analýza kódu pomocí nástroje ShellCheck, zabraňující spuštění chybného příkazu. Sada několika obalů základních příkazů z~GNU coreutils, které jsou méně náchylné na chyby uživatele a lze vrátit změny jimi provedené.
 
@@ -675,7 +675,7 @@ Celý cyklus je také popsán v~diagramu \ref{fig:bash_diag}.
 
 Gramatika shellu je oproti ostatním jazykům jednoduchá, ale často nejasná. V~mnoha případech záleží na kontextu. Dokonce je možné vytvořit proměnnou s~názvem shodujícím se s~klíčovým slovem.
 
-Popíšeme si zde pouze základ gramatiky. Pro více informací a detailní popis je dobré přečíst si manuálové stránky Bashe. Úplně kompletní gramatiku lze nalézt ve zdrojových kódech Bashe, konkrétně v~souboru \textit{parse.y}.
+Popíšeme si zde pouze základ gramatiky. Pro více informací a detailní popis je dobré přečíst si manuálové stránky Bashe. Úplně kompletní gramatiku lze nalézt ve zdrojových kódech Bashe, konkrétně v~souboru \texttt{parse.y}.
 
 Základem je jednoduchý příkaz, který začíná svým názvem a jeho další argumenty a přesměrování vstupů a výstupů jsou odděleny mezerou. Jednoduchý příkaz je ukončen kontrolním operátorem, které jsou v~ukázce \ref{lst:bashcontrol}.
 

@@ -49,7 +49,7 @@
 
 % XXX: ten abstrakt jsem musel zkratit, protoze byl jinak pres dve stranky (coz znamena, ze to bylo moc dlouhy)
 
-\abstractCS{Comma-shell je nástroj pro lepší práci v~interaktivním shellu, určený především pro uživatele seznamující se shellem. První částí je debugger, který umí spouštět a analyzovat příkazy po částech. Druhou částí je framework pro spouštění uživatelských skriptů před a po spuštění příkazů. Předpřipravená je například statická analýza kódu pomocí nástroje ShellCheck, která umí zabránit spuštění chybného příkazu. Poslední částí je sada několika přepsaných základních příkazů z~GNU Coreutils, které jsou méně náchylné na chyby uživatele a lze vrátit změny jimi provedené.}
+\abstractCS{Comma-shell je nástroj pro lepší práci v~interaktivním shellu, určený především pro uživatele seznamující se s~prosředím v~shellu. První částí je debugger, který umí spouštět a analyzovat příkazy po částech. Druhou částí je framework pro spouštění uživatelských skriptů před a po spuštění příkazů. Předpřipravená je například statická analýza kódu pomocí nástroje ShellCheck, která umí zabránit spuštění chybného příkazu. Poslední částí je sada několika přepsaných základních příkazů z~GNU Coreutils, které jsou méně náchylné na chyby uživatele a lze vrátit změny jimi provedené.}
 
 % Comma-shell je nástroj pro lepší práci v~interaktivním shellu, určený především pro uživatele seznamující se s~shellem. Obsahuje debugger pro spouštění příkazů po částech. Dále framework umožňující spouštět skripty před spuštěním příkazů, například statická analýza kódu pomocí nástroje ShellCheck, zabraňující spuštění chybného příkazu. Sada několika obalů základních příkazů z~GNU coreutils, které jsou méně náchylné na chyby uživatele a lze vrátit změny jimi provedené.
 
@@ -675,7 +675,7 @@ Celý cyklus je také popsán v~diagramu \ref{fig:bash_diag}.
 
 Gramatika shellu je oproti ostatním jazykům jednoduchá, ale často nejasná. V~mnoha případech záleží na kontextu. Dokonce je možné vytvořit proměnnou s~názvem shodujícím se s~klíčovým slovem.
 
-Popíšeme si zde pouze základ gramatiky. Pro více informací a detailní popis je dobré přečíst si manuálové stránky Bashe. Úplně kompletní gramatiku lze nalézt ve zdrojových kódech Bashe, konkrétně v~souboru \textit{parse.y}.
+Popíšeme si zde pouze základ gramatiky. Pro více informací a detailní popis je dobré přečíst si manuálové stránky Bashe. Úplně kompletní gramatiku lze nalézt ve zdrojových kódech Bashe, konkrétně v~souboru \texttt{parse.y}.
 
 Základem je jednoduchý příkaz, který začíná svým názvem a jeho další argumenty a přesměrování vstupů a výstupů jsou odděleny mezerou. Jednoduchý příkaz je ukončen kontrolním operátorem, které jsou v~ukázce \ref{lst:bashcontrol}.
 
@@ -1069,7 +1069,7 @@ BashEclipse funguje také na \texttt{DEBUG trap}. Na začátek každého skriptu
 
 Zbytek debuggeru je napsán jako doplněk Eclipse.
 
-Ukázkou grafického prostředí z~Eclipse při debugování shell skriptu přes BashEclipse je obrázek \ref{fig:bash_eclipse}.
+Ukázkou grafického prostředí z~Eclipse při debuggování shell skriptu přes BashEclipse je obrázek \ref{fig:bash_eclipse}.
 
 \begin{figure}
 	\includegraphics[width=1.0\textwidth]{./images/bash_eclipse}
@@ -1091,19 +1091,19 @@ Ukázkou grafického prostředí z~Eclipse při debugování shell skriptu přes
 %
 %
 %
-\section{Možnosti debugování v~interaktivním shellu}
+\section{Možnosti debuggování v~interaktivním shellu}
 
-Nebyl nalezen žádný externí nástroj pro debugování interaktivního shellu. Nejčastějším postupem je však spouštění příkazů postupně. Pokud chce uživatel hledat chybu v~jednom příkazu, co spouští, může mu pomoci nastavení \texttt{xtrace}, aby například viděl, do jakých hodnot expandují proměnné.
+Nebyl nalezen žádný externí nástroj pro debuggování interaktivního shellu. Nejčastějším postupem je však spouštění příkazů postupně. Pokud chce uživatel hledat chybu v~jednom příkazu, co spouští, může mu pomoci nastavení \texttt{xtrace}, aby například viděl, do jakých hodnot expandují proměnné.
 
 
 
 %
 %
-\subsection{Definice debugování v~interaktivním shellu}
+\subsection{Definice debuggování v~interaktivním shellu}
 
 %todo: nema cenu debugovat jednoduche prikazy, ale slozite ano. chceme umet rozkrokovat pipy a subshelly (tedy to co nam to dela ted)
 
-Pro debugování skriptů a programů existuje mnoho nástrojů, které definují, jaké operace a možnosti od takového nástroje očekáváme. Mezi takové základní operací patří možnost zastavit vykonávání skriptu nebo programu na určitém místě, nebo za určitých podmínek. Po takovém zastavení by uživatel měl mít možnost zobrazit si další informace.
+Pro debuggování skriptů a programů existuje mnoho nástrojů, které definují, jaké operace a možnosti od takového nástroje očekáváme. Mezi takové základní operací patří možnost zastavit vykonávání skriptu nebo programu na určitém místě, nebo za určitých podmínek. Po takovém zastavení by uživatel měl mít možnost zobrazit si další informace.
 
 V~interaktivním shellu se zpravidla nespouštějí jednotlivé příkazy v~takovém množství, že by se mezi nimi chtěl uživatel zastavit. V~shellu lze příkazy spouštět v~rouře a v~takovém případě je vhodné vykonávání příkazu pozastavit a nechat si například vypsat výstup, který je následně určen jako vstup do dalšího programu.
 
@@ -1126,6 +1126,8 @@ Tuto myšlenku se podařilo implementovat, je vidět na ukázce \ref{lst:readlin
 
 Bohužel má tento postup řadu nevýhod, z~nichž některé dělají celou myšlenku nepoužitelnou. Největší nevýhodou je, že nelze napsat víceřádkový příkaz, protože při psaní dalšího řádku zapůsobí obalovaní vstupu do funkce. Další nevýhodou je, že se příkaz ke spuštění změní, což může působit velice rušivě. Nevýhodou také je, že takto modifikovaný příkaz se uloží do historie, ale to je věc, která by šla ošetřit.
 
+\noindent
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[language=bash, caption={Modifikace Readline}, label={lst:readline_hack}]
 bash-4.3$ ,() { echo "running: \"$@\""; eval "$@"; }
 bash-4.3$ bind "RETURN: \"\e[1~, '\e[4~'\n\""
@@ -1133,6 +1135,7 @@ bash-4.3$ , 'echo test'
 running: "echo test"
 test
 \end{lstlisting}
+\end{minipage}
 
 %
 %
@@ -1162,10 +1165,12 @@ PS0 je prompt, který se zobrazí před  příkazem. Mechanismus pro kontrolu p�
 %
 \subsection{DEBUG trap}
 
-DEBUG trap se spustí před vykonáním každého příkazu. Pokud je zapnutý pokročilý debugovací mód pomocí extdebug a návratová hodnota DEBUG trap je nenulová, následující příkaz je přeskočen, tedy nevykonán.
+DEBUG trap se spustí před vykonáním každého příkazu. Pokud je zapnutý pokročilý debuggovací mód pomocí extdebug a návratová hodnota DEBUG trap je nenulová, následující příkaz je přeskočen, tedy nevykonán.
 
 Problém, který zde nastává, je ten, že DEBUG trap se spouští pro každý jednoduchý příkaz a ne pro celý vstup. Na ukázce \ref{lst:debugtrap} je nastavena DEBUG trap tak, že se vypíše zpracovávaný příkaz, který lze přeskočit.
 
+\noindent
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[language=bash, caption={DEBUG trap}, label={lst:debugtrap}]
 bash-4.3$ trap 'echo "(trap: $BASH_COMMAND)"' DEBUG
 bash-4.3$ echo foo | grep oo
@@ -1173,6 +1178,7 @@ bash-4.3$ echo foo | grep oo
 (trap: grep oo)
 foo
 \end{lstlisting}
+\end{minipage}
 
 Pokud chceme spustit kód jen jednou pro celý vstup, můžeme použít trik, kdy nebudeme spouštět vůbec nic, tedy DEBUG trap vrátí vždy nenulovou hodnotu a v~první DEBUG trap spustit celý vstup pomocí příkazu eval. Tento vstup můžeme získat z~historie shellu, protože ta se uloží ještě před vykonáním příkazu.
 
@@ -1433,6 +1439,7 @@ Když Bash hledá příkaz k~vykonání a nepodaří se mu ho najít, jako posle
 
 Comma-shell přepíše funkci command\_not\_found\_handle tak, aby nedělala nic, jen vrátila návratový kód 127. V~hooku spuštěném po příkazu se otestuje, zda-li je návratová hodnota 127 a pokud ano, zavolá se kód obstarávající logiku, pokud příkaz není nalezen.
 
+\noindent
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[language=bash, caption={Explain RC hook}, label={lst:notfoundhook}]
 n@t:~$ le asdf
