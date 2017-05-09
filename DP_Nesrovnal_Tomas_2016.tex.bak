@@ -45,11 +45,11 @@
 \authorFN{Nesrovnal} %příjmení autora
 \authorWithDegrees{Bc. Tomáš Nesrovnal} %jméno autora včetně současných akademických titulů
 \supervisor{Ing. Jan Baier}
-\acknowledgements{Děkuji svému vedoucímu Ing. Janu Baierovi za cenné rady a nápady. Děkuji Sandře Tatarevićové za korektury textu.}
+\acknowledgements{Děkuji svému vedoucímu Ing. Janu Baierovi za cenné rady a nápady. Děkuji Sandře Tatarevićové, Martině a Simoně Červíkové za korektury textu.}
 
 % XXX: ten abstrakt jsem musel zkratit, protoze byl jinak pres dve stranky (coz znamena, ze to bylo moc dlouhy)
 
-\abstractCS{Comma-shell je nástroj pro lepší práci v interaktivním shellu, určený především pro uživatele seznamující se s prosředím v shellu. První částí je debugger, který umí spouštět a analyzovat příkazy po částech. Druhou částí je framework pro spouštění uživatelských skriptů před a po spuštění příkazů. Předpřipravená je například statická analýza kódu pomocí nástroje ShellCheck, která umí zabránit spuštění chybného příkazu. Poslední částí je sada několika přepsaných základních příkazů z GNU Coreutils, které jsou méně náchylné na chyby uživatele a lze vrátit změny jimi provedené.}
+\abstractCS{Comma-shell je nástroj pro lepší práci v~interaktivním shellu, určený především pro uživatele seznamující se s~prosředím v~shellu. První částí je debugger, který umí spouštět a analyzovat příkazy po částech. Druhou částí je framework pro spouštění uživatelských skriptů před a po spuštění příkazů. Předpřipravená je například statická analýza kódu pomocí nástroje ShellCheck, která umí zabránit spuštění chybného příkazu. Poslední částí je sada několika přepsaných základních příkazů z~GNU Coreutils, které jsou méně náchylné na chyby uživatele a lze vrátit změny jimi provedené.}
 
 % Comma-shell je nástroj pro lepší práci v~interaktivním shellu, určený především pro uživatele seznamující se s~shellem. Obsahuje debugger pro spouštění příkazů po částech. Dále framework umožňující spouštět skripty před spuštěním příkazů, například statická analýza kódu pomocí nástroje ShellCheck, zabraňující spuštění chybného příkazu. Sada několika obalů základních příkazů z~GNU coreutils, které jsou méně náchylné na chyby uživatele a lze vrátit změny jimi provedené.
 
@@ -65,7 +65,7 @@
 \declarationOfAuthenticityOption{4} %volba Prohlášení (číslo 1-6)
 \keywordsCS{GNU, Bash, shell, debugger  \clearpage 	}
 \keywordsEN{GNU, Bash, shell, debugger}
-\website{https://github.com/nesro/commash/} %volitelná URL práce, objeví se v tiráži - úplně odstraňte, nemáte-li URL práce
+\website{https://github.com/nesro/nesrotom-dip-2016} %volitelná URL práce, objeví se v tiráži - úplně odstraňte, nemáte-li URL práce
 
 \begin{document}
 
@@ -81,7 +81,7 @@
 
 \begin{introduction}
 
-% todo: tohle by chtelo asi jeste prepsat, kdyz to bude prvni vec co se bude z prace cist..
+% todo: tohle by chtelo asi jeste prepsat, kdyz to bude prvni vec co se bude z prace cist (a mnohdy take ta posledni)..
 
 Grafické uživatelské rozhraní (GUI) se jednoduše ovládá, ale ne vždy je k~dispozici. To platí zejména při ovládání serverů. V~takových případech musí postačit pouze ovládání v~textovém terminálu.
 
@@ -89,7 +89,7 @@ Rozhraní příkazové řádky (CLI) je základní textové prostředí pro komu
 
 S~příkazovou řádkou jsou často spojovány operační systémy Unixového typu, jako je například GNU/Linux. Jedním ze základních bodů Unixové filosofie je mít jednoduché programy, které dělají pouze jednu věc, ale dělají ji dobře. To platí zejména pro základní příkazy ze sady GNU Coreutils, tedy příkazy pro základní manipulaci se soubory, shellem a textem.
 
-Tyto základní příkazy je možné řetězit, používat je jako filtr, a tím vytvářet užitečné jednořádkové skripty. Pro začátečníka je zde prostor pro mnoho chyb, protože chyba může vzniknout mezi rourami a tím zůstává pro uživatele skryta.
+Tyto základní příkazy je možné řetězit, používat je jako filtr a tím vytvářet užitečné jednořádkové skripty. Pro začátečníka je zde prostor pro mnoho chyb, protože chyba může vzniknout mezi rourami a tím zůstává pro uživatele skryta.
 
 V~základním nastavení shellu je také skryto mnoho věcí, které jsou důležité. Například návratové kódy. Občas je těžké rozeznat, že příkaz skončil chybou. Všechny tyto faktory představují překážky pro nové uživatele shellu.
 
@@ -104,9 +104,11 @@ Comma-shell hooks jsou skripty, které se vykonávají před, nebo po vykonání
 
 Další částí je Comma-shell debugger, což je ladící program pro příkazy spouštěné z~interaktivní příkazové řádky. Pokud uživatel píše složitější program, obsahující například smyčku, nebo roury a příkaz nefunguje tak, jak uživatel očekává, tak nejjednodušší postup je rozdělit si příkaz na podpříkazy a ujistit se, že každý příkaz dělá to, co od něj uživatel očekává. Comma-shell debugger by měl tento postup urychlit tím, že nabídne seznam podpříkazů, které mohou být ze složitého příkazu spuštěny.
 
-Poslední částí jsou takzvané bezpečné příkazy. Může se stát, že uživatel vykoná příkaz, jehož efekt byl jiný než očekával. Potom by chtěl by spustit opačný příkaz, aby napravil svůj omyl. Často má mnohem větší problém, pokud šlo například o~nesprávné použití programu pro mazání souborů. Cílem bezpečných příkazů je tedy zaprvé umožnit vrátit provedené změny, ale i především informovat uživatele o~tom, co se stane ještě před spuštěním příkazu. Pokud uživatel používá ke specifikování souborů, které mají být argumentem nějakého příkazu, nějaký řetězec označující více souborů, je častý omyl vybrat nějaké soubory nechtěně. Nechtěnou chybou může být také například provedení příkazu ze špatného adresáře.
+Poslední částí jsou takzvané bezpečné příkazy. Může se stát, že uživatel vykoná příkaz, jehož efekt byl jiný než očekával. Potom by chtěl spustit opačný příkaz, aby napravil svůj omyl. Často má mnohem větší problém, pokud šlo například o~nesprávné použití programu pro mazání souborů. Cílem bezpečných příkazů je tedy zaprvé umožnit vrátit provedené změny, ale především informovat uživatele o~tom, co se stane ještě před spuštěním příkazu. Pokud uživatel používá ke specifikování souborů, které mají být argumentem nějakého příkazu, nějaký řetězec označující více souborů, je častý omyl vybrat nějaké soubory nechtěně. Nechtěnou chybou může být také například provedení příkazu ze špatného adresáře.
 
 Cílem práce je i provést rešerši existujících nástrojů pro statickou analýzu, krokování a hledání chyb v~Bash skriptech.
+
+Comma-shell by měl pomoci studentům v~prvním ročníku na FIT ČVUT. Ti se s~tímto prostředím seznamují v~předmětu BI-PS1 --  programování v~shellu.
 
 % https://www.gnu.org/software/coreutils/coreutils.html
 % http://www.tldp.org/LDP/GNU-Linux-Tools-Summary/GNU-Linux-Tools-Summary.pdf
@@ -128,7 +130,7 @@ Textové uživatelské rozhraní také pracuje v~textovém režimu jako rozhran�
 
 \begin{figure}
 	\includegraphics[width=1.0\textwidth]{./images/TUI}
-	\caption{Textové uživatelské rozhraní - FreeDOS Edit \cite{fdedit}}
+	\caption{Textové uživatelské rozhraní -- FreeDOS Edit \cite{fdedit}}
 	\label{fig:tui}
 \end{figure}
 % https://cs.wikipedia.org/wiki/Textov%C3%A9_u%C5%BEivatelsk%C3%A9_rozhran%C3%AD
@@ -138,7 +140,7 @@ Shellem se obecně myslí uživatelské prostředí pro využívání funkcí j�
 
 %---
 
-Prompt je krátký řetězec znaků, který se objeví na začátku řádky, do které se bude vepisovat příkaz v~příkazové řádce. Je používán k~zobrazování důležitých informací, jako například ve kterém adresáři se uživatel nachází či jaké je jméno počítače, na kterém se nachází. Základní prompt v~operačním systému Ubuntu \cite{ubuntu} je v~ukázce \ref{lst:prompt}. Je zde ukázka jak vypsaného promptu, tak i jeho nastavení v~proměnné PS1.
+Prompt je krátký řetězec znaků, který se objeví na začátku řádky, do které se bude vepisovat příkaz v~příkazové řádce. Je používán k~zobrazování důležitých informací, jako například, ve kterém adresáři se uživatel nachází či jaké je jméno počítače, na kterém se nachází. Základní prompt v~operačním systému Ubuntu \cite{ubuntu} je v~ukázce \ref{lst:prompt}. Je zde ukázka jak vypsaného promptu, tak i jeho nastavení v~proměnné \texttt{PS1}.
 
 \noindent
 \begin{minipage}{\linewidth}
@@ -153,7 +155,7 @@ n@t:~/Dropbox/g/nesrotom-dip-2016$ echo "$PS1"
 
 %---
 
-GNU \cite{gnu} je projekt zabývající se tvorbou a propagací svobodného software. Cílem je vytvořit kompletní svobodný operační systém unixového typu. Protože jádro operačního systému od GNU s~názvem Hurd \cite{hurd} nebylo tak úspěšné, začalo se používat jádro Linux \cite{linuxkernel}. Kombinace operačního systému GNU a jádra Linux se označuje jako GNU/Linux. GNU vytvořilo i svůj shell, Bash \cite{bash}. Sada základních příkazů, jejichž existence je předpokládána v~nějaké formě na každém operačním systému, se jmenuje GNU Coreutils \cite{coreutils}. Patří do ní příkazy jako ls, cp, rm, atd. Je důležité si uvědomit, že příkazy jako cd, echo jsou vestavěné příkazy shellu Bash, nikoliv samostané programy.
+GNU \cite{gnu} je projekt zabývající se tvorbou a propagací svobodného software. Cílem je vytvořit kompletní svobodný operační systém unixového typu. Protože jádro operačního systému od GNU s~názvem Hurd \cite{hurd} nebylo tak úspěšné, začalo se používat jádro Linux \cite{linuxkernel}. Kombinace operačního systému GNU a jádra Linux se označuje jako GNU/Linux. GNU vytvořilo i svůj shell, Bash \cite{bash}. Sada základních příkazů, jejichž existence je předpokládána v~nějaké formě na každém operačním systému, se jmenuje GNU Coreutils \cite{coreutils}. Patří do ní příkazy jako \texttt{ls}, \texttt{cp}, \texttt{rm}, atd. Je důležité si uvědomit, že příkazy jako \texttt{cd}, \texttt{echo} jsou vestavěné příkazy shellu Bash, nikoliv samostané programy.
 
 % https://www.gnu.org/software/bash/
 % https://www.gnu.org/software/coreutils/coreutils.html
@@ -165,11 +167,11 @@ Provádění příkazů můžeme rozdělit na dvě kategorie. Jednou z~nich je i
 
 %---
 
-Debuggovaní je činnost, při které se v~kódu hledají chyby. Nejčastějším způsobem je to zastavování programu na nějakém místě při vykonávání a následně zkoumání výstupů a nastavení proměnných za účelem najít něco, co je špatně. Také lze program nebo skript spouštět po jednotlivých příkazech, takovému postupu se říká krokování.
+Debuggování je činnost, při které se v~kódu hledají chyby. Nejčastějším způsobem je zastavování programu na nějakém místě při vykonávání a následně zkoumání výstupů a nastavení proměnných za účelem najít něco, co je špatně. Také lze program nebo skript spouštět po jednotlivých příkazech, takovému postupu se říká krokování.
 
 %---
 
-Trap je příkaz v~shellu, který spustí nějaký kód, pokud shell přijme signál, pro který byla trap nastavena. V~ukázce \ref{lst:trap} je spuštěn skript, který nastaví trap při ukončení programu signálem. V~Bashi je možné nastavit trap pro debuggování skriptů. Taková trap je spuštěna před každým příkazem.
+\texttt{trap} je příkaz v~shellu, který spustí nějaký kód, pokud shell přijme signál, pro který byla \texttt{trap} nastavena. V~ukázce \ref{lst:trap} je spuštěn skript, který nastaví trap při ukončení programu signálem. V~Bashi je možné nastavit \texttt{trap} pro debuggování skriptů. Taková \texttt{trap} je spuštěna před každým příkazem.
 
 \noindent
 \begin{minipage}{\linewidth}
@@ -194,7 +196,7 @@ bash-4.3$
 %
 \chapter{Historie shellu a dnešní využití}
 
-V~této kapitole stručně shrneme historii rodin nepoužívanějších operačních systému a shellů, které se v~nich používají.
+V~této kapitole stručně shrneme historii rodin nejpoužívanějších operačních systémů a shellů, které se v~nich používají.
 
 % Napsat o tom, ze bash je dneska nejcastejsi, protoze linux je vlastne GNU/Linux a bash je GNU bash. Zsh je lepsi snad uplne ve vsem. Sh, resp Dash je rychlejsi.
 
@@ -203,16 +205,16 @@ V~této kapitole stručně shrneme historii rodin nepoužívanějších operačn
 
 Operační systém Windows \cite{windows} je obecně uživatelsky přívětivější pro laické uživatele, protože skoro vše je možné nastavit přes grafické rozhraní. Ovšem ne vždy je grafické prostředí dostupné a příkazová řádka je pak jediná možnost, jak ovládat počítač.
 
-Pro automatizaci a jako nástroj, ve kterém lze snadno skriptovat, nabízí Windows nejen svůj shell PoweShell, ale i nemodifikovaný Bash pro operační sytém Ubuntu, který funguje ve Windows subsystému pro Linux \cite{windowscmd}.
+Pro automatizaci a jako nástroj, ve kterém lze snadno skriptovat, nabízí Windows nejen svůj shell PoweShell, ale i nemodifikovaný Bash pro operační systém Ubuntu, který funguje ve Windows subsystému pro Linux \cite{windowscmd}.
 
 % https://en.wikipedia.org/wiki/Shell_(computing)#Microsoft_Windows
 % -> https://en.wikipedia.org/wiki/Windows_shell
 
 \section{UNIX}
 
-Unix je rodina operačních systémů, které zvládnou spustit více úkonů najednou a do kterých se v~jeden okamžik může připojit více uživatelů. Historie těchto sytému sahá až na konec sedmdesátých let, kdy v~Bell laboratořích firmy AT\&T byl v~jazyce C vytvořen systém UNIX, jehož název byl zaregistrován jako ochranná známka. Časovou osu ukazuje obrázek \ref{fig:unixhistory}. Specifikace Single UNIX Specification \cite{sus} je souhrn standardů, které operační systém musí splňovat a dodržovat, aby se mohl označovat za UNIX.
+Unix je rodina operačních systémů, které zvládnou spustit více úkonů najednou a do kterých se v~jeden okamžik může připojit více uživatelů. Historie těchto systémů sahá až na konec sedmdesátých let, kdy v~Bell laboratořích firmy AT\&T byl v~jazyce C vytvořen systém UNIX, jehož název byl zaregistrován jako ochranná známka. Časovou osu ukazuje obrázek \ref{fig:unixhistory}. Specifikace Single UNIX Specification \cite{sus} je souhrn standardů, které operační systém musí splňovat a dodržovat, aby se mohl označovat za UNIX.
 
-Filosofie Unixu je sada doporučení a pravidel, která vznikla postupem času dle zkušeností tvůrců Unixu. Filosofie Unixu zdůrazňuje tvoření jednoduchého, přehledného a hlavně snadno rozšiřitelného a znovupoužitelného softwaru. Váží si programátorův čas více, než čas práce počítače. Nejznámější pravidlo je tvořit programy, které dělají jen jednu věc a dělají jí správně, rychle a bez chyb. Takové programy lze použít jako filtry a skládat je za sebe. To se často používá v~příkazové řádce, kdy se pomocí rour spojují výstupy programů se vstupy jiných programů. Zdánlivě složitý úkol tak lze udělat rychle a efektivně bez nutnosti programování v~nějakém externím jazyce.
+Filosofie Unixu je sada doporučení a pravidel, která vznikla postupem času dle zkušeností tvůrců Unixu. Filosofie Unixu zdůrazňuje tvoření jednoduchého, přehledného a hlavně snadno rozšiřitelného a znovupoužitelného softwaru. Váží si programátorova času více, než času práce počítače. Nejznámější pravidlo je tvořit programy, které dělají jen jednu věc a dělají jí správně, rychle a bez chyb. Takové programy lze použít jako filtry a skládat je za sebe. To se často používá v~příkazové řádce, kdy se pomocí rour spojují výstupy programů se vstupy jiných programů. Zdánlivě složitý úkol tak lze udělat rychle a efektivně bez nutnosti programování v~nějakém externím jazyce.
 
 
 \begin{figure}
@@ -227,7 +229,7 @@ Filosofie Unixu je sada doporučení a pravidel, která vznikla postupem času d
 % ZDROJ: https://edux.fit.cvut.cz/courses/BI-PS1/_media/lectures/01/bi-ps1-p01-introduction-01.pdf
 
 \section{Linux}
-Linux \cite{linux} je otevřený a svobodný Unix-like operační sytém. Linuxem se obecně myslí GNU operační systém s~jádrem Linux. Unix-like znamená, že přestože je takový operační systém velice podobný systému Unix, nemá certifikaci \uv{Single UNIX Specification}. Linuxová distribuce je GNU/Linuxový systém, který většinou obsahuje balíčkovací systém, kterým je snadné doinstalovat ostatní programy. Linuxové distribuce jsou i předpřipravené, s~grafickým prostředím. Například v~této práci ukazujeme návod na vytvoření takového připraveného systému, GNU/Linuxové distribuci Debian s~předpřipraveným grafickým prostředím LXDE a aplikacemi z~rodiny LXDE.
+Linux \cite{linux} je otevřený a svobodný Unix-like operační systém. Linuxem se obecně myslí GNU operační systém s~jádrem Linux. Unix-like znamená, že přestože je takový operační systém velice podobný systému Unix, nemá certifikaci \uv{Single UNIX Specification}. Linuxová distribuce je GNU/Linuxový systém, který většinou obsahuje balíčkovací systém, kterým je snadné doinstalovat ostatní programy. Linuxové distribuce jsou i předpřipravené, s~grafickým prostředím.
 
 
 % https://www.amazon.com/Just-Fun-Story-Accidental-Revolutionary/dp/0066620732
@@ -253,7 +255,7 @@ Obrázek \ref{fig:shell_history} ukazuje základní dělení Unixových shellů 
 	\label{fig:shell_history}
 \end{figure}
 
-O~shellu se říká slovní hříčka v~angličtině: If you hold a UNIX shell to your ear, can you hear the C? Shell znamená mořskou mušli a~C se vyslovuje jako moře. Je to analogie na to, že UNIX je napsaný v~jazyce C a~je shell je branou, skořápkou, do tohoto sytému.
+O~shellu se říká slovní hříčka v~angličtině: If you hold a UNIX shell to your ear, can you hear the C? Shell označuje mořskou mušli a~C se vyslovuje jako moře. Je to analogie na to, že UNIX je napsaný v~jazyce C a~je shell je branou, skořápkou, do tohoto systému.
 
 % V latexovych komentarich jsou nejake odkazy o historii.
 
@@ -271,7 +273,7 @@ O~shellu se říká slovní hříčka v~angličtině: If you hold a UNIX shell t
 
 Shellem v~operačním systému MS-DOS a PC-DOS byl COMMAND.COM, 16-bitový intepretr příkazů. V~novějších systémech Windows byl tento shell nahrazen CMD.EXE \cite{windowsshell}, 32-bitovým interpretem příkazů. V~CMD.EXE byla dostupná emulace COMMAND.COM pro zpětnou kompatibilitu.
 
-Tato příkazová řádka, shell, již umí přesměrovávat vstupy a výstupy, a~to jak do souboru tak mezi procesy. Také je schopná vykonávat příkazy ze souborů, které se nazývají dávkové a zpravidla mívají příponu bat.
+Tato příkazová řádka, shell, již umí přesměrovávat vstupy a výstupy, a~to jak do souboru, tak mezi procesy. Také je schopná vykonávat příkazy ze souborů, které se nazývají dávkové a zpravidla mívají příponu \texttt{bat}.
 
 % https://en.wikipedia.org/wiki/COMMAND.COM
 
@@ -280,7 +282,7 @@ Tato příkazová řádka, shell, již umí přesměrovávat vstupy a výstupy, 
 
 \section{PowerShell}
 
-Protože je základní příkazová řádka Windows omezená co se funkcionality týče, existují další shelly pro operační systémy Windows, často i s~otevřeným zdrojovým kódem. Firma Microsoft chtěla vytvořit i svůj shell, který bude umět více věcí. S~jeho vývojem začala v~roce 2002 a po 3 letech jej zveřejnila jako Microsoft Command Shell (MSH) s~krycím jménem Monad, který byl později přejmenován na PowerShell.
+Protože je základní příkazová řádka Windows omezená, co se funkcionality týče, existují další shelly pro operační systémy Windows, často i s~otevřeným zdrojovým kódem. Firma Microsoft chtěla vytvořit i svůj shell, který bude umět více věcí. S~jeho vývojem začala v~roce 2002 a po 3 letech jej zveřejnila jako Microsoft Command Shell (MSH) s~krycím jménem Monad, který byl později přejmenován na PowerShell.
 
 PowerShell je integrován s~platformou .NET \cite{windowsdotnet} od Microsoftu. Je tedy možné využívat již vytvořené funkce a nástroje, které usnadní a urychlí vývoj.
 
@@ -291,15 +293,15 @@ Oproti cmd.exe umí PowerShell mnoho věcí. PowerShell umožňuje spouštět p�
 % http://www.makeuseof.com/tag/command-prompt-vs-windows-powershell-whats-difference/
 
 
-\section{v9 -- Thomson Shell}
+\section{V9 -- Thomson Shell}
 
-První shell pro systém UNIX napsal Ken Thomson v~roce 1971 a byl nazván V9 shell. Jednalo se již o~uživatelský program, tedy spuštěný mimo jádro operačního sytému. Shell byl velice jednoduchý a některá základní funkcionalita byla umožněna až dalšími programy. Například expanze parametrů byla zajišťována příkazem glob. Základní větvení, if, bylo také jako samostatný program.
+První shell pro systém UNIX napsal Ken Thomson v~roce 1971 a byl nazván V9 shell. Jednalo se již o~uživatelský program, tedy spuštěný mimo jádro operačního systému. Shell byl velice jednoduchý a některá základní funkcionalita byla umožněna až dalšími programy. Například expanze parametrů byla zajišťována příkazem glob. Základní větvení, if, bylo také jako samostatný program.
 
-V9 shell přinesl syntaxi pro přesměrování a pipelining. Uměl spouštět více oddělených příkazů a dokázal příkazy spouštět na pozadí. Naopak chyběla třeba podpora pro spouštění skriptů.
+V9 shell přinesl syntaxi pro přesměrování a pipelining. Uměl spouštět více oddělených příkazů a dokázal příkazy spouštět na pozadí. Naopak třeba chyběla podpora pro spouštění skriptů.
 
 Díky jednoduchosti a oddělenosti ostatní funkcionality měly zdrojové kódy pouze 900 řádek v~jazyce C.
 
-Originalní zdrojové kódy jsou stále dostupné \cite{thompsonshell}. Projekt Osh \cite{v6shell}, obsahuje jak port tohoto původního shellu, tak i jeho vylepšenou verzi.
+Originální zdrojové kódy jsou stále dostupné \cite{thompsonshell}. Projekt Osh \cite{v6shell}, obsahuje jak port tohoto původního shellu, tak i jeho vylepšenou verzi.
 
 
 % TODO: cite book https://en.wikipedia.org/wiki/The_Unix_Programming_Environment
@@ -314,14 +316,14 @@ Bourne shell byl vytvořen pro UNIX V7 v~roce 1977 Stephenem Bournem v~laborato�
 
 Bourne shell přinesl také podporu smyček, proměnných, signály, subshelly a HERE dokumenty. Skripty v~shellu mohly sloužit i jako filtry. Z~tohoto shellu poté začaly vznikat další, jak je vidět na obrázku \ref{fig:shell_history}.
 
-Dnes se Bourne shell a jeho jiné implementace, stále používají. Je totiž menší, rychlejší a stabilnější než ostatní shelly. Má také minimum závislostí na externí knihovny.
+Dnes se Bourne shell a jeho jiné implementace stále používají. Je totiž menší, rychlejší a stabilnější než ostatní shelly. Má také minimum závislostí na externích knihovnách.
 
 %
 %
 %
 \section{Dash -- Debian Almquist Shell}
 
-Dash je moderní implementace Bourne Shellu. Snaží se být stále malý a rychlý, ale přesto třeba i bezpečný a stabilní při chybách systému. Důležitý je fakt, že tento shell splňuje standardy POSIX 1003.2 a 1003.2a, tedy standardy o~regulárních výrazech, respektive jak se má chovat shell a~jeho základní nástroje.
+Dash je moderní implementace Bourne Shellu. Snaží se být stále malý a rychlý, ale přesto bezpečný a stabilní při chybách systému. Důležitý je fakt, že tento shell splňuje standardy POSIX 1003.2 a 1003.2a, tedy standardy o~regulárních výrazech, respektive jak se má chovat shell a~jeho základní nástroje.
 
 Tento shell byl nastaven jako shell, který spouští příkazy při bootování i~skripty, které mají jako shebang \texttt{/bin/sh} na operačních systémech Ubuntu a~Debian.
 
@@ -342,9 +344,9 @@ Shebang je cesta k~programu, který má interpretovat skript. Tato cesta se pí�
 %
 \section{Csh -- C Shell}
 
-C Shell byl vytvořen Bill Joyem v~sedmdesátých letech. Hlavní myšlenkou byla syntaxe více podobná jazyku C. Dnes se používá vylepšená verze tcsh \cite{tcsh}.
+C Shell byl vytvořen Billem Joyem v~sedmdesátých letech. Hlavní myšlenkou byla syntaxe více podobná jazyku C. Dnes se používá vylepšená verze tcsh \cite{tcsh}.
 
-Přestože není tento shell moc oblíbený v~dnešní době, při svém vzniku představil některé nové vlastnosti, které pak začaly adaptovat i~ostatní shelly. Byla to například historie příkazů nebo podpora aliasů.
+Přestože v~v~dnešní době tento shell není moc oblíbený, při svém vzniku představil některé nové vlastnosti, které pak začaly adaptovat i~ostatní shelly. Byla to například historie příkazů nebo podpora aliasů.
 
 % http://www.tcsh.org/
 % https://en.wikipedia.org/wiki/C_shell
@@ -367,13 +369,13 @@ Korn Shell umožnuje upravovat psaný příkaz jako v~editorech Vi nebo Emacs. P
 %
 \section{Bash -- Bourne Again Shell}
 
-Bash \cite{bash} \cite{learningthebashshell} \cite{unixprogrammingenvironment} je open source shell projektu GNU. Bash se snaží být zpětně kompatibilní s~Bourne shellem, tedy skripty napsané v~Bourne shellu pravděpodobně půjdou spustit i v~Bashi. Naopak to je problém, který se řeší program checkbashisms, o~kterém bude řeč dále.
+Bash \cite{bash} \cite{learningthebashshell} \cite{unixprogrammingenvironment} je open source shell projektu GNU. Bash se snaží být zpětně kompatibilní s~Bourne shellem, tedy skripty napsané v~Bourne shellu pravděpodobně půjdou spustit i v~Bashi. Naopak to je problém, který se řeší programem \texttt{checkbashisms}, o~kterém bude řeč dále.
 
-Bash obsahuje konstrukty pro smyčky. Nejen smyčky while a for, ale i until, což je obdoba smyčky do-while v~jazyce C. Pro větvení lze použít klasický příkaz if, ale například i case, což je obdoba switch v~jazyce C.
+Bash obsahuje konstrukty pro smyčky. Nejen smyčky \texttt{while} a \texttt{for}, ale i \texttt{until}, což je obdoba smyčky \texttt{do-while} v~jazyce C. Pro větvení lze použít klasický příkaz \texttt{if}, ale například i \texttt{case}, což je obdoba \texttt{switch} v~jazyce C.
 
-Z~C-Shellu Bash převzal například expanzi znaku tilda, kdy se \textasciitilde{} změní na obsah proměnné \$HOME. Další funkce z~C-Shellu je například zásobník adresářů, nebo práce s~historií.
+Z~C Shellu Bash převzal například expanzi znaku tilda, kdy se \textasciitilde{} změní na obsah proměnné \$HOME. Další funkce z~C Shellu je například zásobník adresářů, nebo práce s~historií.
 
-Z~Korn shellu bash převzal například příkaz fc, pro volání a opravování příkazů z~historie. Pak je to třeba příkaz type, který vypíše typ příkazu. V~ukázce \ref{lst:bashtype} je vidět rozdíl mezi vnitřním příkazem Bashe.
+Z~Korn shellu bash převzal například příkaz \texttt{fc}, pro volání a opravování příkazů z~historie. Pak je to třeba příkaz \texttt{type}, který vypíše typ příkazu. V~ukázce \ref{lst:bashtype} je vidět rozdíl mezi vnitřním příkazem Bashe.
 
 \noindent
 \begin{minipage}{\linewidth}
@@ -406,11 +408,11 @@ Z~Shell nejenom že nabízí nejvíce funkcí mezi používanými Shelly pro Uni
 
 Funkcí navíc oproti ostatním shellům je hodně. Hned po instalaci Z~Shellu se uživateli nabídne možnost nastavení, jako například nastavení ukládání historie, nebo automatické doplňování. Z~Shell má na rozdíl od Bashe nativní podporu automatického doplňování, která je nejen rychlejší, obsahuje více způsobů, jak s~ní iteragovat, ale je i snadnější na implementaci do uživatelských skriptů.
 
-Z~Shell umožňuje zobrazit hodnotu promptu PS1 i vpravo. Tím se otevírají další možnosti pro zobrazování informací v~okně terminálu. Toto místo často bývá nevyužité, protože příkazy nejsou většinou tak dlouhé.
+Z~Shell umožňuje zobrazit hodnotu promptu \texttt{PS1} i vpravo. Tím se otevírají další možnosti pro zobrazování informací v~okně terminálu. Toto místo často bývá nevyužité, protože příkazy nejsou většinou tak dlouhé.
 
-Ukládání historie je automaticky sdíleno mezi jednotlivými instancemi Z~Shellu. Takové chování je možné nastavit i například v~Bashi, ale je to pro to potřeba ukládat každý příkaz do souboru na disk.
+Ukládání historie je automaticky sdíleno mezi jednotlivými instancemi Z~Shellu. Takové chování je možné nastavit i například v~Bashi, ale je pro to potřeba ukládat každý příkaz do souboru na disk.
 
-Další z~věcí ovlivňujících pohodlnost práce v~Z~Shellu je takzvaný globbing, který je lepší než v~ostatních shellech. Jedná se o~popsání jednoho, nebo několika řetězců, zpravidla názvu souborů, kratším zápisem. Například \texttt{*.txt} se zamění za všechny soubory ve složce s~příponou txt. V~Z~Shellu je ale možné popsat cestu k~souborů pomocí zkratek a nechat ji doplnit. Například \texttt{/h/u/t/s} se změní na \texttt{/home/user/test/script.sh}.
+Další z~věcí ovlivňujících pohodlnost práce v~Z~Shellu je takzvaný globbing, který je lepší než v~ostatních shellech. Jedná se o~popsání jednoho, nebo několika řetězců, zpravidla názvu souborů, kratším zápisem. Například \texttt{*.txt} se zamění za všechny soubory ve složce s~příponou txt. V~Z~Shellu je ale možné popsat cestu k~souboru pomocí zkratek a nechat ji doplnit. Například \texttt{/h/u/t/s} se změní na \texttt{/home/user/test/script.sh}.
 
 Velmi užitečnou funkcí je automatická oprava překlepů. V~Bashi je velmi limitovaná oprava příkazů, ale v~Z~Shellu se opravují nejen názvy příkazů, ale také argumentů. Pokud je argumentem cesta k~souboru, který neexistuje, Z~Shell navrhne cestu k~souboru, který existuje a má podobnou cestu.
 
@@ -429,11 +431,11 @@ Nový uživatel, který ještě není s~prací v~příkazové řádce zběhlý, 
 
 Další výhodou je možnost používání příkazů ve formě filtrů. I~složitou věc je často možné vyřešit pomocí spuštění několika příkazů v~rouře za sebou. Příkazy v~mezikrocích mohou být také uživatelské skripty.
 
-Velice snadná je také automatizace. Pokud uživatel často potřebuje vykonat nějakou sekvenci příkazů, může složené příkazy vyhledat v~historii a třeba z~nich vytvořit skript.
+Velice snadná je také automatizace. Pokud uživatel často potřebuje vykonat nějakou sekvenci příkazů, může složené příkazy vyhledat v~historii a například z~nich vytvořit skript.
 
 Nevýhodou na rozdíl od práce v~grafickém prostředí je často fakt, že zpravidla ne všechny potřebné informace jsou stále na očích. Tento problém lze vyřešit rozšířeným a vylepšeným promptem, nebo takovými emulátory terminálů, které mohou vyhradit nějakou část terminálu pro zobrazování informací. I~přesto se stává, že uživatel musí často spouštět nějaké příkazy, které vypíšou nějaké informace, aby věděl stav věcí, které ho zajímají.
 
-S~rychlejší prací přichází také větší zodpovědnost za spuštěné příkazy. Překlep v~příkaze, který provádí nějaké změny, může způsobit komplikace. Některé programy se uživatele dotazují, zda-li chce operaci opravdu provést, ale není to pravidlem. Nejlepší prevencí je si tedy příkaz před spuštěním překontrolovat.
+S~rychlejší prací přichází také větší zodpovědnost za spuštěné příkazy. Překlep v~příkaze, který provádí nějaké změny, může způsobit komplikace. Některé programy se uživatele dotazují, zdali chce operaci opravdu provést, ale není to pravidlem. Nejlepší prevencí je si tedy příkaz před spuštěním překontrolovat.
 
 
 %
@@ -441,11 +443,11 @@ S~rychlejší prací přichází také větší zodpovědnost za spuštěné př
 %
 \section{Nastavení shellu}
 
-GNU/Linuxové distribuce, které nabízejí předpřipravené prostředí, mají pro výchozí shell bash připravené takzvané rc soubory, které nějakým způsobem upravují běžící interaktivní shell. Jednou z~nejviditelnějších změn je nastavení proměnné PS1, o~které bude řeč v~pozdější kapitole, která určuje styl promptu. Ve výchozím nastavení Bashe, tedy po spuštění Bashe bez načtení rc souborů, které lze spustit pomocí příkazu bash \texttt{--norc}, se v~PS1 zobrazuje pouze název shellu, jeho verze a zda-li je uživatel root. Po načtení výchozích rc souborů se v~PS1 ukazují informace jako je například jméno uživatele, jméno počítače a~co je velmi důležité, jméno aktuálního adresáře.
+GNU/Linuxové distribuce, které nabízejí předpřipravené prostředí, mají pro výchozí shell bash připravené takzvané rc soubory, které nějakým způsobem upravují běžící interaktivní shell. Jednou z~nejviditelnějších změn je nastavení proměnné \texttt{PS1}, o~které bude řeč v~pozdější kapitole, která určuje styl promptu. Ve výchozím nastavení Bashe, tedy po spuštění Bashe bez načtení rc souborů, které lze spustit pomocí příkazu bash \texttt{--norc}, se v~\texttt{PS1} zobrazuje pouze název shellu, jeho verze a zdali je uživatel root. Po načtení výchozích rc souborů se v~\texttt{PS1} ukazují informace, jako jsou jméno uživatele, jméno počítače a~co je velmi důležité, jméno aktuálního adresáře.
 
 Tyto informace jdou snadno získat použitím některých základních příkazů, například whoami, hostname, pwd. Protože tyto informace jsou důležité a~potřebujeme je vědět pořád, chceme je mít pořád na očích.
 
-Mezi další základní nastavení shellu patří i aliasy. Jedná se o~zkratky, které se před vykonáním nahradí za řetězec, který nahrazují. Například v~ukázce \ref{lst:alias} je příklad aliasů pro příkaz ls. Příkaz ls patří k~velmi základním a jeho účelem je vypsat obsah složky. V~základním nastavení, bez argumentů předaných při volání, se vypíšou pouze názvy souborů. To může být vhodné v~nějakých skriptech, ale uživatel v~příkazové řádce chce takovou informaci zobrazit přehledně a~barevně.
+Mezi další základní nastavení shellu patří i aliasy. Jedná se o~zkratky, které se před vykonáním nahradí za řetězec, který nahrazují. V~ukázce \ref{lst:alias} je příklad aliasů pro příkaz \texttt{ls}. Příkaz \texttt{ls} patří k~velmi základním a jeho účelem je vypsat obsah složky. V~základním nastavení, bez argumentů předaných při volání, se vypíšou pouze názvy souborů. To může být vhodné v~nějakých skriptech, ale uživatel v~příkazové řádce chce takovou informaci zobrazit přehledně a~barevně.
 
 \noindent
 \begin{minipage}{\linewidth}
@@ -477,7 +479,7 @@ Protože je terminál elektronické zařízení, ukážeme zde pouze emulátory 
 
 Prvním druhem jsou programy, které vytvoří nové okno v~desktopovém prostředí operačního systému. Na operačních systémech Linux je to zpravidla X Window System \cite{xorg}.
 
-Druhým druhem jsou programy, které se spustí už v~nějakém terminálu a emulují další terminál. To se hodí například při vzdálené práci. Takový emulátor běží na straně serveru, a pokud se přeruší spojení, terminál zůstane neporušen.
+Druhým druhem jsou programy, které se spustí už v~nějakém terminálu a emulují další terminál. To se hodí například při vzdálené práci. Takový emulátor běží na straně serveru a pokud se přeruší spojení, terminál zůstane neporušen.
 
 Obrázek \ref{fig:terminal_invert} ukazuje okno GNOME Terminal v~grafickém prostředí LXDE s~instancí terminálového emulátoru GNU Screen.
 
@@ -497,7 +499,7 @@ Obrázek \ref{fig:terminal_invert} ukazuje okno GNOME Terminal v~grafickém pros
 
 \section{Existující řešení}
 
-Awesome \cite{awesome} je název git repozitáře se seznamem různých zajímavých řešeních ze světa svobodného software. Je zde i podsekce awesome-shell \cite{awesomeshell}, ve které lze nalézt spoustu užitečných nástrojů pro práci s~příkazovou řádkou, nebo psaním skriptů v~Bashi.
+Awesome \cite{awesome} je název Git repozitáře se seznamem různých zajímavých řešení ze světa svobodného software. Je zde i podsekce awesome-shell \cite{awesomeshell}, ve které lze nalézt spoustu užitečných nástrojů pro práci s~příkazovou řádkou, nebo psaním skriptů v~Bashi.
 
 Spousta těchto nástrojů je nad rámec této práce. Představíme si zde některé základní nástroje pro vylepšení interaktivního shellu, nebo nástrojů a~frameworků pro psaní shell skriptů.
 
@@ -506,10 +508,10 @@ Spousta těchto nástrojů je nad rámec této práce. Představíme si zde něk
 
 \section{Bash frameworky pro psaní skriptů}
 
-Existuje mnoho projektů, jejichž cílem je vytvořit framework v~bashi, který má nějakým způsobem zjednodušit vytváření, především větších, skriptů v~bashi. Spousta dnešních vývojářů je zvyklá na objektově orientovaný přístup k~programovaní a je tedy pro těžké vytvořit větší program, který by zůstal přehledný.
+Existuje mnoho projektů, jejichž cílem je vytvořit framework v~bashi, který má nějakým způsobem zjednodušit vytváření především větších skriptů v~bashi. Spousta dnešních vývojářů je zvyklá na objektově orientovaný přístup k~programování a je tedy pro těžké vytvořit větší program, který by zůstal přehledný.
 
 \subsection{Bash Infinity Framework}
-Bash Infinity Framework \cite{bashinfinity}, známý také jako Bash OO framework \cite{bashooframework}, je framework napsaný v~Bashi, který umožňuje vytvářet třídy, výjimky a testy. Cílem je nabídnout možnost skriptovat v~Basi objektově. Takový kód potom může být přehlednější a modulárnější.
+Bash Infinity Framework \cite{bashinfinity}, známý také jako Bash OO framework \cite{bashooframework}, je framework napsaný v~Bashi, který umožňuje vytvářet třídy, výjimky a testy. Cílem je nabídnout možnost skriptovat v~Bashi objektově. Takový kód potom může být přehlednější a modulárnější.
 
 % \url{github.com/niieani/bash-oo-framework}
 % https://invent.life/project/bash-infinity-framework
@@ -521,7 +523,7 @@ Bash Infinity Framework \cite{bashinfinity}, známý také jako Bash OO framewor
 
 \section{Bash frameworky pro správu doplňků}
 
-Existuje spousta věcí, které uživatel příkazové řádky potřebuje občas řešit. Řešení pro daný problém je víc. Buď si uživatel vyřeší problém sám, nebo bude hledat řešení na internetu. Nástroje do shellu, které umějí i spravovat doplňky, mohou mít řešení pro daný problém. Instalace a použití pak bude velmi jednoduché, intuitivní a bude zde nějaká záruka o~funkčnosti a kvalitě.
+Existuje spousta věcí, které uživatel příkazové řádky potřebuje občas řešit. Řešení pro daný problém je víc. Buď si uživatel vyřeší problém sám, nebo bude hledat řešení na internetu. Nástroje do shellu, které umí i spravovat doplňky, mohou mít řešení pro daný problém. Instalace a použití pak bude velmi jednoduché, intuitivní a bude zde nějaká záruka o~funkčnosti a kvalitě.
 
 Přestože je tato práce převážně o~shellu Bash, pro Z~Shell existuje nástroj Oh My Zsh, který je jeden z~nejpokročilejších a s~největší uživatelskou základnou.
 
@@ -532,7 +534,7 @@ Přestože je tato práce převážně o~shellu Bash, pro Z~Shell existuje nást
 
 Oh My Zsh \cite{ohmyzsh} je nástroj pro Z~shell. Má otevřený kód a je vyvíjen komunitou. Jeho cílem je spravovat konfiguraci Z~Shellu. Lze přes něj instalovat spoustu doplňků, ať se jedná o~barevné schéma v~terminálu, nebo nástroje pro lepší práci s~verzovacími systémy.
 
-Ukázkou takového barevného schématu je \ref{fig:zsh_theme}.
+Ukázkou takového barevného schématu je obrázek \ref{fig:zsh_theme}.
 
 \begin{figure}[htb]\centering
 	\includegraphics[width=\textwidth]{./images/zsh_theme}
@@ -573,7 +575,7 @@ Příkladem může být práce s~verzovacím systémem, kdy se uživatel napří
 
 \subsection{Sexy Bash Prompt}
 
-Projekt Sexy Bash Prompt \cite{sexybashprompt} je další používaný prompt v~interaktivním Bashi. Umožňuje vypisovat informace o~stavu větví ve verzovacím systému git. Obrázek \ref{fig:sexy_prompt} ukazuje příklad takového promptu.
+Projekt Sexy Bash Prompt \cite{sexybashprompt} je další používaný prompt v~interaktivním Bashi. Umožňuje vypisovat informace o~stavu větví ve verzovacím systému Git. Obrázek \ref{fig:sexy_prompt} ukazuje příklad takového promptu.
 
 \begin{figure}[htb]\centering
 	\includegraphics[width=\textwidth]{./images/sexy_prompt_edited}
@@ -600,7 +602,7 @@ Prvotním cílem práce bylo navrhnout a vytvořit shell, který bude asistovat 
 
 Protože nástroj na upozorňování chyb, konkrétně vynikající ShellCheck, již existuje, byla část cíle práce nastavena obecněji na analýzu a ovlivňování příkazů spouštěných z~interaktivní příkazové řádky. Tím se v~praxi myslí vytvořit nástroj, který dokáže spustit skripty před vykonáním příkazu a být je schopen ovlivnit, nebo zabránit jejich vykonávání.
 
-Spouštění příkazů, které byly nesprávně použity, může vést k provedení nechtěné akce. Proto je dalším cílem práce je vytvořit sadu upravených základních programů z~GNU Coreutils, které uživatele nejprve upozorní na změny, které nastanou po spuštění takového příkazu a možnost vrátit stav změněných věcí do původního stavu.
+Spouštění příkazů, které byly nesprávně použity, může vést k~provedení nechtěné akce. Proto je dalším cílem práce je vytvořit sadu upravených základních programů z~GNU Coreutils, které uživatele nejprve upozorní na změny, které nastanou po spuštění takového příkazu a možnost vrátit stav změněných věcí do původního stavu.
 
 Posledním cílem je vytvořit jednoduchý debugger příkazů spouštěných v~interaktivním shellu. Na rozdíl od normálních debuggerů pro shell skripty, například bashdb -- BASH Debugger, je cílem takového debuggeru maximální jednoduchost použití. Tím se například myslí spuštění debuggeru s~předepsaným posledním příkazem pomocí spuštění jediného příkazu.
 
@@ -629,7 +631,7 @@ V~této kapitole vysvětlíme, co všechno všechno důležitého se stane mezi 
 \end{figure}
 
 
-Prvním krokem je escapovaní, neboli převod znaků převod znaků, které mají ve svém kontextu speciální význam. V~shellu lze tento postup provést pomocí znaku \textbackslash, nebo tím, že řetězec znaků dáme do uvozovek. Příkladem může být znak \#, který značí, že znaky za ním jsou pouze komentář. V~ukázce \ref{lst:escape} jsou čtyři příklady zavolání příkazu echo. V~prvním případě ale znak \# není vyescapován a Bash ho vyhodnotí jako začátek komentáře, proto se vypíše jen část, oproti ostatním voláním.
+Prvním krokem je escapovaní, neboli převod znaků, které mají ve svém kontextu speciální význam. V~shellu lze tento postup provést pomocí znaku \texttt{\textbackslash}, nebo tím, že řetězec znaků dáme do uvozovek. Příkladem může být znak \texttt{\#}, který značí, že znaky za ním jsou pouze komentář. V~ukázce \ref{lst:escape} jsou čtyři příklady zavolání příkazu echo. V~prvním případě ale znak \# není vyescapován a Bash ho vyhodnotí jako začátek komentáře, proto se vypíše jen část, oproti ostatním voláním.
 
 % TODO: pridat strong/weak quoting?
 % http://wiki.bash-hackers.org/syntax/quoting
@@ -647,7 +649,7 @@ a # b
 \end{lstlisting}
 \end{minipage}
 
-Druhým krokem je odstranění komentářů. V~Bashi lze nastavit, aby se v~interaktivním shellu komentáře ignorovaly. Slouží k~tomu proměnná \textit{interactive\_comments}, v~základním nastavení jsou komentáře zapnuté.
+Druhým krokem je odstranění komentářů. V~Bashi lze nastavit, aby se v~interaktivním shellu komentáře ignorovaly. Slouží k~tomu proměnná \texttt{interactive\_comments}, v~základním nastavení jsou komentáře zapnuté.
 
 Třetím krokem je rozdělení celého vstupu na příkazy. K~příkazům patří přesměrovávání vstupů a výstupů. Jednoduchý příkaz je označení buď pro přiřazení proměnné, nebo název příkazu. Příkazů v~jednom vstupu může být více. Příkazy mohou být za sebou v~rouře, odděleny logickým and nebo or. Příkazy mohou být také odděleny jednoduše pomocí středníku, nebo v~případě spouštění ze skriptu i novou řádkou. Stejně může příkazy rozdělovat ampersand, který značí,  že se příkaz spustí na pozadí. Některé konstrukty již z~principu obsahují více příkazů, například podmínky nebo smyčky.
 
@@ -695,9 +697,9 @@ Roura, anglicky pipeline, je sekvence jednoho, nebo více příkazů oddělenýc
 \end{lstlisting}
 \end{minipage}
 
-Seznam, anglicky list, 	příkazů je sekvence příkazů nebo rour oddělených kontrolními operátory. Listy končící kontrolním operátorem ampersand jsou spuštěny na pozadí. Listy mohou být spojeny kontrolními operátory \texttt{and} nebo \texttt{or}. Podle návratových kódů se řídí vykonávání dalších příkazů v~listu.
+Seznam příkazů, anglicky list, je sekvence příkazů nebo rour oddělených kontrolními operátory. Listy končící kontrolním operátorem ampersand jsou spuštěny na pozadí. Listy mohou být spojeny kontrolními operátory \texttt{and} nebo \texttt{or}. Podle návratových kódů se řídí vykonávání dalších příkazů v~listu.
 
-Složené příkazy se dělí do více podkategorií. Zaprvé to jsou subshelly, které se označují jednoduchými závorkami. Dále to jsou podmíněné příkazy a~aritmetické bloky. Další kategorií jsou konstrukty měnící vykonávání příkazů a~smyčky, takže například if a~while. Formát smyčky for je v~ukázce \ref{lst:bashfor}.
+Složené příkazy se dělí do více podkategorií. Zaprvé to jsou subshelly, které se označují jednoduchými závorkami. Dále to jsou podmíněné příkazy a~aritmetické bloky. Další kategorií jsou konstrukty měnící vykonávání příkazů a~smyčky, takže například \texttt{if} a~\texttt{while}. Formát smyčky \texttt{for} je v~ukázce \ref{lst:bashfor}.
 
 \noindent
 \begin{minipage}{\linewidth}
@@ -734,7 +736,7 @@ Projekt Beautysh \cite{beautysh} si dává za cíl formátovat shell skripty tak
 %
 \subsubsection{Bashlex}\label{sec:bashlex}
 
-Bashlex \cite{bashlex} je knihovna napsaná ve skriptovacím jazyce Python \cite{Python}, která zjednodušeně imituje práci vnitřního parseru Bashe. Z~velké části se jedná jen o~přepsaní zdrojových kódů Bashe z~jazyka C.
+Bashlex \cite{bashlex} je knihovna napsaná ve skriptovacím jazyce Python \cite{Python}, která zjednodušeně imituje práci vnitřního parseru Bashe. Z~velké části se jedná jen o~přepsání zdrojových kódů Bashe z~jazyka C.
 
 Existují zde rozdíly oproti parseru v~Bashi. Za prvé se nespouští žádné příkazy, knihovna umí pouze parsovat. Na rozdíl od parseru Yacc \cite{yacc}, který používá Bash, je Bashlex reentrantní. Výstupem Bashlexu je kompletní abstraktní syntaktický strom.
 
@@ -780,9 +782,9 @@ ListNode(pos=(0, 31), parts=[
 
 Libbash \cite{libbash} je projekt, který vzniknul v~roce 2010 na akci Google Summer of Code. Cílem je jako stejně u~knihovny Bashlex vytvořit ze vstupu kompletní abstraktní syntaktický strom.
 
-Libbash je napsaný v~jazyce C++, ale využívá generátor parserů ANTLR \cite{antlr}, který je v~Javě. Gramatika Bashe je pro tento generátor popsána v~souboru bashast.g
+Libbash je napsaný v~jazyce C++, ale využívá generátor parserů ANTLR \cite{antlr}, který je v~Javě. Gramatika Bashe je pro tento generátor popsána v~souboru \texttt{bashast.g}.
 
-Projekt se stal i součástí Google Summer of Code v~roce 2011. Na stránkách operačního systému Gentoo \cite{gentoolibbash} je Libbashi věnovaná stránka, ale na gitových repozitářích není již žádná nedávná aktivita. Protože má Libbash velký potenciál, je možné, že se projekt obnoví.
+Projekt se stal i součástí Google Summer of Code v~roce 2011. Na stránkách operačního systému Gentoo \cite{gentoolibbash} je Libbashi věnovaná stránka, ale na Gitových repozitářích není již žádná nedávná aktivita. Protože má Libbash velký potenciál, je možné, že se projekt obnoví.
 
 
 % https://qiaomuf.wordpress.com/2011/05/05/introduction-to-libbash/
@@ -803,11 +805,11 @@ Projekt se stal i součástí Google Summer of Code v~roce 2011. Na stránkách 
 
 Shell pracuje v~uživatelském adresním prostoru. To znamená, že sám o~sobě nemůže pracovat s~hardwarem, nebo provádět úkony, jako například vytváření procesů. K~tomu, aby takovéto operace mohl provádět, volá systémové volání tak, aby jádro operačního systému tyto operace provedlo tak, jak potřebuje shell.
 
-Ke spouštění příkazů se používá systémové volání fork, které vytvoří nový proces tím, že duplikuje proces, jenž fork zavolal.
+Ke spouštění příkazů se používá systémové volání \texttt{fork}, které vytvoří nový proces tím, že duplikuje proces, jenž \texttt{fork} zavolal.
 
-Pokud je přesměrováván vstup, nebo výstup souborů, je využito systémových volání close pro zavření defaultního výstupu a poté open k~otevření výstupu nového.
+Pokud je přesměrováván vstup, nebo výstup souborů, je využito systémových volání \texttt{close} pro zavření defaultního výstupu a poté \texttt{open} k~otevření výstupu nového.
 
-Pro spouštění příkazů v~rouře slouží systémové volání pipe, které v~jádře operačního systému vytvoří vyrovnávací paměť pro komunikaci mezi dvěma procesy. Jedná se i o~frontu, takže data mohou přicházet rychleji, než je další proces stíhá odebírat.
+Pro spouštění příkazů v~rouře slouží systémové volání \texttt{pipe}, které v~jádře operačního systému vytvoří vyrovnávací paměť pro komunikaci mezi dvěma procesy. Jedná se i o~frontu, takže data mohou přicházet rychleji, než je další proces stíhá odebírat.
 
 Důležité je si uvědomit, že ne všechny příkazy potřebují vytváření nových procesů. Například vestavěné příkazy Bashe pracují interně. Takové příkazy fungují mnohem rychleji. Navíc takové příkazy často modifikují nastavení běžícího shellu.
 
@@ -835,7 +837,7 @@ Důležité je si uvědomit, že ne všechny příkazy potřebují vytváření 
 
 %
 %
-\section{Debuggovaní Bashe} %-------------------------------------------------
+\section{Debuggování Bashe} %-------------------------------------------------
 
 Cílem této práce je i provést rešerši existujících nástrojů pro statickou analýzu, krokování a hledání chyb v~Bash skriptech. V~této podkapitole budou popsány jak vnitřní nástroje Bashe, tak i externí nástroje.
 
@@ -845,7 +847,7 @@ Cílem této práce je i provést rešerši existujících nástrojů pro static
 
 Pokud se najde takový kód, který vypadá správně, ale při jeho vykonávání nastane něco nečekaného, je dobrou praktikou zmenšit takový  kód pouze na tu část, se kterou je něco špatně.
 
-Pokud se pak jedná o~jednoduchý příkaz nebo několik takových příkazů, které jsou syntakticky a podle manuálu správně, je také možné, že je chyba přímo v~interpretu. Uživatel pak může chování nahlásit vývojářům Bashe. Pro ověření toho, že něco špatně, může uživatel debuggovat přímo instanci Bashe pomocí debuggeru GNU GDB.
+Pokud se pak jedná o~jednoduchý příkaz nebo několik takových příkazů, které jsou syntakticky a podle manuálu správně, je také možné, že je chyba přímo v~interpretu. Uživatel pak může chování nahlásit vývojářům Bashe. Pro ověření toho, že je něco špatně, může uživatel debuggovat přímo instanci Bashe pomocí debuggeru GNU GDB.
 
 
 
@@ -872,7 +874,7 @@ foo
 \end{lstlisting}
 \end{minipage}
 
-Z~ukázky \ref{lst:xtrace} je vidět, že základní hodnota proměnné PS4 je \texttt{+}.
+Z~ukázky \ref{lst:xtrace} je vidět, že základní hodnota proměnné \texttt{PS4} je \texttt{+}.
 
 \subsubsection{verbose}
 
@@ -959,7 +961,7 @@ Nastavení \texttt{extdebug}, které v~Bashi zapne pokročilý debuggovací rež
 
 První změnou je, že příkaz \texttt{declare -F} pro danou funkci řekne, ve kterém souboru a na jakém řádku byla deklarována.
 
-Druhou změnou je chování \texttt{DEBUG trap}. Pokud \texttt{DEBUG trap} vrátí nenulovou hodnotu, další příkaz je přeskočen a není vykonán. Pokud DEBUG trap vrátí jako návratovou hodnotu číslo dva a shell vykonává příkazy ve funkci, nebo zpracovává soubor, je simulován návrat z~takové funkce respektive souboru.
+Druhou změnou je chování \texttt{DEBUG trap}. Pokud \texttt{DEBUG trap} vrátí nenulovou hodnotu, další příkaz je přeskočen a není vykonán. Pokud DEBUG trap vrátí jako návratovou hodnotu číslo dva a shell vykonává příkazy ve funkci nebo zpracovává soubor, je simulován návrat z~takové funkce, respektive souboru.
 
 Třetí změnou je, že se nastavují proměnné \texttt{BASH\_ARGC} a \texttt{BASH\_ARGV}. Tyto proměnné obsahují informace o~zásobníku s~volanými funkcemi.
 % execution call stack. (TODO: nejak cesky?)
@@ -1011,7 +1013,7 @@ bar
 
 \texttt{PS0} je proměnná, která je nová pro Bash ve verzi 4.4. V~době psaní této práce je již verze 4.4 vydaná a stabilní, ale stále není jako výchozí v~Linuxových operačních systémech.
 
-Stejně jako v~případě proměnné \texttt{PS4}, může být obsahem volání funkce ze subshellu. Problémem ale je, že taková funkce nemůže jednoduše ovlivňovat stav mimo svůj subshell, proto se hodí spíše jen pro výpis informací.
+Stejně jako v~případě proměnné \texttt{PS4} může být obsahem volání funkce ze subshellu. Problémem ale je, že taková funkce nemůže jednoduše ovlivňovat stav mimo svůj subshell, proto se hodí spíše jen pro výpis informací.
 
 Stejné funkcionality se dá dosáhnout v~Bashi před verzí 4.4 pomocí kombinace \texttt{DEBUG trap} a \texttt{PROMPT\_COMMAND}. To je mimo jiné způsob, na kterém pracuje právě Comma-shell a~o~kterém bude řeč dále.
 
@@ -1042,18 +1044,18 @@ $
 
 Bash Debugger \cite{bashdb} je nástroj, který má stejnou syntaxi a chování jako debugger GNU GDB. Bash Debugger umí nastavit breakpoint, tedy místo, na které když se dostane interpretr shellu, tak se vykonávání skriptu zastaví a uživatel může zkoumat stav instance shellu, krokovat do následujících příkazů, nebo si nechat zobrazit zásobník volání.
 
-Bash Debugger je možné integrovat do některých textovch editorů, jako je třeba Emacs. Na obrázku \ref{fig:bashdb} je použití Bash debuggeru v~textovém editoru Emacs. Konkrétně obrázek ukazuje použití breakpointu, po kterém se zobrazí interaktivní rozhraní Bash Debuggeru.
+Bash Debugger je možné integrovat do některých textových editorů, jako je třeba Emacs. Na obrázku \ref{fig:bashdb} je použití Bash debuggeru v~textovém editoru Emacs. Konkrétně obrázek ukazuje použití breakpointu, po kterém se zobrazí interaktivní rozhraní Bash Debuggeru.
 
 
 \begin{figure}[htb]\centering
 	\includegraphics[width=\textwidth]{./images/bashdb-break_invert}
-	\caption{Bash Debugger - Break point}
+	\caption{Bash Debugger -- Break point \cite{bashdb}}
 	\label{fig:bashdb}
 \end{figure}
 
 Bash Debugger má výhodu v~tom, že sám je napsaný v~Bashi. Je tak velice snadné zasahovat do běžícího skriptu svými příkazy.
 
-Funkčnost debuggeru závisí na nastavení \texttt{DEBUG trap}, která je spuštěna před každým příkazem, V~\texttt{DEBUG trap} se pokaždé zkontroluje, zda-li nemá být skript pozastaven, nebo zda není registrovaná nějaká událost. Také \texttt{EXIT} a \texttt{INT trap} jsou nastavené, aby debugger běžel i po skončení, respektive po přerušení skriptu.
+Funkčnost debuggeru závisí na nastavení \texttt{DEBUG trap}, která je spuštěna před každým příkazem. V~\texttt{DEBUG trap} se pokaždé zkontroluje, zdali nemá být skript pozastaven, nebo zda není registrovaná nějaká událost. Také \texttt{EXIT} a \texttt{INT trap} jsou nastavené, aby debugger běžel i po skončení, respektive po přerušení skriptu.
 
 
 
@@ -1065,15 +1067,15 @@ Funkčnost debuggeru závisí na nastavení \texttt{DEBUG trap}, která je spuš
 
 BashEclipse \cite{basheclipse} je plugin do integrovaného vývojového prostředí Eclipse. Pro svůj běh vyžaduje nainstalovaný editor ShellEd \cite{shelled}.
 
-BashEclipse funguje také na \texttt{DEBUG trap}. Na začátek každého skriptu, který chceme debuggovat musíme přidat speciální soubor \texttt{\_DEBUG.sh}. V~tomto souboru se nastaví spojení s~TCP/IP socketem ze souboru pro zařízení tcp localhost s~portem 3333, ze kterého se čtou příkazy, které se v~\texttt{DEBUG trap} vykonají.
+BashEclipse funguje také na \texttt{DEBUG trap}. Na začátek každého skriptu, který chceme debuggovat, musíme přidat speciální soubor \texttt{\_DEBUG.sh}. V~tomto souboru se nastaví spojení s~TCP/IP socketem ze souboru pro zařízení tcp localhost s~portem 3333, ze kterého se čtou příkazy, které se v~\texttt{DEBUG trap} vykonají.
 
 Zbytek debuggeru je napsán jako doplněk Eclipse.
 
-Ukázkou grafického prostředí z~Eclipse při debugování shell skriptu přes BashEclipse je obrázek \ref{fig:bash_eclipse}.
+Ukázkou grafického prostředí z~Eclipse při debuggování shell skriptu přes BashEclipse je obrázek \ref{fig:bash_eclipse}.
 
 \begin{figure}
 	\includegraphics[width=1.0\textwidth]{./images/bash_eclipse}
-	\caption{Bash eclipse}
+	\caption{BashEclipse \cite{basheclipse}}
 	\label{fig:bash_eclipse}
 \end{figure}
 
@@ -1091,23 +1093,23 @@ Ukázkou grafického prostředí z~Eclipse při debugování shell skriptu přes
 %
 %
 %
-\section{Možnosti debugování v~interaktivním shellu}
+\section{Možnosti debuggování v~interaktivním shellu}
 
-Nebyl nalezen žádný externí nástroj pro debugování interaktivního shellu. Nejčastějším postupem je však spouštění příkazů postupně. Pokud chce uživatel hledat chybu v~jednom příkazu, co spouští, může mu pomoci nastavení \texttt{xtrace}, aby například viděl, do jakých hodnot expandují proměnné.
+Nebyl nalezen žádný externí nástroj pro debuggování interaktivního shellu. Nejčastějším postupem je však spouštění příkazů postupně. Pokud chce uživatel hledat chybu v~jednom příkazu, co spouští, může mu pomoci nastavení \texttt{xtrace}, aby například viděl, do jakých hodnot expandují proměnné.
 
 
 
 %
 %
-\subsection{Definice debugování v~interaktivním shellu}
+\subsection{Definice debuggování v~interaktivním shellu}
 
 %todo: nema cenu debugovat jednoduche prikazy, ale slozite ano. chceme umet rozkrokovat pipy a subshelly (tedy to co nam to dela ted)
 
-Pro debugování skriptů a programů existuje mnoho nástrojů, které definují, jaké operace a možnosti od takového nástroje očekáváme. Mezi takové základní operací patří možnost zastavit vykonávání skriptu nebo programu na určitém místě, nebo za určitých podmínek. Po takovém zastavení by uživatel měl mít možnost zobrazit si další informace.
+Pro debuggování skriptů a programů existuje mnoho nástrojů, které definují, jaké operace a možnosti od takového nástroje očekáváme. Mezi takové základní operace patří možnost zastavit vykonávání skriptu nebo programu na určitém místě nebo za určitých podmínek. Po takovém zastavení by uživatel měl mít možnost zobrazit si další informace.
 
 V~interaktivním shellu se zpravidla nespouštějí jednotlivé příkazy v~takovém množství, že by se mezi nimi chtěl uživatel zastavit. V~shellu lze příkazy spouštět v~rouře a v~takovém případě je vhodné vykonávání příkazu pozastavit a nechat si například vypsat výstup, který je následně určen jako vstup do dalšího programu.
 
-I~v~interaktivním shellu se často setkáme s~použitím cyklů, for a while. U~for cyklu uživatele může zajímat přes jaké hodnoty iterátoru bude tělo cyklu spuštěno, popřípadě spustit tělo cyklu s~vlastním iterátorem.
+I~v~interaktivním shellu se často setkáme s~použitím cyklů for a while. U~for cyklu uživatele může zajímat, přes jaké hodnoty iterátoru bude tělo cyklu spuštěno, popřípadě spustit tělo cyklu s~vlastním iterátorem.
 
 
 
@@ -1116,16 +1118,18 @@ I~v~interaktivním shellu se často setkáme s~použitím cyklů, for a while. U
 
 Následující kapitoly shrnují možnosti, kterými by šel debugger interaktivního shellu implementovat.
 
-Základní funkcionalita, která je nutná pro vytvoření takového programu je ta, že příkazy napsané do shellu je možné nevykonat a místo toho spustit nějaký vlastní kód.
+Základní funkcionalita, která je nutná pro vytvoření takového programu, je ta, že příkazy napsané do shellu je možné nevykonat a místo toho spustit nějaký vlastní kód.
 
 \subsection{GNU Readline}
 
-GNU Readline umožňuje přemapovat klávesu enter tak, že se před i po řetězec znaků dopíšou nějaké další znaky. Myšlenka byla taková, že se příkaz obalí voláním funkce, ve které se příkaz spustí, popřípadě se zapne nějaký debugger, nebo se vykonají jiné skripty.
+GNU Readline umožňuje přemapovat klávesu enter tak, že se před i po řetězec znaků dopíšou nějaké další znaky. Myšlenka byla taková, že se příkaz obalí voláním funkce, ve které se příkaz spustí, popřípadě se zapne nějaký debugger nebo se vykonají jiné skripty.
 
-Tuto myšlenku se podařilo implementovat, je vidět na ukázce \ref{lst:readline_hack}. V~této ukázce už je vidět modifikovaná řádka vstupu, ta se však objeví až po zmáčknutí klávesy enter. Příkaz bind říká, že po zmáčknutí klávesy enter se před vstup má vložit řetězec znaků \texttt{, '} a za vstup znak \texttt{'}. Znak \texttt{,} způsobí volání funkce s~názvem \texttt{,}, tento název byl zvolen tématicky jako název práce.
+Tuto myšlenku se podařilo implementovat, je vidět na ukázce \ref{lst:readline_hack}. V~této ukázce už je vidět modifikovaná řádka vstupu, ta se však objeví až po zmáčknutí klávesy enter. Příkaz bind říká, že po zmáčknutí klávesy enter se před vstup má vložit řetězec znaků \texttt{, '} a za vstup znak \texttt{'}. Znak \texttt{,} způsobí volání funkce s~názvem \texttt{,}, tento název byl zvolen tematicky jako název práce.
 
 Bohužel má tento postup řadu nevýhod, z~nichž některé dělají celou myšlenku nepoužitelnou. Největší nevýhodou je, že nelze napsat víceřádkový příkaz, protože při psaní dalšího řádku zapůsobí obalovaní vstupu do funkce. Další nevýhodou je, že se příkaz ke spuštění změní, což může působit velice rušivě. Nevýhodou také je, že takto modifikovaný příkaz se uloží do historie, ale to je věc, která by šla ošetřit.
 
+\noindent
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[language=bash, caption={Modifikace Readline}, label={lst:readline_hack}]
 bash-4.3$ ,() { echo "running: \"$@\""; eval "$@"; }
 bash-4.3$ bind "RETURN: \"\e[1~, '\e[4~'\n\""
@@ -1133,16 +1137,17 @@ bash-4.3$ , 'echo test'
 running: "echo test"
 test
 \end{lstlisting}
+\end{minipage}
 
 %
 %
 \subsection{Napsání nového REPLu}
 
-Další možností, jak ovládat všechny příkazy k~vykonání, je napsat celý mechanismus, který se stará o~čtení příkazů, jejich vykonání a vypsání dalšího promptu. Takové smyčce se také říká REPL z~anglického read-eval-print loop.
+Další možností, jak ovládat všechny příkazy k~vykonání, je napsat celý mechanismus, který se stará o~čtení příkazů, jejich vykonání a vypsání dalšího promptu. Takové smyčce se také říká REPL, z~anglického read-eval-print loop.
 
 Základní implementace by mohla být velice jednoduchá a napsaná v~Bashi. Smyčka by mohla být součástí skriptu, který se pustí hned po startu Bashe.
 
-Největší problém tohoto řešení je fakt, že uživatel není v~shellu, ale v~našem skriptu. To by mělo za následek například to, že by stavené aliasy v~základu nefungovaly. Takových případů by se nashromáždilo víc a výsledkem práce by byla omezená verze shellu.
+Největší problém tohoto řešení je fakt, že uživatel není v~shellu, ale v~našem skriptu. To by mělo za následek například to, že by nastavené aliasy v~základu nefungovaly. Takových případů by se nashromáždilo víc a výsledkem práce by byla omezená verze shellu.
 
 % https://brennan.io/2015/01/16/write-a-shell-in-c/
 % https://www.gnu.org/software/libc/manual/html_node/Implementing-a-Shell.html#Implementing-a-Shell
@@ -1156,16 +1161,18 @@ Celý mechanismus pro kontrolu příkazů a jejich nespouštění by mohl být n
 %
 \subsection{PS0}
 
-PS0 je prompt, který se zobrazí před  příkazem. Mechanismus pro kontrolu příkazů by mohl být spuštěn ze subshellu, který by byl vykonán při expanzi proměnné PS0. Problémem ale je, že ze subshellu není snadné interagovat s~hlavní instancí shellu.
+\texttt{PS0} je prompt, který se zobrazí před  příkazem. Mechanismus pro kontrolu příkazů by mohl být spuštěn ze subshellu, který by byl vykonán při expanzi proměnné \texttt{PS0}. Problémem ale je, že ze subshellu není snadné interagovat s~hlavní instancí shellu.
 
 %
 %
 \subsection{DEBUG trap}
 
-DEBUG trap se spustí před vykonáním každého příkazu. Pokud je zapnutý pokročilý debugovací mód pomocí extdebug a návratová hodnota DEBUG trap je nenulová, následující příkaz je přeskočen, tedy nevykonán.
+DEBUG trap se spustí před vykonáním každého příkazu. Pokud je zapnutý pokročilý debuggovací mód pomocí extdebug a návratová hodnota DEBUG trap je nenulová, následující příkaz je přeskočen, tedy nevykonán.
 
 Problém, který zde nastává, je ten, že DEBUG trap se spouští pro každý jednoduchý příkaz a ne pro celý vstup. Na ukázce \ref{lst:debugtrap} je nastavena DEBUG trap tak, že se vypíše zpracovávaný příkaz, který lze přeskočit.
 
+\noindent
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[language=bash, caption={DEBUG trap}, label={lst:debugtrap}]
 bash-4.3$ trap 'echo "(trap: $BASH_COMMAND)"' DEBUG
 bash-4.3$ echo foo | grep oo
@@ -1173,6 +1180,7 @@ bash-4.3$ echo foo | grep oo
 (trap: grep oo)
 foo
 \end{lstlisting}
+\end{minipage}
 
 Pokud chceme spustit kód jen jednou pro celý vstup, můžeme použít trik, kdy nebudeme spouštět vůbec nic, tedy DEBUG trap vrátí vždy nenulovou hodnotu a v~první DEBUG trap spustit celý vstup pomocí příkazu eval. Tento vstup můžeme získat z~historie shellu, protože ta se uloží ještě před vykonáním příkazu.
 
@@ -1191,7 +1199,7 @@ Statická analýza skriptů znamená prozkoumat, analyzovat skript a například
 %
 \subsection{Vestavěná statická analýza}
 
-Při volání skriptu Bashem můžeme použít parametr -n, nebo použít příkaz set -n, kde n značí noexec, tedy mód, ve kterém se nebudou spouštět příkazy.
+Při volání skriptu Bashem můžeme použít parametr \texttt{-n} nebo použít příkaz \texttt{set -n}, kde \texttt{n} značí \texttt{noexec}, tedy mód, ve kterém se nebudou spouštět příkazy.
 
 V~takovém módu lze nalézt syntaktické chyby, ale například se nekontroluje existence volaných příkazů. Tato metoda  tedy nepomůže proti překlepům.
 
@@ -1213,7 +1221,7 @@ Check Bashisms je skript napsaný v~jazyce Perl \cite{perl} a obsahuje sadu regu
 %
 \subsection{Explain Shell}
 
-Projekt Explain Shell \cite{explainshell}, provádí statickou analýzu kódu, ale nehledá v~něm chyby, ale pouze vyparsuje vstupní kód a vyhledá příslušnou dokumentaci v~manuálových stránkách. Využívá se zde knihovny bashlex, která zde byla popsána v sekci \ref{sec:bashlex}. Manuálové stránky, ze kterých se vybírá jsou z~operačního systému Ubuntu.
+Projekt Explain Shell \cite{explainshell}, provádí statickou analýzu kódu, ale nehledá v~něm chyby, pouze vyparsuje vstupní kód a vyhledá příslušnou dokumentaci v~manuálových stránkách. Využívá se zde knihovny bashlex, která zde byla popsána v~sekci \ref{sec:bashlex}. Manuálové stránky, ze kterých se vybírá, jsou z~operačního systému Ubuntu.
 
 % \url{http://www.explainshell.com/}
 
@@ -1225,15 +1233,15 @@ ShellCheck \cite{shellcheck} je nástroj, který varuje před chybami a~dokonce 
 
 Shellcheck si dává za cíl tři základní věci. Za prvé pomoci nezkušeným uživatelům shellu, upozornit je na základní chyby srozumitelně, protože základní hlášení chyb v~shellu může působit zmateně.
 
-Druhý cíl je vysvětlit nestandardní chování, nebo neintuitivní syntaxi, uživatelům, kteří používající středně pokročilé praktiky.
+Druhý cíl je vysvětlit nestandardní chování nebo neintuitivní syntaxi uživatelům kteří používající středně pokročilé praktiky.
 
 Posledním cílem je upozornit pokročilé uživatele na okrajové případy a~nástrahy. Například skript může pracovat dobře, dokud nemá zpracovat soubor obsahující mezeru v~názvu.
 
 ShellCheck obsahuje galerii špatného kódu s~přehledem základních chyb. Na jeho stránkách je však také podrobně popsán každý případ, který se hledá a na který se upozorňuje.
 
-ShellCheck je napsaný v~čistě funkcionálním jazyce Haskell \cite{haskell} postaveném v~systému Cabal. Obsahuje parser, který tvoří abstraktní syntaktický strom. Zdroje chyb, varování a doporučení, které ShellCheck hledá jsou kontrolovány jak při tvoření abstraktního syntaktického stromu, tak je zde i~soubor pravidel, ve kterých se hledá shoda s~příkazy na vstupu.
+ShellCheck je napsaný v~čistě funkcionálním jazyce Haskell \cite{haskell} postaveném v~systému Cabal. Obsahuje parser, který tvoří abstraktní syntaktický strom. Zdroje chyb, varování a doporučení, které ShellCheck hledá, jsou kontrolovány jak při tvoření abstraktního syntaktického stromu, tak je zde i~soubor pravidel, ve kterých se hledá shoda s~příkazy na vstupu.
 
-ShellCheck je velice aktivní projekt a~používá se často na testovacích serverech, jako je například Travis CI.
+ShellCheck je velice aktivní projekt a~používá se často na testovacích serverech, jako je například Travis CI \cite{travisci}.
 % TODO: cite cabal, travis ci
 
 V~ukázce \ref{lst:shellcheck} je výpis ShellChecku pro ukázkový skript.
@@ -1261,7 +1269,7 @@ if [[ $1 == $n ]]; then
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Realizace}
 
-Cílem této práce má být multifunkční nástroj do interaktivní příkazové řádky. První funkcí je umět analyzovat příkazy před jejich vykonáváním, případně je nevykonat. Druhou funkcí je debugger, který umožní krokovat spouštěné příkazy, nebo spouštět pouze jejich část. Poslední funkcí je sada příkazů, která obaluje základní příkazy z~GNU Coreutils a umožňuje vrátit změny provedené těmito příkazy, nebo rovnou uživateli vysvětlit, co přesně se stane a upozornit ho na jeho chyby.
+Cílem této práce má být multifunkční nástroj do interaktivní příkazové řádky. První funkcí je umět analyzovat příkazy před jejich vykonáváním, případně je nevykonat. Druhou funkcí je debugger, který umožní krokovat spouštěné příkazy nebo spouštět pouze jejich část. Poslední funkcí je sada příkazů, která obaluje základní příkazy z~GNU Coreutils a umožňuje vrátit změny provedené těmito příkazy, nebo rovnou uživateli vysvětlit, co přesně se stane a upozornit ho na jeho chyby.
 
 Vytvořený nástroj se jmenuje Comma-shell a je to otevřený software. Nejaktuálnější zdrojové kódy, ukázky a návod na instalaci jsou na autorově veřejném Git repozitáři \cite{commash}.
 
@@ -1270,9 +1278,9 @@ Vytvořený nástroj se jmenuje Comma-shell a je to otevřený software. Nejaktu
 
 Pokud si chce uživatel vyzkoušet Comma-shell v~bezpečném a izolovaném prostředí, je dobrou praxí vytvořit si virtuální stroj pouze pro tento účel.
 
-Instalace byla otestována na virtuálním stroji s~operačním systémem Debian verze \texttt{8.7.1-amd64}. Je nutné přidělit  minimálně 2GB operační paměti RAM, jinak je možné, že kompilace některých částí, zejména ShellChecku skončí neúspěchem.
+Instalace byla otestována na virtuálním stroji s~operačním systémem Debian verze \texttt{8.7.1-amd64}. Je nutné přidělit  minimálně 2GB operační paměti RAM, jinak je možné, že kompilace některých částí, zejména ShellChecku, skončí neúspěchem.
 
-Virtuální stroj, který byl použit pro toto testování je VirtualBox verze \texttt{5.0.32\_Ubuntu r112930}, pod operačním systémem založeným na Ubuntu 16.04 LTS.
+Virtuální stroj, který byl použit pro toto testování, je VirtualBox verze \texttt{5.0.32\_Ubuntu r112930}, pod operačním systémem založeným na Ubuntu 16.04 LTS.
 
 % TODO na zacatku pisu o tom, ze zde bude postup instalace i nastaveni VM
 
@@ -1305,15 +1313,15 @@ source ~/.commash/comma.sh
 %
 % TODO sekce
 \section{Nespouštění příkazů}\label{sec:debugtraprealization}
-V~sekci realizování debuggeru interaktivního shellu bylo zmíněno několik možností. Pro realizaci byla nakonec vybráno řešení s~\texttt{DEBUG trap}.
+V~sekci realizování debuggeru interaktivního shellu bylo zmíněno několik možností. Pro realizaci bylo nakonec vybráno řešení s~\texttt{DEBUG trap}.
 
 Celé řešení je postavené na tom, že \texttt{DEBUG trap} stále vrací nenulovou hodnotu, takže žádné příkazy nejsou vykonány.
 
-Bash obsahuje proměnnou \texttt{PROMPT\_COMMAND}, která je vykonána před každém vypsání promptu. Comma-shell v~této proměnné volá funkci, která nastaví, že následující DEBUG trap je první v~pořadí po odeslání příkazu k~jeho vykonání.
+Bash obsahuje proměnnou \texttt{PROMPT\_COMMAND}, která je vykonána před každým vypsání promptu. Comma-shell v~této proměnné volá funkci, která nastaví, že následující DEBUG trap je první v~pořadí po odeslání příkazu k~jeho vykonání.
 
-\texttt{DEBUG trap}, která má vykonat nějaký kód tak učiní pomocí funkce eval. \texttt{eval} je vestavěná funkce v~shellu, která vykoná příkaz, který ji byl předán argumentem.
+\texttt{DEBUG trap}, která má vykonat nějaký kód, tak učiní pomocí funkce \texttt{eval}. \texttt{eval} je vestavěná funkce v~shellu, která vykoná příkaz, jenž ji byl předán argumentem.
 
-\texttt{DEBUG trap} má informace pouze o~jednoduchém příkazu, který se má vykonat. Příkaz k~vykonání se uloží do historie ještě před zavolání první \texttt{DEBUG trap}. Kód, který vykonává funkce eval je tedy vzat jako ten poslední z~historie.
+\texttt{DEBUG trap} má informace pouze o~jednoduchém příkazu, který se má vykonat. Příkaz k~vykonání se uloží do historie ještě před zavoláním první \texttt{DEBUG trap}. Kód, který vykonává funkce \texttt{eval}, je tedy vzat jako ten poslední z~historie.
 
 % TODO: implementovat minimalni verzi a ukazat ji tady?
 
@@ -1325,7 +1333,7 @@ Bash obsahuje proměnnou \texttt{PROMPT\_COMMAND}, která je vykonána před ka�
 %
 \section{Hooks}
 
-Hooks mají v~adresářové struktuře vyhrazenou vlastní složku, ze které se automaticky načtou všechny soubory. Comma-shell poskytuje funkce, s~nimiž lze zaregistrovat hook spouštěný před, nebo po i s~jeho prioritou. Priorita slouží k~řazení posloupnosti hooků, protože bez nich by byly spouštěny v~pořadí abecedního seřazení podle názvů, což není vždy žádané.
+Hooks mají v~adresářové struktuře vyhrazenou vlastní složku, ze které se automaticky načtou všechny soubory. Comma-shell poskytuje funkce, s~nimiž lze zaregistrovat hook spouštěný před nebo po i s~jeho prioritou. Priorita slouží k~řazení posloupnosti hooků, protože bez nich by byly spouštěny v~pořadí abecedního seřazení podle názvů, což není vždy žádané.
 
 Pokud hook spuštěný před příkazem vrátí nenulovou návratovou hodnotu, není následující příkaz vykonán. Vykonáváním příkazu v~tomto kontextu se nemyslí zabránění spuštění příkazu z~DEBUG trap, ale samotné vykonání příkazu přes eval v~první \texttt{DEBUG trap} po zobrazení promptu v~interaktivní příkazové řádce.
 
@@ -1342,7 +1350,7 @@ Vstupním funkcím hooku jsou předány dva argumenty. Prvním z~nich je časov�
 
 \subsection{Hooky před vykonáním příkazu}
 
-Hooky před spuštění příkazů mohou sloužit ke kontrole příkazu, nebo například zaznamenání místa spuštění. Možné je jen vypsat nějaké doporučené používání příkazu, pokud je někde zvolen pracovní kodex.
+Hooky před spuštěním příkazů mohou sloužit ke kontrole příkazu nebo například zaznamenání místa spuštění. Možné je jen vypsat nějaké doporučené používání příkazu, pokud je někde zvolen pracovní kodex.
 
 \subsection{Hooky po vykonání příkazu}
 
@@ -1356,9 +1364,9 @@ Comma-shell obsahuje v~základu několik předvytvořených hooků. Některé z~
 %
 \subsection{ShellCheck hook}
 
-ShellCheck na nástroj na kontrolu skriptů v~Bashi nebo Bourne Shellu. ShellCheck hook však vytvoří z~příkazu, který se má vykonat skript, který následně ShellCheck zkontroluje. Pokud jsou nalezeny nějaké problémy, varování, nebo doporučení, vypíše se uživateli zpráva, na základě které se může rozhodnout příkaz nespouštět, upravit, nebo vypnout upozornění na danou chybu.
+ShellCheck na nástroj na kontrolu skriptů v~Bashi nebo Bourne Shellu. ShellCheck hook však vytvoří z~příkazu, který se má vykonat, skript, jenž následně ShellCheck zkontroluje. Pokud jsou nalezeny nějaké problémy, varování nebo doporučení, vypíše se uživateli zpráva, na základě které se může rozhodnout příkaz nespouštět, upravit nebo vypnout upozornění na danou chybu.
 
-Protože ShellCheck je určen pro skripty, některé případy, na které upozorňuje nejsou v~interaktivním shellu moc relevantní. ShellCheck například kontroluje, zda byl příkaz cd, který změní aktuální adresář, ošetřen tak, že pokud selže, skript se přizpůsobí. Například pokud se chce skript přepnout do nějaké složky a v~ní mazat soubory. Pokud příkaz cd selže v~interaktivním shellu, uživatel je o~situaci informován a může se podle toho zařídit.
+Protože ShellCheck je určen pro skripty, některé případy, na které upozorňuje, nejsou v~interaktivním shellu moc relevantní. ShellCheck například kontroluje, zda byl příkaz cd, který změní aktuální adresář, ošetřen tak, že pokud selže, skript se přizpůsobí. Například pokud se chce skript přepnout do nějaké složky a v~ní mazat soubory. Pokud příkaz cd selže v~interaktivním shellu, uživatel je o~situaci informován a může se podle toho zařídit.
 
 \noindent
 \begin{minipage}{\linewidth}
@@ -1431,8 +1439,9 @@ n@t:~$ cat
 
 Když Bash hledá příkaz k~vykonání a nepodaří se mu ho najít, jako poslední možnost zkusí zavolat funkci command\_not\_found\_handle, které jako argument předá příkaz, který nebyl nalezen.
 
-Comma-shell přepíše funkci command\_not\_found\_handle tak, aby nedělala nic, jen vrátila návratový kód 127. V~hooku spuštěném po příkazu se otestuje, zda-li je návratová hodnota 127 a pokud ano, zavolá se kód obstarávající logiku, pokud příkaz není nalezen.
+Comma-shell přepíše funkci command\_not\_found\_handle tak, aby nedělala nic, jen vrátila návratový kód 127. V~hooku spuštěném po příkazu se otestuje, zdali je návratová hodnota 127 a pokud ano, zavolá se kód obstarávající logiku, pokud příkaz není nalezen.
 
+\noindent
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[language=bash, caption={Explain RC hook}, label={lst:notfoundhook}]
 n@t:~$ le asdf
@@ -1463,7 +1472,7 @@ V~ukázce \ref{lst:notfoundhook} je vidět notfound hook v~akci. Uživatel můž
 
 V~následujících sekcích bude představen debugger určený do interaktivního shellu. Jedná se tedy o~takové použití, že uživatel chce krokovat, nebo částečně spouštět příkazy spouštěné v~interaktivním režimu shellu.
 
-Implementace debuggeru je rozdělena na dvě části. První část je hook, který se spustí před příkazem a zjišťuje se v~něm, zda-li má být debuggování aktivní. Pokud ano, je zavolán skript napsaný v~jazyce Python, ve kterém se použije knihovna Bashlex. Výstupem tohoto skriptu je na standardním výstupu informace pro uživatele, které možnosti má. Na chybovém výstupu jsou kódy v~shellu odpovídající jednotlivým akcím, které pak hook v~Comma-shellu vykoná po tom, co od uživatele přečte jeho požadovanou akci.
+Implementace debuggeru je rozdělena na dvě části. První část je hook, který se spustí před příkazem a zjišťuje se v~něm, zdali má být debuggování aktivní. Pokud ano, je zavolán skript napsaný v~jazyce Python, ve kterém se použije knihovna Bashlex. Výstupem tohoto skriptu je na standardním výstupu informace pro uživatele, které možnosti má. Na chybovém výstupu jsou kódy v~shellu odpovídající jednotlivým akcím, které pak hook v~Comma-shellu vykoná po tom, co od uživatele přečte jeho požadovanou akci.
 
 Použití knihovny Bashlex je velice jednoduché a intuitivní. Nejprve je celý vstup parsován a je vytvořen abstraktní syntaktický strom. Poté se projde celý strom znovu s~naší třídou, která definuje metody pro jednotlivé uzly. Příklad takové metody je \texttt{visitpipe}, která se zavolá, když se v~abstraktním syntaktickém stromě narazí na rouru. V~takové metodě máme přístup k~pozici roury a z~této informace můžeme uživateli nabídnout nějaké akce, třeba vykonat všechny příkazy až do té konkretní roury.
 
@@ -1476,7 +1485,7 @@ V~ukázce \ref{lst:dbginteractivesubhsell} je z~příkazové řádky spuštěn p
 
 \noindent
 \begin{minipage}{\linewidth}
-\begin{lstlisting}[language=bash, caption={Debugger interaktivního shellu - subshell}, label={lst:dbginteractivesubhsell}]
+\begin{lstlisting}[language=bash, caption={Debugger interaktivního shellu -- subshell}, label={lst:dbginteractivesubhsell}]
 n@t:~$ echo "the year is $(date +%Y)" | grep 2017
 ,: commash debugger:
 
@@ -1496,7 +1505,7 @@ V~ukázce \ref{lst:dbginteractivepipe} je stejný příkaz jako v~ukázce \ref{l
 
 \noindent
 \begin{minipage}{\linewidth}
-\begin{lstlisting}[language=bash, caption={Debugger interaktivního shellu - subshell}, label={lst:dbginteractivepipe}]
+\begin{lstlisting}[language=bash, caption={Debugger interaktivního shellu -- subshell}, label={lst:dbginteractivepipe}]
 n@t:~$ echo "the year is $(date +%Y)" | grep 2017
 ,: commash debugger:
 
@@ -1512,11 +1521,11 @@ the year is 2017
 \end{lstlisting}
 \end{minipage}
 
-V~ukázce \ref{lst:dbginteractiveforcycle1} je příklad debuggování for cyklu. For cyklus se v~shellu často používá na provedení operace pro několik souborů, které jsou specifikované v~hlavičce for cyklu. Zde je jsou tyto soubory označeny \texttt{*.txt}. Comma-shell debugger umožňuje zobrazit hodnoty, přes které bude postupně spuštěno tělo for cyklu.
+V~ukázce \ref{lst:dbginteractiveforcycle1} je příklad debuggování for cyklu. For cyklus se v~shellu často používá na provedení operace pro několik souborů, které jsou specifikované v~hlavičce for cyklu. Zde jsou tyto soubory označeny \texttt{*.txt}. Comma-shell debugger umožňuje zobrazit hodnoty, přes které bude postupně spuštěno tělo for cyklu.
 
 \noindent
 \begin{minipage}{\linewidth}
-\begin{lstlisting}[language=bash, caption={Debugger interaktivního shellu - výpis hodnot iterátoru for cyklu }, label={lst:dbginteractiveforcycle1}]
+\begin{lstlisting}[language=bash, caption={Debugger interaktivního shellu -- výpis hodnot iterátoru for cyklu }, label={lst:dbginteractiveforcycle1}]
 n@t:/tmp/csfor$ for i in *.txt; do echo "$i"; done
 ,: commash debugger:
 
@@ -1538,7 +1547,7 @@ V~další ukázce \ref{lst:dbginteractiveforcycle2} na ten samý for cyklus jako
 
 \noindent
 \begin{minipage}{\linewidth}
-\begin{lstlisting}[language=bash, caption={Debugger interaktivního shellu - změna iterátoru for cyklu}, label={lst:dbginteractiveforcycle2}]
+\begin{lstlisting}[language=bash, caption={Debugger interaktivního shellu -- změna iterátoru for cyklu}, label={lst:dbginteractiveforcycle2}]
 n@t:/tmp/csfor$ for i in *.txt; do echo "$i"; done
 ,: commash debugger:
 
@@ -1565,7 +1574,7 @@ Bash debugger je nejpoužívanější a zaběhlý debugger skriptů napsaných v
 
 Comma-shell debugger shell skriptů se pro to snaží jít jinou cestou. Využívá podobných postupů, jako je Comma-shell debugger v~interaktivním shellu. Práce v~takovém debuggeru by měla být jednoduchá a natolik intuitivní, že není potřeba studovat žádnou manuálovou stránku. Příkazy, které je možné vykonat, budou zobrazeny v~menu a budou se spouštět zmáčknutím jedné klávesy.
 
-Práce s~tímto debuggerem je taková, že je uživateli nabízené menu pro každý příkaz první úrovně. Příkaz první úrovně je příkaz, který není v~žádné funkci, ani součástí smyček, nebo podmínek. V~takovém menu, pokud tomu příkaz odpovídá, je možné vstoupit do tohoto příkazu a v~něm krokovat příkazy.
+Práce s~tímto debuggerem je taková, že je uživateli nabízeno menu pro každý příkaz první úrovně. Příkaz první úrovně je příkaz, který není v~žádné funkci, ani součástí smyček, nebo podmínek. V~takovém menu, pokud tomu příkaz odpovídá, je možné vstoupit do tohoto příkazu a v~něm krokovat příkazy.
 
 V~ukázce \ref{lst:dbgscript} je příklad použití debuggeru na skript, který začíná for cyklem. Uživatel zvolí možnost krokovat cyklem s~vlastním iterátorem. Následně krokuje příkazy uvnitř tohoto for cyklu.
 
@@ -1635,13 +1644,13 @@ Pokud se vstoupí do nějakého cyklu nebo podmínky, je hlavní část debugger
 %
 \section{Bezpečný mód}
 
-Bezpečný mód umožňuje dvě základní věci. Tou jednodušší je pouze vypsání efektu příkazu, který má nějaké destruktivní následky. Druhá funkcionalita dovoluje vracení do stavu před vykonáním příkazu.
+Bezpečný mód umožňuje dvě základní věci. Tou jednodušší je pouze vypsání efektu příkazu, který má nějaké destruktivní následky. Druhá funkcionalita dovoluje vracení se do stavu před vykonáním příkazu.
 
-Některé příkazy, jako například rm pro mazání souborů mají zabudovanou nějakou ochranu před nechtěným spuštěním, ale ta je z~našeho pohledu buď nedostatečná, nebo je až moc striktní a zabírá příliš času, před samotným vykonáním příkazu.
+Některé příkazy, jako například \texttt{rm} pro mazání souborů, mají zabudovanou nějakou ochranu před nechtěným spuštěním, ale ta je z~našeho pohledu buď nedostatečná, nebo je až moc striktní a zabírá příliš času, před samotným vykonáním příkazu.
 
 Při navrhování bezpečných příkazů byl kladen důraz na myšlenku zobrazit uživateli nějaký souhrn akcí, co se stanou. Odsouhlasení základního chování by mělo být zmáčknutí pouze jedné klávesy. Při tom by mělo být možné nechat si vypsat nějaké detailnější informace, především pokud uživatel v~souhrnu uvidí něco, s~čím nepočítal, nebo co jej překvapilo.
 
-Poslední důležitou věcí je nemít přepsané názvy nebezpečných příkazů na ty bezpečné z~Comma-shellu. V~takovém případě by si uživatel mohl zvyknout na dané chování a nebral by svoje akce jako absolutní. To by pro něj mohl být problém na systému, kde není Comma-shell s~bezpečnými příkazy nainstalován. Jak se vidět na ukázce \ref{lst:rmwrapp1} V~základním nastavení se například název rm přepíše aliasem tak, aby informoval uživatele.
+Poslední důležitou věcí je nemít přepsané názvy nebezpečných příkazů na ty bezpečné z~Comma-shellu. V~takovém případě by si uživatel mohl zvyknout na dané chování a nebral by svoje akce jako absolutní. To by pro něj mohl být problém na systému, kde není Comma-shell s~bezpečnými příkazy nainstalován. Jak je vidět na ukázce \ref{lst:rmwrapp1}, v~základním nastavení se například název \texttt{rm} přepíše aliasem tak, aby informoval uživatele.
 
 \noindent
 \begin{minipage}{\linewidth}
@@ -1655,7 +1664,7 @@ n@t:~$ rm test
 %
 \subsection{Comma-shell rm}
 
-Příkaz rm z~balíčku GNU Coreutils obsahuje dva přepínače, které mají sloužit proti smazání nechtěných souborů. První přepínač -i, znamená výzvu před každým smazaným souborem. Jak je vidět na ukázce \ref{lst:rmwrapp2}, je potřeba skutečně odsouhlasit každý mazaný soubor.
+Příkaz \texttt{rm} z~balíčku GNU Coreutils obsahuje dva přepínače, které mají sloužit proti smazání nechtěných souborů. První přepínač \texttt{-i}, znamená výzvu před každým smazaným souborem. Jak je vidět na ukázce \ref{lst:rmwrapp2}, je potřeba skutečně odsouhlasit každý mazaný soubor.
 
 \noindent
 \begin{minipage}{\linewidth}
@@ -1672,7 +1681,7 @@ n@t:/tmp/rmtest$ /bin/rm -ir ./*
 \end{lstlisting}
 \end{minipage}
 
-Druhý přepínač je -I. V~manuálových stránkách příkazu rm se píše, že je uživatel vyzván jednou, pokud odstraňuje tři, nebo více souborů, nebo pokud je mazána složka rekurzivně. U~tohoto přepínače je také napsáno, že je méně rušivý, než přepínač -i, ale stejně chrání před většinou chyb. V~ukázce \ref{lst:rmwrapp3} je vidět příklad použití tohoto přepínače. Přestože je uživatel upozorněn o~tom, že se bude něco mazat, už není upozorněn o~tom, co se bude mazat.
+Druhý přepínač je \texttt{-I}. V~manuálových stránkách příkazu \texttt{rm} se píše, že je uživatel vyzván jednou, pokud odstraňuje tři nebo více souborů nebo pokud je mazána složka rekurzivně. U~tohoto přepínače je také napsáno, že je méně rušivý, než přepínač \texttt{-i}, ale stejně chrání před většinou chyb. V~ukázce \ref{lst:rmwrapp3} je vidět příklad použití tohoto přepínače. Přestože je uživatel upozorněn na to, že se bude něco mazat, už není upozorněn na to, co se bude mazat.
 
 \noindent
 \begin{minipage}{\linewidth}
@@ -1685,11 +1694,11 @@ n@t:/tmp/rmtest$
 \end{lstlisting}
 \end{minipage}
 
-Z~našeho pohledu jsou oba tyto přepínače v~praxi nepoužitelné. Jeden je moc striktní a druhý je zbytečný. Myšlenkou Comma-shell rm je zobrazit dostatečně komplexní souhrn toho, co se bude mazat tak, aby se uživatel mohl rychle rozhodnout, zda-li chce skutečně tyto soubory smazat, nebo se chce detailněji podívat na to, co všechno se bude mazat, například v~podsložkách.
+Z~našeho pohledu jsou oba tyto přepínače v~praxi nepoužitelné. Jeden je moc striktní a druhý je zbytečný. Myšlenkou Comma-shell \texttt{rm} je zobrazit dostatečně komplexní souhrn toho, co se bude mazat, tak, aby se uživatel mohl rychle rozhodnout, zdali chce skutečně tyto soubory smazat, nebo se chce detailněji podívat na to, co všechno se bude mazat, například v~podsložkách.
 
-Další funkcionalitou Comma-shell \texttt{rm} je schopnost obnovovat mazané soubory. Tato funkcionalita je zajištěna použitím koše ze specifikace Freedesktop. Pokud Comma-shell \texttt{rm} smaže nějaké soubory tak, že je přesune do koše, vytvoří soubor s~informací kdy, odkud a co bylo smazáno. Uživatel tedy má možnost nejen obnovit z~koše soubory, které potřebuje, ale je možné obnovit všechny soubory smazané jedním příkazem \texttt{rm}.
+Další funkcionalitou Comma-shell \texttt{rm} je schopnost obnovovat mazané soubory. Tato funkcionalita je zajištěna použitím koše ze specifikace Freedesktop \cite{freedesktop}. Pokud Comma-shell \texttt{rm} smaže nějaké soubory tak, že je přesune do koše, vytvoří soubor s~informací kdy, odkud a co bylo smazáno. Uživatel tedy má možnost nejen obnovit z~koše soubory, které potřebuje, ale je možné obnovit všechny soubory smazané jedním příkazem \texttt{rm}.
 
-Implementace koše podle specifikace Freedesktop není úplně triviální, proto Comma-shell \texttt{rm} používá externí nástroj pro práci s~tímto košem, \texttt{trash-cli}.
+Implementace koše podle specifikace Freedesktop není úplně triviální, proto Comma-shell \texttt{rm} používá externí nástroj pro práci s~tímto košem, \texttt{trash--cli} \cite{trashcli}.
 
 % https://github.com/andreafrancia/trash-cli
 % https://www.freedesktop.org/wiki/Specifications/trash-spec/
@@ -1752,11 +1761,11 @@ q
 \end{lstlisting}
 \end{minipage}
 
-V~ukázce \ref{lst:rmwrapp6} je použití Comma-shell \texttt{rm} pro přesunutí souborů do koše. Soubory se pomocí \texttt{trash-put} mažou postupně, včetně složek, aby bylo snadnější upozorňovat na chyby.
+V~ukázce \ref{lst:rmwrapp6} je použití Comma-shell \texttt{rm} pro přesunutí souborů do koše. Soubory se pomocí \texttt{trash--put} mažou postupně, včetně složek, aby bylo snadnější upozorňovat na chyby.
 
 \noindent
 \begin{minipage}{\linewidth}
-\begin{lstlisting}[language=bash, caption={,rm - přesouvání do koše}, label={lst:rmwrapp6}]
+\begin{lstlisting}[language=bash, caption={,rm -- přesouvání do koše}, label={lst:rmwrapp6}]
 n@t:/tmp/rmtest$ mkdir -p dir3/dir4
 n@t:/tmp/rmtest$ touch {a..b}.txt dir3/{c..d}.txt dir3/dir4/{e..f}.txt g
 n@t:/tmp/rmtest$ ,rm -r *
@@ -1778,11 +1787,11 @@ t
 \end{lstlisting}
 \end{minipage}
 
-V~ukázce \ref{lst:rmwrapp7} je obnova souborů z~předchozí ukázky \ref{lst:rmwrapp6}. Po zavolání příkazu pro zobrazení balíčků smazaných souborů a vybrání jednoho podle času, místa a seznamu souborů si uživatel mimo jiné může nechat zobrazit detailní výpis souborů přesunutých do koše. Soubory může z~koše permanentně odstranit, nebo je obnovit. Pro odstranění se používá příkaz \texttt{trash-rm}. Pro obnovu souborů se používá příkaz \texttt{trash-restore}.
+V~ukázce \ref{lst:rmwrapp7} je obnova souborů z~předchozí ukázky \ref{lst:rmwrapp6}. Po zavolání příkazu pro zobrazení balíčků smazaných souborů a vybrání jednoho podle času, místa a seznamu souborů si uživatel mimo jiné může nechat zobrazit detailní výpis souborů přesunutých do koše. Soubory může z~koše permanentně odstranit, nebo je obnovit. Pro odstranění se používá příkaz \texttt{trash--rm}. Pro obnovu souborů se používá příkaz \texttt{trash--restore}.
 
 \noindent
 \begin{minipage}{\linewidth}
-\begin{lstlisting}[language=bash, caption={,rm - obnova souborů }, label={lst:rmwrapp7}]
+\begin{lstlisting}[language=bash, caption={,rm -- obnova souborů }, label={lst:rmwrapp7}]
 n@t:/tmp/rmtest$ ,t
 ,rm: This is a wrapper. Real trash is located at ~/.local/share/Trash
 ,rm: Choose the bundle:
@@ -1819,7 +1828,7 @@ restore
 
 Cílem práce bylo implementovat základní příkazy ze sady GNU Coreutils, podobně jako právě Comma-shell \texttt{rm}. Tyto příkazy zde budou popsány pouze stručně a bez ukázek, protože jsou velice podobné Comma-shell \texttt{rm}.
 
-Příkaz \texttt{chmod} slouží ke změně přístupových práv k~souboru. Před provedením příkazu \texttt{chmod} se uloží práva pomocí příkazu \texttt{getfacl} do souboru. Pro navrácení práv do původního stavu slouží opačný příkaz, \texttt{setfacl}, který umí práva obnovit z~toho souboru vytvořený příkazem \texttt{getfacl}. Ukázka tohoto postupu je v~\ref{lst:sgfacl}
+Příkaz \texttt{chmod} slouží ke změně přístupových práv k~souboru. Před provedením příkazu \texttt{chmod} se uloží práva pomocí příkazu \texttt{getfacl} do souboru. Pro navrácení práv do původního stavu slouží opačný příkaz, \texttt{setfacl}, který umí práva obnovit z~toho souboru vytvořeného příkazem \texttt{getfacl}. Ukázka tohoto postupu je v~\ref{lst:sgfacl}
 
 \noindent
 \begin{minipage}{\linewidth}
@@ -1837,11 +1846,11 @@ n@t:/tmp/sgfacl$ setfacl --restore=log
 \end{lstlisting}
 \end{minipage}
 
-Příkaz chown umí měnit vlastníka souboru a skupinu, do které patří. Přestože by i zde mohl být pro obnovu použit příkazy getfacl, který také ukládá vlastníka a skupinu, příkaz setfacl už tyto vlastnosti nastavit neumí. Byl proto zvolen příkaz find, jehož výstup byl nastaven tak, aby jej bylo snadné číst ve smyčce, která bude tyto vlastnosti znovu nastavovat. 
+Příkaz \texttt{chown} umí měnit vlastníka souboru a skupinu, do které patří. Přestože by i zde mohl být pro obnovu použit příkaz \texttt{getfacl}, který také ukládá vlastníka a skupinu, příkaz \texttt{setfacl} už tyto vlastnosti nastavit neumí. Byl proto zvolen příkaz \texttt{find}, jehož výstup byl nastaven tak, aby jej bylo snadné číst ve smyčce, která bude tyto vlastnosti znovu nastavovat. 
 
 % chgrp, chmod a chown
 
-Příkazy jako cp a mv neukládají další extra informace, kromě spuštěného příkazu, složky ze které byl příkaz spuštěn a seznamu souborů předaných argumenty. Pro navrácení do původního stavu se pro příkaz cp smaže původní cíl příkazu, kam se kopírovalo, pro navrácení příkazu mv se cíl přejmenuje, nebo přesune zpět na původní místo.
+Příkazy jako \texttt{cp} a \texttt{mv} neukládají další extra informace, kromě spuštěného příkazu, složky ze které byl příkaz spuštěn a seznamu souborů předaných argumenty. Pro navrácení do původního stavu se pro příkaz \texttt{cp} smaže původní cíl příkazu, kam se kopírovalo, pro navrácení příkazu \texttt{mv} se cíl přejmenuje, nebo přesune zpět na původní místo.
 
 % Za druhé jsou to příkazy cp, ln, mv, mkdir
 
@@ -1879,7 +1888,7 @@ Druhým způsobem je testování, které simuluje uživatele v~příkazové řá
 
 \section{shUnit2}
 
-Projekt shUnit2 \cite{shunit2} je framework pro tvorbu unit testů, z~rodiny frameworků xUnit \cite{xunit}. Framework nabízí funkce na testování podmínek, jako například test, zda-li se dvě hodnoty rovnají. Tyto funkce potom uživatel může použít ve svých funkcích pro zjištění, jestli jeho kód funguje správně.
+Projekt shUnit2 \cite{shunit2} je framework pro tvorbu unit testů, z~rodiny frameworků xUnit \cite{xunit}. Framework nabízí funkce na testování podmínek, jako například test, zdali se dvě hodnoty rovnají. Tyto funkce potom uživatel může použít ve svých funkcích pro zjištění, jestli jeho kód funguje správně.
 
 Framework spouští funkce, které napsal uživatel, vyhledává funkce pro jednorázové nastavení a závěrečné čistění, ale také nastavení a čištění před každou uživatelskou funkcí.
 
@@ -1891,7 +1900,7 @@ Framework spouští funkce, které napsal uživatel, vyhledává funkce pro jedn
 \section{Bats -- Bash Automated Testing System}
 Bats \cite{bats} je framework pro Bash, který splňuje specifikaci TAP, Test Anything Protocol \cite{tap}. Jedná se o~protokol, který sjednocuje výsledky testů různých jazyků a tím usnadňuje jejich automatizaci.
 
-Příklad testu Bats je v~ukázce \ref{lst:bats}. Jednotlivé testy jsou v~test blocích uvozených příkazem @test a popiskem testu. V~takovém bloku lze volat externí skripty nebo funkce příkazem run. Bats při tom naplní obsah proměnných tak, že obsahují návratové kódy, výstup jako celek, nebo pole jednotlivých řádek, pomocí kterých může uživatel kontrolovat, zda-li byl jeho skript nebo funkce úspěšná.
+Příklad testu Bats je v~ukázce \ref{lst:bats}. Jednotlivé testy jsou v~test blocích uvozených příkazem @test a popiskem testu. V~takovém bloku lze volat externí skripty nebo funkce příkazem run. Bats při tom naplní obsah proměnných tak, že obsahují návratové kódy, výstup jako celek, nebo pole jednotlivých řádek, pomocí kterých může uživatel kontrolovat, zdali byl jeho skript nebo funkce úspěšná.
 
 \noindent
 \begin{minipage}{\linewidth}
@@ -1924,7 +1933,7 @@ Expect \cite{expect} je rozšířením jazyka Tcl \cite{tcl}. Hlavním účelem 
 
 Expect byl napsán Donem Libesem pro operační systémy z~rodiny Unix, ale později se dostal i na systémy Microsoft Windows a další.
 
-Základní práce v~jazyce Expect je spouštění programů, například Bash, nebo i třeba SSH. Do takovýchto instancí je možné posílat vstup stejně tak, jako by ho uživatel psal na klávesnici. Expect potom obsahuje konstrukce pro očekávání nějakého výstupu, podle kterého se může větvit zbytek skriptu.
+Základní práce v~jazyce Expect je spouštění programů, například Bash nebo SSH. Do takovýchto instancí je možné posílat vstup stejně tak, jako by ho uživatel psal na klávesnici. Expect potom obsahuje konstrukce pro očekávání nějakého výstupu, podle kterého se může větvit zbytek skriptu.
 
 % https://www.nist.gov/services-resources/software/expect
 % http://expect.sourceforge.net/
@@ -1941,7 +1950,7 @@ Testy se skládají ze vstupů a z~řetězců, které se očekávají na výstup
 
 Testy jsou rozdělené na menší části, kde každá testuje jednu konkrétní věc. Přes skript lze pustit sérii všech testů.
 
-V~ukázce \ref{lst:expectshellcheck} je část testu v~Expectu, která testuje, zda-li se pro příkaz zavolá ShellCheck a příkaz se po zmáčknutí klávesy \texttt{r} skutečně spustí.
+V~ukázce \ref{lst:expectshellcheck} je část testu v~Expectu, která testuje, zdali se pro příkaz zavolá ShellCheck a příkaz se po zmáčknutí klávesy \texttt{r} skutečně spustí.
 
 % todo: lepsi priklad?
 
@@ -1995,17 +2004,17 @@ expect {
 
 Byl vytvořen nástroj Comma-shell, který zlepšuje práci v~interaktivním shellu nejen novým uživatelům. Nabízí prostředí pro psaní uživatelských skriptů, hooků, před a po vykonání příkazu. Jeden předpřipravený hook, ShellCheck, umí kontrolovat příkazy před jejich vykonáváním a tím varovat uživatele před chybami. Dalším užitečným nástrojem je debugger příkazů spouštěných z~příkazové řádky. Lze je spouštět po částech, které dávají smysl a pomáhá tak zefektivnit práci při hledání chyb. Poslední částí je sada příkazů vylepšujících základní příkazy z~GNU Coreutils. Tyto příkazy jsou více přívětivější k~uživateli zobrazováním více informací a umí vrátit zpět provedené změny.
 
-Comma-shell je frameworkem, který dávajá nové možnosti pro implementaci užitečných nástrojů do interaktivního shellu. Existují nástroje pro zobrazování informací v~shellu, ale chyběl zde nástroj možnost komplexní analýzy příkazu ještě před jeho vykonáním a tím je právě Comma-shell.
+Comma-shell je frameworkem, který dává nové možnosti pro implementaci užitečných nástrojů do interaktivního shellu. Existují nástroje pro zobrazování informací v~shellu, ale chyběl zde nástroj pro komplexní analýzu příkazu ještě před jeho vykonáním a tím je právě Comma-shell.
 
 
 \section{Možnost využití}
 
-Comma-shell využije nejen začátečník, ale i zkušený uživatel. Přestože to v~takto rané fázi projektu zřejmě nebude, tak v~budoucnu by například bylo možné, aby se ve firmách, nebo školících zařízeních připravil Comma-shell tak, aby zajistil bezpečnost a informoval uživatele.
+Comma-shell využije nejen začátečník, ale i zkušený uživatel. Přestože to v~takto rané fázi projektu zřejmě nebude, v~budoucnu by například bylo možné, aby se ve firmách nebo školících zařízeních připravil Comma-shell tak, aby zajistil bezpečnost a informoval uživatele.
 
 
 \section{Další práce}
 
-Účelem frameworku Comma-shell bylo připravit prostředí pro další vývoj. Toto prostředí funguje dobře a až na opravu případných chyb jej není potřeba příliš rozšiřovat. Je možné, že se v~budoucích verzích Bashe objeví nové debuggovací nástroje tak, že bude možné jádro Comma-shellu přepsat.
+Účelem frameworku Comma-shell bylo připravit prostředí pro další vývoj. Toto prostředí funguje dobře a až na opravu případných chyb jej není potřeba příliš rozšiřovat. Je možné, že se v~budoucích verzích Bashe objeví nové debuggovací nástroje, takže bude možné jádro Comma-shellu přepsat.
 
 Comma-shell debugger a sada bezpečných příkazů mají přirozeně místo pro další vývoj a vylepšování. Především to bude reagování na podněty uživatelů. Dále to může být přidávání funkcionality pro více přepínačů, nebo přidání podpory pro další příkazy z~GNU Coreutils.
 
