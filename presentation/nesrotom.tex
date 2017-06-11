@@ -73,10 +73,10 @@ Tom{\'{a}}\v{s} Nesrovnal $|$ Comma-shell, interaktivn{\'{i}} debugger shellu $|
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\section*{Obsah - }
-\frame{
-	\frametitle{Obsah prezentace FIXME: chci vubec obsah?}
-	\tableofcontents
-}
+%\frame{
+%	\frametitle{Obsah prezentace FIXME: chci vubec obsah?}
+%	\tableofcontents
+%}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
 
@@ -99,52 +99,52 @@ Tom{\'{a}}\v{s} Nesrovnal $|$ Comma-shell, interaktivn{\'{i}} debugger shellu $|
 \begin{frame}
 	\frametitle{Existující řešení}
 	\begin{itemize}
-		\item Debugování skriptů: Bash Debugger
+		\item Debugování skriptů: Bash Debugger (podobné GNU GDB)
 		\item Statická analýza skriptů: ShellCheck
 	\end{itemize}
 \end{frame}
 
-\subsection{Bash Debugger}
-\begin{frame}
-	\frametitle{Existující řešení: Bash Debugger}
-	\begin{exampleblock}{Výhody}
-		\begin{itemize}
-			\item Ovládání jako GNU GDB
-		\end{itemize}
-	\end{exampleblock}
-	\begin{alertblock}{Nevýhody}
-		\begin{itemize}
-			\item Pouze pro skripty
-		\end{itemize}
-	\end{alertblock}
-	
-		
-\end{frame}
-\begin{frame}
-	\frametitle{Existující řešení: Bash Debugger}
-	\begin{figure}
-		\centering
-		\includegraphics[width=1.0\textwidth]{./images/bashdb-break_invert}
-		%\caption{Bash Debugger}
-	\end{figure}	
-\end{frame}
-
-
-\subsection{ShellCheck}
-\begin{frame}
-	\frametitle{Existující řešení: ShellCheck}
-	\begin{exampleblock}{Výhody}
-		\begin{itemize}
-			\item Databáze "špatného kódu"
-		\end{itemize}
-	\end{exampleblock}
-	\begin{alertblock}{Nevýhody}
-		\begin{itemize}
-			\item Napsaný v jazyce Haskell
-			\item Pouze pro skripty
-		\end{itemize}
-	\end{alertblock}
-\end{frame}
+%\subsection{Bash Debugger}
+%\begin{frame}
+%	\frametitle{Existující řešení: Bash Debugger}
+%	\begin{exampleblock}{Výhody}
+%		\begin{itemize}
+%			\item Ovládání jako GNU GDB
+%		\end{itemize}
+%	\end{exampleblock}
+%	\begin{alertblock}{Nevýhody}
+%		\begin{itemize}
+%			\item Pouze pro skripty
+%		\end{itemize}
+%	\end{alertblock}
+%	
+%		
+%\end{frame}
+%\begin{frame}
+%	\frametitle{Existující řešení: Bash Debugger}
+%	\begin{figure}
+%		\centering
+%		\includegraphics[width=1.0\textwidth]{./images/bashdb-break_invert}
+%		%\caption{Bash Debugger}
+%	\end{figure}	
+%\end{frame}
+%
+%
+%\subsection{ShellCheck}
+%\begin{frame}
+%	\frametitle{Existující řešení: ShellCheck}
+%	\begin{exampleblock}{Výhody}
+%		\begin{itemize}
+%			\item Databáze "špatného kódu"
+%		\end{itemize}
+%	\end{exampleblock}
+%	\begin{alertblock}{Nevýhody}
+%		\begin{itemize}
+%			\item Napsaný v jazyce Haskell
+%			\item Pouze pro skripty
+%		\end{itemize}
+%	\end{alertblock}
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -158,6 +158,7 @@ Tom{\'{a}}\v{s} Nesrovnal $|$ Comma-shell, interaktivn{\'{i}} debugger shellu $|
 	
 	\begin{exampleblock}{Využití}
 		\begin{itemize}
+			\item Framework pro vytváření uživatelských skriptů
 			\item Spouštění skriptů před vykonáním příkazů z příkazové řádky
 			\item Příkazy k vykonání je možné měnit, nebo nevykonávat
 		\end{itemize}
@@ -168,8 +169,19 @@ Tom{\'{a}}\v{s} Nesrovnal $|$ Comma-shell, interaktivn{\'{i}} debugger shellu $|
 			\item Zastavení všech příkazů pomocí DEBUG trap v módu extdebug
 			\item Příkaz k vykonání se zjišťuje pomocí příkazu history
 			\item Vykonávání příkazů probíhá pomocí příkazu eval
+			\item Hook dostává v parametru příkaz a identifikátor
 		\end{itemize}
 	\end{exampleblock}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Ukázkya: ShellCheck Hook}
+	\begin{figure}
+		\centering
+		\includegraphics[width=1.0\textwidth]{./images/shellcheck}
+		%\caption{Bash Debugger}
+	\end{figure}	
 \end{frame}
 
 
@@ -194,6 +206,16 @@ Tom{\'{a}}\v{s} Nesrovnal $|$ Comma-shell, interaktivn{\'{i}} debugger shellu $|
 	\end{exampleblock}		
 \end{frame}
 
+\begin{frame}
+	\frametitle{Ukázka: Comma-shell Debugger}
+	\begin{figure}
+		\centering
+		\includegraphics[width=1.0\textwidth]{./images/debugger}
+		%\caption{Bash Debugger}
+	\end{figure}
+\end{frame}
+
+
 
 \subsection{Bezpečné příkazy}
 \begin{frame}
@@ -202,6 +224,7 @@ Tom{\'{a}}\v{s} Nesrovnal $|$ Comma-shell, interaktivn{\'{i}} debugger shellu $|
 	\begin{exampleblock}{Využití}
 		\begin{itemize}
 			\item Wrapper základních příkazů
+			\item Výpis dalších informací
 			\item Změny provedené těmito příkazy lze vrátit zpět
 		\end{itemize}
 	\end{exampleblock}		
@@ -211,65 +234,56 @@ Tom{\'{a}}\v{s} Nesrovnal $|$ Comma-shell, interaktivn{\'{i}} debugger shellu $|
 		\begin{itemize}
 			\item Funkce se stejným jménem jako příkaz z GNU coreutils
 			\item Logování příkazů a jejich efektů
-			\item rm implementováno pomocí FreeDestkop.org koše
+			\item rm implementováno pomocí FreeDestkop.org koše (trash-cli)
 		\end{itemize}
 	\end{exampleblock}		
 \end{frame}
 
 
-
-\section{Ukázky}
-
 \begin{frame}
-	\frametitle{Ukázky: ShellCheck hook}
+	\frametitle{Ukázka: Comma-shell safe 1/2}
 	\begin{figure}
 		\centering
-		\includegraphics[width=1.0\textwidth]{./images/shellcheck}
-		%\caption{Bash Debugger}
-	\end{figure}	
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{Ukázky: Comma-shell debugger}
-	\begin{figure}
-		\centering
-		\includegraphics[width=1.0\textwidth]{./images/debugger}
-		%\caption{Bash Debugger}
+		\includegraphics[width=1.0\textwidth]{./images/2rm1}
 	\end{figure}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Ukázky: Comma-shell safe}
+	\frametitle{Ukázka: Comma-shell safe 2/2}
 	\begin{figure}
 		\centering
-		\includegraphics[width=1.0\textwidth]{./images/rm}
-		%\caption{Bash Debugger}
+		\includegraphics[width=1.0\textwidth]{./images/2rm2}
 	\end{figure}
 \end{frame}
 
 
-\section{Instalace}
-\begin{frame}
-	\frametitle{Instalace}
-	
-	\begin{exampleblock}{Git repozitář}
-		\begin{itemize}
-			\item github.com/nesro/commash
-		\end{itemize}
-	\end{exampleblock}
-	
-	
-	\begin{exampleblock}{Instalace}
-		\begin{itemize}
-			\item sudo apt update
-			\item sudo apt install git shellcheck python-pip xdotool -y
-			\item sudo pip install bashlex
-			\item git clone https://github.com/nesro/commash \textasciitilde/.commash
-			\item source \textasciitilde/.commash/comma.sh
-		\end{itemize}
-	\end{exampleblock}
-\end{frame}
+
+
+%\section{Ukázky}
+
+
+
+
+%\section{Instalace}
+%\begin{frame}
+%	\frametitle{Instalace}
+%	
+%	\begin{exampleblock}{Git repozitář}
+%		\begin{itemize}
+%			\item github.com/nesro/commash
+%		\end{itemize}
+%	\end{exampleblock}
+%	
+%	
+%	\begin{exampleblock}{Instalace}
+%		\begin{itemize}
+%			\item sudo apt install git shellcheck python-pip xdotool -y
+%			\item sudo pip install bashlex
+%			\item git clone https://github.com/nesro/commash \textasciitilde/.commash
+%			\item source \textasciitilde/.commash/comma.sh
+%		\end{itemize}
+%	\end{exampleblock}
+%\end{frame}
 
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -290,6 +304,17 @@ Tom{\'{a}}\v{s} Nesrovnal $|$ Comma-shell, interaktivn{\'{i}} debugger shellu $|
 %\appendix
 \backupbegin
 
+
+\begin{frame}
+	\frametitle{Děkuji za pozornost}
+	\begin{exampleblock}{Shrnutí}
+		\begin{itemize}
+			\item Hooks
+			\item Debugger
+			\item Safe příkazy
+		\end{itemize}
+	\end{exampleblock}
+\end{frame}
 
 \section{Otázky: oponent}
 
