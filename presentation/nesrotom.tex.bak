@@ -305,15 +305,16 @@ Tom{\'{a}}\v{s} Nesrovnal $|$ Comma-shell, interaktivn{\'{i}} debugger shellu $|
 \backupbegin
 
 
-%\begin{frame}
-%	\frametitle{Děkuji za pozornost}
-%	\begin{exampleblock}{Shrnutí}
-%		\begin{itemize}
-%			\item Formáty COO, CSR, BSR, Quadtree
-%			\item Zobecnění formátu Quadtree, husté a řídké listy
-%		\end{itemize}
-%	\end{exampleblock}
-%\end{frame}
+\begin{frame}
+	\frametitle{Děkuji za pozornost}
+	\begin{exampleblock}{Shrnutí}
+		\begin{itemize}
+			\item Hooks
+			\item Debugger
+			\item Safe příkazy
+		\end{itemize}
+	\end{exampleblock}
+\end{frame}
 
 \section{Otázky: oponent}
 
